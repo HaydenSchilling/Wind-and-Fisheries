@@ -1,0 +1,92 @@
+File Wind Data/u Wind/u_wind_2001_2014.nc (NC_FORMAT_NETCDF4_CLASSIC):
+
+     2 variables (excluding dimension variables):
+        float uwnd[lon,lat,time]   
+            long_name: 3-hourly U-wind
+            units: m/s
+            precision: 2
+            GRIB_id: 33
+            GRIB_name: UGRD10mFcst
+            var_desc: U-wind
+            dataset: NOAA-CIRES 20th Century Reanalysis version 2c
+            level_desc: 10 m
+            statistic: Ensemble Mean
+            parent_stat: Other
+            standard_name: eastward_wind
+            missing_value: -9.96920996838687e+36
+            valid_range: -300
+             valid_range: 300
+            statistic_method: Ensemble mean is calculated by averaging over all 56 ensemble members at each time step
+            GridType: Cylindrical Equidistant Projection Grid
+            datum: wgs84
+            actual_range: -7.90999984741211
+             actual_range: 2.24000000953674
+        double time_bnds[nbnds,time]   
+
+     4 dimensions:
+        lon  Size:3
+            units: degrees_east
+            long_name: Longitude
+            standard_name: longitude
+            axis: X
+            coordinate_defines: point
+            actual_range: 150
+             actual_range: 153.75
+        lat  Size:8
+            units: degrees_north
+            long_name: Latitude
+            standard_name: latitude
+            axis: Y
+            coordinate_defines: point
+            actual_range: -25.7138996124268
+             actual_range: -39.0470008850098
+        time  Size:40904   *** is unlimited ***
+            units: hours since 1800-1-1 00:00:0.0
+            long_name: Time
+            delta_t: 0000-00-00 03:00:00
+            standard_name: time
+            axis: T
+            coordinate_defines: start
+            actual_range: 1761936
+             actual_range: 1884645
+        nbnds  Size:2
+
+    20 global attributes:
+        Conventions: CF-1.2
+        title: 4x Daily NOAA-CIRES 20th Century Reanalysis V2c
+        comments: Data is from 
+NOAA-CIRES 20th Century Reanalysis version 2c
+(4x/day).  It consists of most variables interpolated to
+pressure surfaces from model (sigma) surfaces.
+        platform: Model
+        institution: NOAA ESRL Physical Sciences Division & CU/CIRES 
+(325 Broadway R/PSD1, Boulder, CO 80305)
+        version: 2c
+        history: Tue Jun  4 18:49:29 2019: ncrcat -O -d lat,-40.000000,-25.000000 -d lon,150.000000,155.000000 -d time,0,40903 -n 14,4,1 /Datasets/20thC_ReanV2c/gaussian/monolevel/uwnd.10m.2001.nc /Public/www/X149.171.174.33.154.18.49.28.nc
+created 2015/02 by Hoop (chunked, deflated non-packed netCDF4-Classic)
+esrl.psd.data@noaa.gov
+        contact: esrl.psd.data@noaa.gov
+        source: 20CRv2c 2014, Ensemble Kalman Filter, ocean (specified): SODAsi.2c; 
+atmosphere: NCEP GFS2008ex; sea ice (specified): COBE-SST2 sea ice; 
+land: Noah; version 2
+        forcing: CO2, Sl, Vl, SST, Oz (Oz is prognostic, SST is SODAsi.2c, Sl starts in 1944 
+repeating 11 year solar cycle prior, Vl is Sato et al. 1993)
+        name_of_model_used: ensda_v351
+        creation_date: 2014-06-13T18:30:07Z
+        product: reanalysis
+        observations: International Surface Pressure Databank version 3.2.9
+        assimilation_algorithm: Ensemble Kalman Filter
+        References: http://www.esrl.noaa.gov/psd/data/gridded/data.20thC_ReanV2c.html
+        dataset_title: NOAA-CIRES 20th Century Reanalysis (V2c)
+        forcing_note: Additional information on the external forcings uses in this 
+reanalysis can be found at http://dx.doi.org/10.1002/qj.77
+        citation: Compo,G.P. <https://www.esrl.noaa.gov/psd/people/gilbert.p.compo>, 
+J.S. Whitaker <https://www.esrl.noaa.gov/psd/people/jeffrey.s.whitaker>
+P.D. Sardeshmukh, N.Matsui, R.J. Allan, X. Yin, B.E. Gleason, R.S. Vose, 
+G. Rutledge, P. Bessemoulin, S. Bronnimann, M. Brunet, R.I. Crouthamel, 
+A.N. Grant, P.Y. Groisman, P.D. Jones, M. Kruk, A.C. Kruger, G.J. Marshal, 
+M. Maugeri, H.Y. Mok, O. Nordli, T.F. Ross, R.M. Trio, X.L. Wang, 
+S.D. Woodruff, and S.J. Worley, 2011:  The Twentieth Century Reanalysis Project
+<http://onlinelibrary.wiley.com/doi/10.1002/qj.776/abstract>.
+Quarterly J. Roy. Meteorol. Soc./, 137, 1-28. DOI: 10.1002/qj.776.
+        _NCProperties: version=2,netcdf=4.6.3,hdf5=1.10.5
