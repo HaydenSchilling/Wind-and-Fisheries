@@ -20,6 +20,8 @@ str(fish_data)
 fish_data <- filter(fish_data, Latitude <= -30 & Latitude >= -36)
 fish_data <- filter(fish_data, dists_km <= 70)
 
+hist(fish_data$dists_km)
+
 # Recognise Dates
 fish_data$Date <- as.Date(as.character(fish_data$Date), format = "%d/%m/%Y")
 fish_data <- filter(fish_data, Date < "2015-1-1")
@@ -318,6 +320,22 @@ plot(x = pred2$SE_Winds.standardised, y=Pred2$fit, type = "l",
 lines(x = pred2$SE_Winds.standardised, y=(Pred2$fit-Pred2$se.fit), type = "l", col = "blue")
 lines(x = pred2$SE_Winds.standardised, y=(Pred2$fit+Pred2$se.fit), type = "l", col = "blue")
 
+
+# To plot in ggplot
+SE_1km_plot_dat <- data.frame(Pred2$fit, Pred2$se.fit, pred2$SE_Winds.standardised)
+head(SE_1km_plot_dat)
+
+p1 <- ggplot(SE_1km_plot_dat, aes(x = pred2.SE_Winds.standardised, y = Pred2.fit)) + ylim(0,0.02) +
+  theme_classic() + xlab("Standardised Southeast Winds") + ylab("Predicted Normalised Abundance") +
+  geom_ribbon(aes(ymax = Pred2.fit+Pred2.se.fit, ymin = Pred2.fit-Pred2.se.fit), fill = "grey60", col = "grey60") + 
+  geom_line(col = "blue", size = 1.5) +
+  theme(axis.title = element_text(face="bold", colour="black", size = 14),
+        axis.ticks = element_line(colour="black"),
+        legend.title = element_text(face = "bold", size = 14),
+        legend.text = element_text(size = 12, face = "bold"),
+        axis.text=element_text(size=12, face = "bold", colour = "black"))
+p1
+
 ### 10km from coast
 pred2 <- data.frame("SE_Winds.standardised" = seq(from = -2,
                                                   to =2, by = 0.05),
@@ -334,12 +352,24 @@ plot(x = pred2$SE_Winds.standardised, y=Pred2$fit, type = "l", ylim = c(0,0.01),
 lines(x = pred2$SE_Winds.standardised, y=(Pred2$fit-Pred2$se.fit), type = "l", col = "blue")
 lines(x = pred2$SE_Winds.standardised, y=(Pred2$fit+Pred2$se.fit), type = "l", col = "blue")
 
+SE_10km_plot_dat <- data.frame(Pred2$fit, Pred2$se.fit, pred2$SE_Winds.standardised)
+head(SE_1km_plot_dat)
 
+p2 <- ggplot(SE_10km_plot_dat, aes(x = pred2.SE_Winds.standardised, y = Pred2.fit)) + ylim(0,0.02) +
+  theme_classic() + xlab("Standardised Southeast Winds") + ylab("Predicted Normalised Abundance") +
+  geom_ribbon(aes(ymax = Pred2.fit+Pred2.se.fit, ymin = Pred2.fit-Pred2.se.fit), fill = "grey60", col = "grey60") + 
+  geom_line(col = "blue", size = 1.5) +
+  theme(axis.title = element_text(face="bold", colour="black", size = 14),
+        axis.ticks = element_line(colour="black"),
+        legend.title = element_text(face = "bold", size = 14),
+        legend.text = element_text(size = 12, face = "bold"),
+        axis.text=element_text(size=12, face = "bold", colour = "black"))
+p2
 
 # Try predictions NE Winds
 pred2 <- data.frame("NE_Winds.standardised" = seq(from = -2,
                                                   to =2, by = 0.05),
-                    "SE_Winds.standardised" = -1,
+                    "SE_Winds.standardised" = 0,
                     "dists_km" = 1,
                     "Project_ID" = "P1")
 pred2
@@ -351,6 +381,21 @@ plot(x = pred2$NE_Winds.standardised, y=Pred2$fit, type = "l", ylim = c(0,0.01),
      main = "Predicted coastal species abundance \nfor 1km from coast and weak SE winds") #, ylim=c(0,1)
 lines(x = pred2$NE_Winds.standardised, y=(Pred2$fit-Pred2$se.fit), type = "l", col = "blue")
 lines(x = pred2$NE_Winds.standardised, y=(Pred2$fit+Pred2$se.fit), type = "l", col = "blue")
+
+NE_1km_plot_dat <- data.frame(Pred2$fit, Pred2$se.fit, pred2$NE_Winds.standardised)
+head(SE_1km_plot_dat)
+
+p3 <- ggplot(NE_1km_plot_dat, aes(x = pred2.NE_Winds.standardised, y = Pred2.fit)) + ylim(0,0.02) +
+  theme_classic() + xlab("Standardised Northeast Winds") + ylab("Predicted Normalised Abundance") +
+  geom_ribbon(aes(ymax = Pred2.fit+Pred2.se.fit, ymin = Pred2.fit-Pred2.se.fit), fill = "grey60", col = "grey60") + 
+  geom_line(col = "blue", size = 1.5) +
+  theme(axis.title = element_text(face="bold", colour="black", size = 14),
+        axis.ticks = element_line(colour="black"),
+        legend.title = element_text(face = "bold", size = 14),
+        legend.text = element_text(size = 12, face = "bold"),
+        axis.text=element_text(size=12, face = "bold", colour = "black"))
+p3
+
 
 ### 10km from coast
 pred2 <- data.frame("NE_Winds.standardised" = seq(from = -2,
@@ -368,6 +413,28 @@ plot(x = pred2$NE_Winds.standardised, y=Pred2$fit, type = "l", ylim = c(0,0.01),
 lines(x = pred2$NE_Winds.standardised, y=(Pred2$fit-Pred2$se.fit), type = "l", col = "blue")
 lines(x = pred2$NE_Winds.standardised, y=(Pred2$fit+Pred2$se.fit), type = "l", col = "blue")
 
-# investigate NRS Samples
-levels(fish_data$Project_name)
-fish_data2 <- subset(fish_data, Project_name == "NIMO_NRS")
+NE_10km_plot_dat <- data.frame(Pred2$fit, Pred2$se.fit, pred2$NE_Winds.standardised)
+head(SE_1km_plot_dat)
+
+p4 <- ggplot(NE_10km_plot_dat, aes(x = pred2.NE_Winds.standardised, y = Pred2.fit)) + ylim(0,0.02) +
+  theme_classic() + xlab("Standardised Northeast Winds") + ylab("Predicted Normalised Abundance") +
+  geom_ribbon(aes(ymax = Pred2.fit+Pred2.se.fit, ymin = Pred2.fit-Pred2.se.fit), fill = "grey60", col = "grey60") + 
+  geom_line(col = "blue", size = 1.5) +
+  theme(axis.title = element_text(face="bold", colour="black", size = 14),
+        axis.ticks = element_line(colour="black"),
+        legend.title = element_text(face = "bold", size = 14),
+        legend.text = element_text(size = 12, face = "bold"),
+        axis.text=element_text(size=12, face = "bold", colour = "black"))
+p4
+
+
+### Plot it all together
+library(ggpubr)
+ggarrange(p1, p2, p3, p4, 
+          labels = c("a) 1km from Coast\n    Mean NE Winds ", "b) 10km from Coast\n    Mean NE Winds",
+                     "c) 1km from Coast\n    Mean SE Winds", "d) 10km from Coast\n    Mean SE Winds"))
+
+
+ggsave("plots/Larvae wind predictions.pdf", width = 21, height = 14.8, units = "cm")
+ggsave("plots/Larvae wind predictions.png", width = 21, height = 14.8, units = "cm", dpi = 600)
+# Note these were all edited after to fix labels

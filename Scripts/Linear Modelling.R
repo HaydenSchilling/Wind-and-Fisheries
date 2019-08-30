@@ -1,4 +1,4 @@
-# Linar Modelling
+# Linar Modelling to test individual level estuary effects
 #install.packages("broom")
 library(broom)
 library(dplyr)
