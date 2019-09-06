@@ -18,9 +18,9 @@ str(fish_data)
 
 # Restrict to NSW and on the continental shelf
 fish_data <- filter(fish_data, Latitude <= -30 & Latitude >= -36)
-fish_data <- filter(fish_data, dists_km <= 70)
-
-hist(fish_data$dists_km)
+fish_data <- filter(fish_data, Bathym_m <= 200)
+summary(fish_data$Bathym_m)
+hist(fish_data$Bathym_m)
 
 # Recognise Dates
 fish_data$Date <- as.Date(as.character(fish_data$Date), format = "%d/%m/%Y")
@@ -63,6 +63,7 @@ for (i in 1:nrow(fish_data)){
 hist(fish_data$NE_Winds)
 hist(fish_data$SE_Winds)
 hist(fish_data$dists_km)
+hist(fish_data$Bathym_m)
 
 # # Harmonic is to fit Hour and DOY
 # Harm <- function (theta, k = 4) {
@@ -325,9 +326,9 @@ lines(x = pred2$SE_Winds.standardised, y=(Pred2$fit+Pred2$se.fit), type = "l", c
 SE_1km_plot_dat <- data.frame(Pred2$fit, Pred2$se.fit, pred2$SE_Winds.standardised)
 head(SE_1km_plot_dat)
 
-p1 <- ggplot(SE_1km_plot_dat, aes(x = pred2.SE_Winds.standardised, y = Pred2.fit)) + ylim(0,0.02) +
+p1 <- ggplot(SE_1km_plot_dat, aes(x = pred2.SE_Winds.standardised, y = Pred2.fit)) + ylim(0,0.035) +
   theme_classic() + xlab("Standardised Southeast Winds") + ylab("Predicted Normalised Abundance") +
-  geom_ribbon(aes(ymax = Pred2.fit+Pred2.se.fit, ymin = Pred2.fit-Pred2.se.fit), fill = "grey60", col = "grey60") + 
+  geom_ribbon(aes(ymax = Pred2.fit+Pred2.se.fit, ymin = Pred2.fit-Pred2.se.fit), fill = "grey80", col = "grey80") + 
   geom_line(col = "blue", size = 1.5) +
   theme(axis.title = element_text(face="bold", colour="black", size = 14),
         axis.ticks = element_line(colour="black"),
@@ -355,9 +356,9 @@ lines(x = pred2$SE_Winds.standardised, y=(Pred2$fit+Pred2$se.fit), type = "l", c
 SE_10km_plot_dat <- data.frame(Pred2$fit, Pred2$se.fit, pred2$SE_Winds.standardised)
 head(SE_1km_plot_dat)
 
-p2 <- ggplot(SE_10km_plot_dat, aes(x = pred2.SE_Winds.standardised, y = Pred2.fit)) + ylim(0,0.02) +
+p2 <- ggplot(SE_10km_plot_dat, aes(x = pred2.SE_Winds.standardised, y = Pred2.fit)) + ylim(0,0.035) +
   theme_classic() + xlab("Standardised Southeast Winds") + ylab("Predicted Normalised Abundance") +
-  geom_ribbon(aes(ymax = Pred2.fit+Pred2.se.fit, ymin = Pred2.fit-Pred2.se.fit), fill = "grey60", col = "grey60") + 
+  geom_ribbon(aes(ymax = Pred2.fit+Pred2.se.fit, ymin = Pred2.fit-Pred2.se.fit), fill = "grey80", col = "grey80") + 
   geom_line(col = "blue", size = 1.5) +
   theme(axis.title = element_text(face="bold", colour="black", size = 14),
         axis.ticks = element_line(colour="black"),
@@ -385,9 +386,9 @@ lines(x = pred2$NE_Winds.standardised, y=(Pred2$fit+Pred2$se.fit), type = "l", c
 NE_1km_plot_dat <- data.frame(Pred2$fit, Pred2$se.fit, pred2$NE_Winds.standardised)
 head(SE_1km_plot_dat)
 
-p3 <- ggplot(NE_1km_plot_dat, aes(x = pred2.NE_Winds.standardised, y = Pred2.fit)) + ylim(0,0.02) +
+p3 <- ggplot(NE_1km_plot_dat, aes(x = pred2.NE_Winds.standardised, y = Pred2.fit)) + ylim(0,0.035) +
   theme_classic() + xlab("Standardised Northeast Winds") + ylab("Predicted Normalised Abundance") +
-  geom_ribbon(aes(ymax = Pred2.fit+Pred2.se.fit, ymin = Pred2.fit-Pred2.se.fit), fill = "grey60", col = "grey60") + 
+  geom_ribbon(aes(ymax = Pred2.fit+Pred2.se.fit, ymin = Pred2.fit-Pred2.se.fit), fill = "grey80", col = "grey80") + 
   geom_line(col = "blue", size = 1.5) +
   theme(axis.title = element_text(face="bold", colour="black", size = 14),
         axis.ticks = element_line(colour="black"),
@@ -416,9 +417,9 @@ lines(x = pred2$NE_Winds.standardised, y=(Pred2$fit+Pred2$se.fit), type = "l", c
 NE_10km_plot_dat <- data.frame(Pred2$fit, Pred2$se.fit, pred2$NE_Winds.standardised)
 head(SE_1km_plot_dat)
 
-p4 <- ggplot(NE_10km_plot_dat, aes(x = pred2.NE_Winds.standardised, y = Pred2.fit)) + ylim(0,0.02) +
+p4 <- ggplot(NE_10km_plot_dat, aes(x = pred2.NE_Winds.standardised, y = Pred2.fit)) + ylim(0,0.035) +
   theme_classic() + xlab("Standardised Northeast Winds") + ylab("Predicted Normalised Abundance") +
-  geom_ribbon(aes(ymax = Pred2.fit+Pred2.se.fit, ymin = Pred2.fit-Pred2.se.fit), fill = "grey60", col = "grey60") + 
+  geom_ribbon(aes(ymax = Pred2.fit+Pred2.se.fit, ymin = Pred2.fit-Pred2.se.fit), fill = "grey80", col = "grey80") + 
   geom_line(col = "blue", size = 1.5) +
   theme(axis.title = element_text(face="bold", colour="black", size = 14),
         axis.ticks = element_line(colour="black"),

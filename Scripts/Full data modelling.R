@@ -166,14 +166,74 @@ library(lme4)
 library(lmerTest)
 bream <- subset(my.df, Species == "Bream")
 
-m1 <- lmer(CPUE.standardised~ Current_Wind + X135_degree_winds.standardised * X45_degree_winds.standardised + 
-           Estuary_Type + Drought_Months +
-           (1|Estuary), data = bream)
+m1 <- lmer(CPUE.standardised ~ X135_degree_winds.standardised * X45_degree_winds.standardised + 
+           Estuary_Type + Drought_Months + (1|Estuary), data = bream)
 plot(m1)
 summary(m1)
 anova(m1) # bream increase with SE Winds
 
 plot(allEffects(m1))
+
+simulationOutput <- simulateResiduals(fittedModel = m1, n = 250)
+plot(simulationOutput)
+
+### Make Predictions
+str(bream)
+pred_dat <- data.frame("X135_degree_winds.standardised" = seq(from = -2,
+                                                  to =2, by = 0.05),
+                    "X45_degree_winds.standardised" = 0,
+                    "Estuary" = "Hawkesbury River",
+                    "Estuary_Type" = "Barrier Lagoon",
+                    #"Current_Wind" = mean(bream$Current_Wind),
+                    "Drought_Months" = 4)
+
+# # Old prediction code - does not do SE
+
+# Pred_Bream <- predict(m1, newdata = pred_dat, type = "response", se.fit = T)
+# 
+# b <- bootMer(m1, nsim=100, 
+#              FUN=function(x)predict(x, newdata=pred_dat, re.form=NA))
+# 
+# hist(b$t, #breaks=seq(250,350,by=5),
+#      #ylim=c(0,25),
+#      main="", xlab="Reaction time at 5 Days (ms)",
+#      col="cornflowerblue")
+# box()
+
+#library(devtools)
+#install_github("remkoduursma/bootpredictlme4")
+
+library(bootpredictlme4)
+Pred_Bream <- predict(m1, newdata=pred_dat, re.form=NA, se.fit=TRUE, nsim=100)
+
+Pred_Bream
+
+#plot(x = pred_dat$X135_degree_winds.standardised, y=Pred_Bream$fit, type = "l",
+#     ylab = "Predicted Bream CPUE standardised", xlab = "Standardised Southeast Winds",
+#     main = "Predicted coastal species abundance \nfor no drought and mean NE winds") #, ylim=c(0,1)
+#lines(x = pred_dat$X135_degree_winds.standardised, y=(Pred_Bream$fit-Pred_Bream$se.fit), type = "l", col = "blue")
+#lines(x = pred_dat$X135_degree_winds.standardised, y=(Pred_Bream$fit+Pred_Bream$se.fit), type = "l", col = "blue")
+
+bream_plot_dat <- data.frame(Pred_Bream$fit, Pred_Bream$se.fit, pred_dat$X135_degree_winds.standardised)
+head(bream_plot_dat)
+
+p4 <- ggplot(bream_plot_dat, aes(x = pred_dat.X135_degree_winds.standardised, y = Pred_Bream.fit)) +
+  theme_classic() + xlab("Standardised Southeast Winds") + ylab("Bream Predicted Standardised CPUE") +
+  geom_ribbon(aes(ymax = Pred_Bream.fit+Pred_Bream.se.fit, ymin = Pred_Bream.fit-Pred_Bream.se.fit), 
+              fill = "grey80", col = "grey80") + 
+  geom_line(col = "blue", size = 1.5) +
+  theme(axis.title = element_text(face="bold", colour="black", size = 14),
+        axis.ticks = element_line(colour="black"),
+        legend.title = element_text(face = "bold", size = 14),
+        legend.text = element_text(size = 12, face = "bold"),
+        axis.text=element_text(size=12, face = "bold", colour = "black"))
+p4
+
+ggsave("plots/Bream CPUE and wind predictions.pdf", height = 14.8, width = 21, units = "cm")
+ggsave("plots/Bream CPUE and wind predictions.png", height = 14.8, width = 21, units = "cm", dpi = 600)
+
+
+### Now Mullet
 
 mullet <- subset(my.df, Species == "Mullet")
 
@@ -186,6 +246,10 @@ m2 <- lmer(CPUE.standardised~  X135_degree_winds.standardised * X45_degree_winds
 #                 (1|Estuary), data = mullet)
 
 plot(m2)
+
+simulationOutput <- simulateResiduals(fittedModel = m2, n = 250)
+plot(simulationOutput)
+
 summary(m2)
 anova(m2) # No effects from mullet
 
@@ -197,6 +261,10 @@ m3 <- lmer(CPUE.standardised~  X135_degree_winds.standardised * X45_degree_winds
            Estuary_Type * Drought_Months +
            (1|Estuary), data = flathead)
 plot(m3)
+
+simulationOutput <- simulateResiduals(fittedModel = m4, n = 250)
+plot(simulationOutput)
+
 summary(m3)
 anova(m3) # No effects for Flathead
 
@@ -204,10 +272,19 @@ plot(allEffects(m3))
 
 luderick <- subset(my.df, Species == "Luderick")
 
-m4 <- lmer(CPUE.standardised~ Current_Wind + X135_degree_winds.standardised * X45_degree_winds.standardised + 
-           Estuary_Type + Drought_Months +
-           (1|Estuary), data = luderick)
+# Current wind may help for luderick
+#m4 <- lmer(CPUE.standardised~ Current_Wind + X135_degree_winds.standardised * X45_degree_winds.standardised + 
+#           Estuary_Type + Drought_Months +
+#           (1|Estuary), data = luderick)
+
+m4 <- lmer(CPUE.standardised~ X135_degree_winds.standardised * X45_degree_winds.standardised + 
+             Estuary_Type + Drought_Months +
+             (1|Estuary), data = luderick)
 plot(m4)
+
+simulationOutput <- simulateResiduals(fittedModel = m4, n = 250)
+plot(simulationOutput)
+
 summary(m4)
 anova(m4)
 
@@ -216,10 +293,14 @@ plot(Effect(c("SE_Winds.standardised","NE_Winds.standardised"), fit2))
 
 whiting <- subset(my.df, Species == "Whiting")
 
-m5 <- lmer(CPUE.standardised~ Current_Wind + X135_degree_winds.standardised * X45_degree_winds.standardised + 
+m5 <- lmer(CPUE.standardised ~ X135_degree_winds.standardised * X45_degree_winds.standardised + 
            Estuary_Type * Drought_Months +
            (1|Estuary), data = whiting)
 plot(m5)
+
+simulationOutput <- simulateResiduals(fittedModel = m5, n = 250)
+plot(simulationOutput)
+
 summary(m5)
 anova(m5) # drought increases catch of Whiting, no wind effects
 
@@ -236,12 +317,12 @@ plot(allEffects(m5))
 # anova(m6)
 # plot(allEffects(m6)) # No effects for total CPUE
 
-#Test Single model with Species as a random effect
-m7 <- lmer(CPUE.standardised~ Current_Wind + X135_degree_winds.standardised * X45_degree_winds.standardised + 
-             Estuary_Type *Drought_Months +
-             (1|Estuary) + (1|Species), data = my.df)
-plot(m7)
-summary(m7)
-anova(m7) # drought increases catch of Whiting, no wind effects
+# Test Single model with Species as a random effect
+# m7 <- lmer(CPUE.standardised~ Current_Wind + X135_degree_winds.standardised * X45_degree_winds.standardised + 
+#             Estuary_Type *Drought_Months +
+#              (1|Estuary) + (1|Species), data = my.df)
+# plot(m7)
+# summary(m7)
+# anova(m7) # drought increases catch of Whiting, no wind effects
 
-plot(allEffects(m7))
+# plot(allEffects(m7))

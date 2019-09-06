@@ -10,11 +10,11 @@ library(dplyr)
 
 
 mydata <- read.csv("Wind Data/135 degree/Sydney_Daily Modelled Wind Data Final 135 degree.csv", header = T)
-soi_data <- read.csv("SOI data long.csv", header = T)
+#soi_data <- read.csv("SOI data long.csv", header = T)
 
 head(mydata)
 
-mydata <- left_join(mydata, soi_data, by = c("Year", "Month"))
+#mydata <- left_join(mydata, soi_data, by = c("Year", "Month"))
 
 mydata$Date <- paste0(mydata$Year,"-",mydata$Month,"-",mydata$Day)
 mydata$Date <- as.Date(mydata$Date)
@@ -31,8 +31,10 @@ dat2 <- subset(dat, Year >= 1900)
 fit1 <- lm(Annual_displacement ~ Year, data = dat2)
 plot(fit1)
 summary(fit1)
+anova(fit1)
 plot(dat2$Year, dat2$Annual_displacement)
 abline(fit1)
+
 
 p1 <- ggplot(dat2, aes(x = Year, y = Annual_displacement)) + geom_point() + geom_smooth(method = "lm") +
   theme_classic() + ylab("Annual Displacement") + xlab("Year") +
@@ -44,7 +46,7 @@ p1 <- ggplot(dat2, aes(x = Year, y = Annual_displacement)) + geom_point() + geom
         #strip.text = element_text(colour="black", face = "bold", size = 14),
         #strip.background = element_rect(colour = "white"),
         #legend.justification=c(1,0), legend.position="right",
-        panel.border = element_rect(colour = "black", fill=NA, size = 1),
+        panel.border = element_rect(colour = "black", fill=NA, size = 1)
         #legend.key.size = unit(1, "cm"),
         #legend.title = element_text(face = "bold", size = 14),
         #legend.text = element_text(size = 12, face = "bold"))
@@ -54,6 +56,79 @@ p1
 ggsave("plots/Historical SE Wind Change.pdf", height = 14.8, width = 21, units = "cm")
 ggsave("plots/Historical SE Wind Change.png", height = 14.8, width = 21, units = "cm", dpi = 600)
 
+
+### Now do NE Winds
+NEdata <- read.csv("Wind Data/45 degree/Sydney_Daily Modelled Wind Data Final 45 degree.csv", header = T)
+
+
+NEdata$Date <- paste0(NEdata$Year,"-",NEdata$Month,"-",NEdata$Day)
+NEdata$Date <- as.Date(NEdata$Date)
+
+str(NEdata)
+
+dat_NE <- NEdata %>% group_by(Year) %>% summarise(Annual_displacement = sum(displacement))
+head(dat_NE)
+
+plot(dat_NE$Year, dat_NE$Annual_displacement)
+
+dat2_NE <- subset(dat_NE, Year >= 1900)
+
+fit2 <- lm(Annual_displacement ~ Year, data = dat2_NE)
+plot(fit2)
+summary(fit2)
+anova(fit2)
+plot(dat2_NE$Year, dat2_NE$Annual_displacement)
+abline(fit2)
+
+p2 <- ggplot(dat2_NE, aes(x = Year, y = Annual_displacement)) + geom_point() + geom_smooth(method = "lm") +
+  theme_classic() + ylab("Annual Displacement") + xlab("Year") +
+  theme(axis.title.x = element_text(face="bold", colour="black", size = 18),
+        axis.text.x  = element_text(colour="black", size = 12), 
+        axis.title.y = element_text(face="bold", colour="black", size = 18),
+        axis.text.y  = element_text(colour="black", size = 14),
+        axis.ticks = element_line(colour="black"),
+        #strip.text = element_text(colour="black", face = "bold", size = 14),
+        #strip.background = element_rect(colour = "white"),
+        #legend.justification=c(1,0), legend.position="right",
+        panel.border = element_rect(colour = "black", fill=NA, size = 1)
+        #legend.key.size = unit(1, "cm"),
+        #legend.title = element_text(face = "bold", size = 14),
+        #legend.text = element_text(size = 12, face = "bold"))
+  )
+p2
+
+#install.packages("ggpubr")
+library(ggpubr)
+
+ggarrange(p1, p2, labels = c("a) SE Winds", "b) NE Winds"), ncol=1)
+
+
+## Try facet designed plot
+SE <- dat2
+NE <- dat2_NE
+
+full_data <- bind_rows(list("b) SE Winds" = SE,"a) NE Winds" = NE), .id ="Direction")
+
+p3 <- ggplot(full_data, aes(x = Year, y = Annual_displacement)) + geom_point() + geom_smooth(method = "lm") +
+  theme_classic() + ylab("Annual Displacement") + xlab("Year") + 
+  facet_wrap(~Direction, scales = "free_y", ncol = 2) +
+  theme(axis.title.x = element_text(face="bold", colour="black", size = 18),
+        axis.text.x  = element_text(colour="black", size = 14), 
+        axis.title.y = element_text(face="bold", colour="black", size = 18),
+        axis.text.y  = element_text(colour="black", size = 14),
+        axis.ticks = element_line(colour="black"),
+        strip.text = element_text(colour="black", face = "bold", size = 14, hjust=0),
+        strip.background = element_rect(colour = "white"),
+        #legend.justification=c(1,0), legend.position="right",
+        panel.border = element_rect(colour = "black", fill=NA, size = 1)
+        #legend.key.size = unit(1, "cm"),
+        #legend.title = element_text(face = "bold", size = 14),
+        #legend.text = element_text(size = 12, face = "bold"))
+  )
+p3
+
+ggsave("plots/Historical Wind Change2.pdf", height = 14.8, width = 21, units = "cm")
+ggsave("plots/Historical Wind Change2.png", height = 14.8, width = 21, units = "cm", dpi = 600)
 
 #mydata$Time <- ymd_hms(mydata$Time, tz="GMT")
 
