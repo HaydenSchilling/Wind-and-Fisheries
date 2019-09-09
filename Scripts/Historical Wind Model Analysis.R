@@ -30,11 +30,39 @@ dat2 <- subset(dat, Year >= 1900)
 
 fit1 <- lm(Annual_displacement ~ Year, data = dat2)
 plot(fit1)
+
+hist(fit1$residuals)
+
+# try cooks distance
+#install.packages("olsrr")
+library(olsrr)
+
+ols_plot_cooksd_bar(fit1)
+ols_plot_cooksd_chart(fit1)
+ols_plot_dfbetas(fit1)
+ols_plot_dffits(fit1)
+ols_plot_resid_stud(fit1) # conclusions # 24 is a  outlier
+ols_plot_resid_stand(fit1)
+ols_plot_resid_lev(fit1) # but 24 has low leverage
+ols_plot_resid_stud_fit(fit1)
+ols_plot_hadi(fit1)
+ols_plot_resid_pot(fit1)
+
+
 summary(fit1)
 anova(fit1)
 plot(dat2$Year, dat2$Annual_displacement)
 abline(fit1)
 
+# try to remove the outlier 
+dat2_no_outlier <- subset(dat2, Year != 1923)
+
+fit1_no_outlier <- lm(Annual_displacement ~ Year, data = dat2_no_outlier)
+plot(fit1)
+
+hist(fit1$residuals)
+ols_plot_resid_stud(fit1_no_outlier) # no real outliers now
+summary(fit1_no_outlier)# same significant effect but effect is greater
 
 p1 <- ggplot(dat2, aes(x = Year, y = Annual_displacement)) + geom_point() + geom_smooth(method = "lm") +
   theme_classic() + ylab("Annual Displacement") + xlab("Year") +
@@ -75,6 +103,19 @@ dat2_NE <- subset(dat_NE, Year >= 1900)
 
 fit2 <- lm(Annual_displacement ~ Year, data = dat2_NE)
 plot(fit2)
+
+hist(fit2$residuals)
+ols_plot_cooksd_bar(fit2)
+ols_plot_cooksd_chart(fit2)
+ols_plot_dfbetas(fit2)
+ols_plot_dffits(fit2)
+ols_plot_resid_stud(fit2) # conclusions # 24 is a  outlier
+ols_plot_resid_stand(fit2)
+ols_plot_resid_lev(fit2) # but 24 has low leverage
+ols_plot_resid_stud_fit(fit2)
+ols_plot_hadi(fit2)
+ols_plot_resid_pot(fit2)
+
 summary(fit2)
 anova(fit2)
 plot(dat2_NE$Year, dat2_NE$Annual_displacement)

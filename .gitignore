@@ -7,6 +7,7 @@
 *.rds
 /BOM Data/*
 /Upwelling/*
+/Feedback/*
 /Fisheries Data/*
 /Wind Data/All Estuaries Modelled Wind Data speed direction.csv
 /Wind Data/Wind_data_full_all_estuaries_vectors.csv

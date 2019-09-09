@@ -177,6 +177,9 @@ plot(allEffects(m1))
 simulationOutput <- simulateResiduals(fittedModel = m1, n = 250)
 plot(simulationOutput)
 
+# histograms
+hist(simulationOutput$fittedResiduals)
+
 ### Make Predictions
 str(bream)
 pred_dat <- data.frame("X135_degree_winds.standardised" = seq(from = -2,
@@ -250,11 +253,14 @@ plot(m2)
 simulationOutput <- simulateResiduals(fittedModel = m2, n = 250)
 plot(simulationOutput)
 
+hist(simulationOutput$fittedResiduals)
+
 summary(m2)
 anova(m2) # No effects from mullet
 
 plot(allEffects(m2))
 
+# Flathead
 flathead <- subset(my.df, Species == "Flathead")
 
 m3 <- lmer(CPUE.standardised~  X135_degree_winds.standardised * X45_degree_winds.standardised + 
@@ -262,8 +268,10 @@ m3 <- lmer(CPUE.standardised~  X135_degree_winds.standardised * X45_degree_winds
            (1|Estuary), data = flathead)
 plot(m3)
 
-simulationOutput <- simulateResiduals(fittedModel = m4, n = 250)
+simulationOutput <- simulateResiduals(fittedModel = m3, n = 250)
 plot(simulationOutput)
+
+hist(simulationOutput$fittedResiduals)
 
 summary(m3)
 anova(m3) # No effects for Flathead
@@ -285,6 +293,8 @@ plot(m4)
 simulationOutput <- simulateResiduals(fittedModel = m4, n = 250)
 plot(simulationOutput)
 
+hist(simulationOutput$fittedResiduals)
+
 summary(m4)
 anova(m4)
 
@@ -300,6 +310,8 @@ plot(m5)
 
 simulationOutput <- simulateResiduals(fittedModel = m5, n = 250)
 plot(simulationOutput)
+
+hist(simulationOutput$fittedResiduals)
 
 summary(m5)
 anova(m5) # drought increases catch of Whiting, no wind effects

@@ -104,126 +104,126 @@ hist(fish_data$SE_Winds.standardised)
 plot(fish_data$SE_Winds ~ fish_data$Month)
 ggplot(fish_data, (aes(Month, SE_Winds))) + geom_smooth() + geom_point(alpha = 0.5) # no month effect needed
 
-# try modelling again
-# fit1 <- glmer.nb(Total_Abundance ~ SE_Winds.standardised*NE_Winds.standardised + dists_km + (1|Project_ID), offset =log(fish_data$Volume_m3), data = fish_data)
-fit2 <- glmmTMB(Total_Abundance ~ SE_Winds.standardised * NE_Winds.standardised*dists_km + (1|Project_ID), 
-                offset= log(Volume_m3), family=nbinom2, data = fish_data)
-
-simulationOutput <- simulateResiduals(fittedModel = fit2, n = 250)
-plot(simulationOutput)
-plotResiduals(fish_data$Project_ID, simulationOutput$scaledResiduals)
-
-Anova(fit2,type="II",test="Chisq")
-summary(fit2)
-
-
-plot(allEffects(fit2))
-plot(Effect(c("SE_Winds.standardised","dists_km"), fit2))
-plot(Effect(c("NE_Winds.standardised","dists_km"), fit2))
-
-# Try predictions
-pred1 <- data.frame("SE_Winds.standardised" = seq(from = -2,
-                                                  to =2, by = 0.05),
-                    "NE_Winds.standardised" = 0,
-                    "dists_km" = 1,
-                    "Project_ID" = "P1",
-                    "Volume_m3" = 1000)
-pred1
-
-Pred <- predict(fit2, newdata = pred1, type = "response", se.fit = T)
-
-plot(x = pred1$SE_Winds.standardised, y=Pred$fit, type = "l") #, ylim=c(0,1)
-lines(x = pred1$SE_Winds.standardised, y=(Pred$fit-Pred$se.fit), type = "l", col = "blue")
-lines(x = pred1$SE_Winds.standardised, y=(Pred$fit+Pred$se.fit), type = "l", col = "blue")
-
-
-# Coastal species only (Ford Identified species only)
-
-fit2 <- glmmTMB(Ford_Fish ~ SE_Winds.standardised * NE_Winds.standardised*dists_km + (1|Project_ID), 
-                offset= log(Volume_m3), family=nbinom2, data = fish_data)
-
-simulationOutput <- simulateResiduals(fittedModel = fit2, n = 250)
-plot(simulationOutput)
-plotResiduals(fish_data$Project_ID, simulationOutput$scaledResiduals)
-
-Anova(fit2,type="II",test="Chisq")
-summary(fit2)
-
-
-plot(allEffects(fit2))
-plot(Effect(c("SE_Winds.standardised","dists_km"), fit2))
-plot(Effect(c("NE_Winds.standardised","dists_km"), fit2))
-
-# Try predictions
-pred1 <- data.frame("SE_Winds.standardised" = seq(from = -2,
-                                                  to =2, by = 0.05),
-                    "NE_Winds.standardised" = 0,
-                    "dists_km" = 1,
-                    "Project_ID" = "P1",
-                    "Volume_m3" = 1000)
-pred1
-
-Pred <- predict(fit2, newdata = pred1, type = "response", se.fit = T)
-
-plot(x = pred1$SE_Winds.standardised, y=Pred$fit, type = "l", ylim=c(-50,100)) #, 
-lines(x = pred1$SE_Winds.standardised, y=(Pred$fit-Pred$se.fit), type = "l", col = "blue")
-lines(x = pred1$SE_Winds.standardised, y=(Pred$fit+Pred$se.fit), type = "l", col = "blue")
-
-# Normalising fish species
-library(vegetarian)
-
-norm_el <- fish_data[,22:239]  #select spp data
-
-norm_el <- norm_el/fish_data$Volume_m3
-
-norm_el <- t(norm_el) #transpose matrix so columns are sites and rows are species
-
-
-norm_el <- normalize.rows(norm_el) #normalise rows (ie each spp)
-
-rowSums(norm_el) #checking it worked (sum to 1)
-
-norm_el <- t(norm_el)  ##re-transpose so columns are species and rows are sites
-
-norm_abund <- rowSums(norm_el)
-norm_abund
-fish_data$Normalised_Abund <- norm_abund
-
+# # try modelling again
+# # fit1 <- glmer.nb(Total_Abundance ~ SE_Winds.standardised*NE_Winds.standardised + dists_km + (1|Project_ID), offset =log(fish_data$Volume_m3), data = fish_data)
+# fit2 <- glmmTMB(Total_Abundance ~ SE_Winds.standardised * NE_Winds.standardised*dists_km + (1|Project_ID), 
+#                 offset= log(Volume_m3), family=nbinom2, data = fish_data)
+# 
+# simulationOutput <- simulateResiduals(fittedModel = fit2, n = 250)
+# plot(simulationOutput)
+# plotResiduals(fish_data$Project_ID, simulationOutput$scaledResiduals)
+# 
+# Anova(fit2,type="II",test="Chisq")
+# summary(fit2)
+# 
+# 
+# plot(allEffects(fit2))
+# plot(Effect(c("SE_Winds.standardised","dists_km"), fit2))
+# plot(Effect(c("NE_Winds.standardised","dists_km"), fit2))
+# 
+# # Try predictions
+# pred1 <- data.frame("SE_Winds.standardised" = seq(from = -2,
+#                                                   to =2, by = 0.05),
+#                     "NE_Winds.standardised" = 0,
+#                     "dists_km" = 1,
+#                     "Project_ID" = "P1",
+#                     "Volume_m3" = 1000)
+# pred1
+# 
+# Pred <- predict(fit2, newdata = pred1, type = "response", se.fit = T)
+# 
+# plot(x = pred1$SE_Winds.standardised, y=Pred$fit, type = "l") #, ylim=c(0,1)
+# lines(x = pred1$SE_Winds.standardised, y=(Pred$fit-Pred$se.fit), type = "l", col = "blue")
+# lines(x = pred1$SE_Winds.standardised, y=(Pred$fit+Pred$se.fit), type = "l", col = "blue")
+# 
+# 
+# # Coastal species only (Ford Identified species only)
+# 
+# fit2 <- glmmTMB(Ford_Fish ~ SE_Winds.standardised * NE_Winds.standardised*dists_km + (1|Project_ID), 
+#                 offset= log(Volume_m3), family=nbinom2, data = fish_data)
+# 
+# simulationOutput <- simulateResiduals(fittedModel = fit2, n = 250)
+# plot(simulationOutput)
+# plotResiduals(fish_data$Project_ID, simulationOutput$scaledResiduals)
+# 
+# Anova(fit2,type="II",test="Chisq")
+# summary(fit2)
+# 
+# 
+# plot(allEffects(fit2))
+# plot(Effect(c("SE_Winds.standardised","dists_km"), fit2))
+# plot(Effect(c("NE_Winds.standardised","dists_km"), fit2))
+# 
+# # Try predictions
+# pred1 <- data.frame("SE_Winds.standardised" = seq(from = -2,
+#                                                   to =2, by = 0.05),
+#                     "NE_Winds.standardised" = 0,
+#                     "dists_km" = 1,
+#                     "Project_ID" = "P1",
+#                     "Volume_m3" = 1000)
+# pred1
+# 
+# Pred <- predict(fit2, newdata = pred1, type = "response", se.fit = T)
+# 
+# plot(x = pred1$SE_Winds.standardised, y=Pred$fit, type = "l", ylim=c(-50,100)) #, 
+# lines(x = pred1$SE_Winds.standardised, y=(Pred$fit-Pred$se.fit), type = "l", col = "blue")
+# lines(x = pred1$SE_Winds.standardised, y=(Pred$fit+Pred$se.fit), type = "l", col = "blue")
+# 
+# # Normalising fish species
+# library(vegetarian)
+# 
+# norm_el <- fish_data[,22:239]  #select spp data
+# 
+# norm_el <- norm_el/fish_data$Volume_m3
+# 
+# norm_el <- t(norm_el) #transpose matrix so columns are sites and rows are species
+# 
+# 
+# norm_el <- normalize.rows(norm_el) #normalise rows (ie each spp)
+# 
+# rowSums(norm_el) #checking it worked (sum to 1)
+# 
+# norm_el <- t(norm_el)  ##re-transpose so columns are species and rows are sites
+# 
+# norm_abund <- rowSums(norm_el)
+# norm_abund
+# fish_data$Normalised_Abund <- norm_abund
+# 
+# # fit3 <- glmmTMB(Normalised_Abund ~ SE_Winds.standardised * NE_Winds.standardised*dists_km + (1|Project_ID), 
+# #                 family=nbinom1, data = fish_data)
+# 
+# ## Tweedie Family for positive continuous response variable
 # fit3 <- glmmTMB(Normalised_Abund ~ SE_Winds.standardised * NE_Winds.standardised*dists_km + (1|Project_ID), 
-#                 family=nbinom1, data = fish_data)
-
-## Tweedie Family for positive continuous response variable
-fit3 <- glmmTMB(Normalised_Abund ~ SE_Winds.standardised * NE_Winds.standardised*dists_km + (1|Project_ID), 
-             family=nbinom2, data = fish_data)
-
-simulationOutput <- simulateResiduals(fittedModel = fit3, n = 250)
-plot(simulationOutput)
-plotResiduals(fish_data$Project_ID, simulationOutput$scaledResiduals)
-
-Anova(fit3,type="II",test="Chisq")
-summary(fit3)
-
-hist(fish_data$Normalised_Abund)
-
-plot(allEffects(fit3))
-plot(Effect(c("SE_Winds.standardised","dists_km"), fit3)) # not appropriate as NE*SE interaction
-plot(Effect(c("NE_Winds.standardised","dists_km"), fit3)) # not appropriate as NE*SE interaction
-plot(Effect(c("SE_Winds.standardised","NE_Winds.standardised"), fit3)) # not appropriate as NE*SE interaction
-
-
-# Try predictions
-pred2 <- data.frame("SE_Winds.standardised" = seq(from = -2,
-                                     to =2, by = 0.05),
-                    "NE_Winds.standardised" = 0,
-                    "dists_km" = 0.05,
-                    "Project_ID" = "P1")
-pred2
-
-Pred2 <- predict(fit3, newdata = pred2, type = "response", se.fit = T)
-
-plot(x = pred2$SE_Winds.standardised, y=Pred2$fit, type = "l", ylim=c(0,1))
-lines(x = pred2$SE_Winds.standardised, y=(Pred2$fit-Pred2$se.fit), type = "l", col = "blue")
-lines(x = pred2$SE_Winds.standardised, y=(Pred2$fit+Pred2$se.fit), type = "l", col = "blue")
+#              family=nbinom2, data = fish_data)
+# 
+# simulationOutput <- simulateResiduals(fittedModel = fit3, n = 250)
+# plot(simulationOutput)
+# plotResiduals(fish_data$Project_ID, simulationOutput$scaledResiduals)
+# 
+# Anova(fit3,type="II",test="Chisq")
+# summary(fit3)
+# 
+# hist(fish_data$Normalised_Abund)
+# 
+# plot(allEffects(fit3))
+# plot(Effect(c("SE_Winds.standardised","dists_km"), fit3)) # not appropriate as NE*SE interaction
+# plot(Effect(c("NE_Winds.standardised","dists_km"), fit3)) # not appropriate as NE*SE interaction
+# plot(Effect(c("SE_Winds.standardised","NE_Winds.standardised"), fit3)) # not appropriate as NE*SE interaction
+# 
+# 
+# # Try predictions
+# pred2 <- data.frame("SE_Winds.standardised" = seq(from = -2,
+#                                      to =2, by = 0.05),
+#                     "NE_Winds.standardised" = 0,
+#                     "dists_km" = 0.05,
+#                     "Project_ID" = "P1")
+# pred2
+# 
+# Pred2 <- predict(fit3, newdata = pred2, type = "response", se.fit = T)
+# 
+# plot(x = pred2$SE_Winds.standardised, y=Pred2$fit, type = "l", ylim=c(0,1))
+# lines(x = pred2$SE_Winds.standardised, y=(Pred2$fit-Pred2$se.fit), type = "l", col = "blue")
+# lines(x = pred2$SE_Winds.standardised, y=(Pred2$fit+Pred2$se.fit), type = "l", col = "blue")
 
 ## Normalised Coastal Species
 library(vegetarian)
@@ -292,6 +292,16 @@ fit3 <- glmmTMB(Coastal_Normalised_Abund ~ SE_Winds.standardised * NE_Winds.stan
 
 simulationOutput <- simulateResiduals(fittedModel = fit3, n = 250)
 plot(simulationOutput)
+
+
+
+# Test Jon Gillson comments about residuals (still to do autocorrelation?)
+hist(simulationOutput$scaledResiduals)
+hist(residuals(fit3))
+
+hist(simulationOutput$fittedResiduals)
+
+### Continue on
 plotResiduals(fish_data$Project_ID, simulationOutput$scaledResiduals)
 
 Anova(fit3,type="II",test="Chisq")
