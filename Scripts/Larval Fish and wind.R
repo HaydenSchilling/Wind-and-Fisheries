@@ -301,6 +301,16 @@ hist(residuals(fit3))
 
 hist(simulationOutput$fittedResiduals)
 
+res <- residuals(fit3)
+acf(res, plot = F)
+head(res, type = "pearson")
+
+library(ggfortify)
+acf_p <- autoplot(acf(res)) + #simulationOutput$fittedResiduals
+  geom_hline(yintercept = 0) +
+  ylab('Autocorrelation function')
+acf_p
+
 ### Continue on
 plotResiduals(fish_data$Project_ID, simulationOutput$scaledResiduals)
 
