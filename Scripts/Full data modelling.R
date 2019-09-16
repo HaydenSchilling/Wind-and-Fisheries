@@ -1,6 +1,7 @@
 # modelling
 
 library(ggplot2)
+library(DHARMa)
 
 # Load Data
 mydata <- read.csv("Full_Data_Modelling.csv", header = T)
@@ -180,6 +181,30 @@ plot(simulationOutput)
 # histograms
 hist(simulationOutput$fittedResiduals)
 
+#autocorrelation
+res <- residuals(m1)
+acf(res, plot = F)
+head(res, type = "pearson")
+
+library(ggfortify)
+acf_p <- autoplot(acf(res)) + #simulationOutput$fittedResiduals
+  geom_hline(yintercept = 0) +
+  ylab('Autocorrelation function')
+acf_p
+
+
+library(merTools)
+fastdisp(m1)
+
+feEx <- FEsim(m1, 1000)
+cbind(feEx[,1] , round(feEx[, 2:4], 3))
+
+
+plotFEsim(feEx) + 
+  theme_bw() + labs(title = "Coefficient Plot of InstEval Model", 
+                    x = "Median Effect Estimate", y = "Evaluation Rating")
+
+
 ### Make Predictions
 str(bream)
 pred_dat <- data.frame("X135_degree_winds.standardised" = seq(from = -2,
@@ -260,6 +285,75 @@ anova(m2) # No effects from mullet
 
 plot(allEffects(m2))
 
+fastdisp(m2)
+
+feEx <- FEsim(m2, 1000)
+cbind(feEx[,1] , round(feEx[, 2:4], 3))
+
+
+plotFEsim(feEx) + 
+  theme_bw() + labs(title = "Coefficient Plot of InstEval Model", 
+                    x = "Median Effect Estimate", y = "Evaluation Rating")
+
+
+### Make Predictions
+str(mullet)
+pred_dat <- data.frame("X135_degree_winds.standardised" = seq(from = -2,
+                                                              to =2, by = 0.05),
+                       "X45_degree_winds.standardised" = 0,
+                       "Estuary" = "Hawkesbury River",
+                       "Estuary_Type" = "Barrier Lagoon",
+                       #"Current_Wind" = mean(bream$Current_Wind),
+                       "Drought_Months" = 4)
+
+# # Old prediction code - does not do SE
+
+# Pred_Bream <- predict(m1, newdata = pred_dat, type = "response", se.fit = T)
+# 
+# b <- bootMer(m1, nsim=100, 
+#              FUN=function(x)predict(x, newdata=pred_dat, re.form=NA))
+# 
+# hist(b$t, #breaks=seq(250,350,by=5),
+#      #ylim=c(0,25),
+#      main="", xlab="Reaction time at 5 Days (ms)",
+#      col="cornflowerblue")
+# box()
+
+#library(devtools)
+#install_github("remkoduursma/bootpredictlme4")
+
+library(bootpredictlme4)
+Pred_mullet <- predict(m2, newdata=pred_dat, re.form=NA, se.fit=TRUE, nsim=100)
+
+Pred_mullet
+
+#plot(x = pred_dat$X135_degree_winds.standardised, y=Pred_Bream$fit, type = "l",
+#     ylab = "Predicted Bream CPUE standardised", xlab = "Standardised Southeast Winds",
+#     main = "Predicted coastal species abundance \nfor no drought and mean NE winds") #, ylim=c(0,1)
+#lines(x = pred_dat$X135_degree_winds.standardised, y=(Pred_Bream$fit-Pred_Bream$se.fit), type = "l", col = "blue")
+#lines(x = pred_dat$X135_degree_winds.standardised, y=(Pred_Bream$fit+Pred_Bream$se.fit), type = "l", col = "blue")
+
+mullet_plot_dat <- data.frame(Pred_mullet$fit, Pred_mullet$se.fit, pred_dat$X135_degree_winds.standardised)
+head(mullet_plot_dat)
+
+p4 <- ggplot(mullet_plot_dat, aes(x = pred_dat.X135_degree_winds.standardised, y = Pred_mullet.fit)) +
+  theme_classic() + xlab("Standardised Southeast Winds") + ylab("Mullet Predicted Standardised CPUE") +
+  geom_ribbon(aes(ymax = Pred_mullet.fit+Pred_mullet.se.fit, ymin = Pred_mullet.fit-Pred_mullet.se.fit), 
+              fill = "grey80", col = "grey80") + 
+  geom_line(col = "blue", size = 1.5) +
+  theme(axis.title = element_text(face="bold", colour="black", size = 14),
+        axis.ticks = element_line(colour="black"),
+        legend.title = element_text(face = "bold", size = 14),
+        legend.text = element_text(size = 12, face = "bold"),
+        axis.text=element_text(size=12, face = "bold", colour = "black"))
+p4
+
+ggsave("plots/Mullet CPUE and wind predictions.pdf", height = 14.8, width = 21, units = "cm")
+ggsave("plots/Mullet CPUE and wind predictions.png", height = 14.8, width = 21, units = "cm", dpi = 600)
+
+
+
+
 # Flathead
 flathead <- subset(my.df, Species == "Flathead")
 
@@ -277,6 +371,66 @@ summary(m3)
 anova(m3) # No effects for Flathead
 
 plot(allEffects(m3))
+
+### Make Predictions
+str(flathead)
+pred_dat <- data.frame("X135_degree_winds.standardised" = seq(from = -2,
+                                                              to =2, by = 0.05),
+                       "X45_degree_winds.standardised" = 0,
+                       "Estuary" = "Hawkesbury River",
+                       "Estuary_Type" = "Barrier Lagoon",
+                       #"Current_Wind" = mean(bream$Current_Wind),
+                       "Drought_Months" = 4)
+
+# # Old prediction code - does not do SE
+
+# Pred_Bream <- predict(m1, newdata = pred_dat, type = "response", se.fit = T)
+# 
+# b <- bootMer(m1, nsim=100, 
+#              FUN=function(x)predict(x, newdata=pred_dat, re.form=NA))
+# 
+# hist(b$t, #breaks=seq(250,350,by=5),
+#      #ylim=c(0,25),
+#      main="", xlab="Reaction time at 5 Days (ms)",
+#      col="cornflowerblue")
+# box()
+
+#library(devtools)
+#install_github("remkoduursma/bootpredictlme4")
+
+library(bootpredictlme4)
+Pred_flathead <- predict(m3, newdata=pred_dat, re.form=NA, se.fit=TRUE, nsim=100)
+
+Pred_flathead
+
+#plot(x = pred_dat$X135_degree_winds.standardised, y=Pred_Bream$fit, type = "l",
+#     ylab = "Predicted Bream CPUE standardised", xlab = "Standardised Southeast Winds",
+#     main = "Predicted coastal species abundance \nfor no drought and mean NE winds") #, ylim=c(0,1)
+#lines(x = pred_dat$X135_degree_winds.standardised, y=(Pred_Bream$fit-Pred_Bream$se.fit), type = "l", col = "blue")
+#lines(x = pred_dat$X135_degree_winds.standardised, y=(Pred_Bream$fit+Pred_Bream$se.fit), type = "l", col = "blue")
+
+flathead_plot_dat <- data.frame(Pred_flathead$fit, Pred_flathead$se.fit, pred_dat$X135_degree_winds.standardised)
+head(flathead_plot_dat)
+
+p4 <- ggplot(flathead_plot_dat, aes(x = pred_dat.X135_degree_winds.standardised, y = Pred_flathead.fit)) +
+  theme_classic() + xlab("Standardised Southeast Winds") + ylab("flathead Predicted Standardised CPUE") +
+  geom_ribbon(aes(ymax = Pred_flathead.fit+Pred_flathead.se.fit, ymin = Pred_flathead.fit-Pred_flathead.se.fit), 
+              fill = "grey80", col = "grey80") + 
+  geom_line(col = "blue", size = 1.5) +
+  theme(axis.title = element_text(face="bold", colour="black", size = 14),
+        axis.ticks = element_line(colour="black"),
+        legend.title = element_text(face = "bold", size = 14),
+        legend.text = element_text(size = 12, face = "bold"),
+        axis.text=element_text(size=12, face = "bold", colour = "black"))
+p4
+
+ggsave("plots/flathead CPUE and wind predictions.pdf", height = 14.8, width = 21, units = "cm")
+ggsave("plots/flathead CPUE and wind predictions.png", height = 14.8, width = 21, units = "cm", dpi = 600)
+
+
+
+
+### Luderick
 
 luderick <- subset(my.df, Species == "Luderick")
 
@@ -299,7 +453,68 @@ summary(m4)
 anova(m4)
 
 plot(allEffects(m4)) # weak evidence for an interaction between NE and SE Winds
-plot(Effect(c("SE_Winds.standardised","NE_Winds.standardised"), fit2))
+#plot(Effect(c("SE_Winds.standardised","NE_Winds.standardised"), fit2))
+
+
+### Make Predictions
+str(luderick)
+pred_dat <- data.frame("X135_degree_winds.standardised" = seq(from = -2,
+                                                              to =2, by = 0.05),
+                       "X45_degree_winds.standardised" = 0,
+                       "Estuary" = "Hawkesbury River",
+                       "Estuary_Type" = "Barrier Lagoon",
+                       #"Current_Wind" = mean(bream$Current_Wind),
+                       "Drought_Months" = 4)
+
+# # Old prediction code - does not do SE
+
+# Pred_Bream <- predict(m1, newdata = pred_dat, type = "response", se.fit = T)
+# 
+# b <- bootMer(m1, nsim=100, 
+#              FUN=function(x)predict(x, newdata=pred_dat, re.form=NA))
+# 
+# hist(b$t, #breaks=seq(250,350,by=5),
+#      #ylim=c(0,25),
+#      main="", xlab="Reaction time at 5 Days (ms)",
+#      col="cornflowerblue")
+# box()
+
+#library(devtools)
+#install_github("remkoduursma/bootpredictlme4")
+
+library(bootpredictlme4)
+Pred_luderick <- predict(m4, newdata=pred_dat, re.form=NA, se.fit=TRUE, nsim=100)
+
+Pred_luderick
+
+#plot(x = pred_dat$X135_degree_winds.standardised, y=Pred_Bream$fit, type = "l",
+#     ylab = "Predicted Bream CPUE standardised", xlab = "Standardised Southeast Winds",
+#     main = "Predicted coastal species abundance \nfor no drought and mean NE winds") #, ylim=c(0,1)
+#lines(x = pred_dat$X135_degree_winds.standardised, y=(Pred_Bream$fit-Pred_Bream$se.fit), type = "l", col = "blue")
+#lines(x = pred_dat$X135_degree_winds.standardised, y=(Pred_Bream$fit+Pred_Bream$se.fit), type = "l", col = "blue")
+
+luderick_plot_dat <- data.frame(Pred_luderick$fit, Pred_luderick$se.fit, pred_dat$X135_degree_winds.standardised)
+head(luderick_plot_dat)
+
+p4 <- ggplot(luderick_plot_dat, aes(x = pred_dat.X135_degree_winds.standardised, y = Pred_luderick.fit)) +
+  theme_classic() + xlab("Standardised Southeast Winds") + ylab("luderick Predicted Standardised CPUE") +
+  geom_ribbon(aes(ymax = Pred_luderick.fit+Pred_luderick.se.fit, ymin = Pred_luderick.fit-Pred_luderick.se.fit), 
+              fill = "grey80", col = "grey80") + 
+  geom_line(col = "blue", size = 1.5) +
+  theme(axis.title = element_text(face="bold", colour="black", size = 14),
+        axis.ticks = element_line(colour="black"),
+        legend.title = element_text(face = "bold", size = 14),
+        legend.text = element_text(size = 12, face = "bold"),
+        axis.text=element_text(size=12, face = "bold", colour = "black"))
+p4
+
+ggsave("plots/luderick CPUE and wind predictions.pdf", height = 14.8, width = 21, units = "cm")
+ggsave("plots/luderick CPUE and wind predictions.png", height = 14.8, width = 21, units = "cm", dpi = 600)
+
+
+
+
+## Whiting
 
 whiting <- subset(my.df, Species == "Whiting")
 
@@ -317,6 +532,65 @@ summary(m5)
 anova(m5) # drought increases catch of Whiting, no wind effects
 
 plot(allEffects(m5))
+
+
+### Make Predictions
+str(whiting)
+pred_dat <- data.frame("X135_degree_winds.standardised" = seq(from = -2,
+                                                              to =2, by = 0.05),
+                       "X45_degree_winds.standardised" = 0,
+                       "Estuary" = "Hawkesbury River",
+                       "Estuary_Type" = "Barrier Lagoon",
+                       #"Current_Wind" = mean(bream$Current_Wind),
+                       "Drought_Months" = 4)
+
+# # Old prediction code - does not do SE
+
+# Pred_Bream <- predict(m1, newdata = pred_dat, type = "response", se.fit = T)
+# 
+# b <- bootMer(m1, nsim=100, 
+#              FUN=function(x)predict(x, newdata=pred_dat, re.form=NA))
+# 
+# hist(b$t, #breaks=seq(250,350,by=5),
+#      #ylim=c(0,25),
+#      main="", xlab="Reaction time at 5 Days (ms)",
+#      col="cornflowerblue")
+# box()
+
+#library(devtools)
+#install_github("remkoduursma/bootpredictlme4")
+
+library(bootpredictlme4)
+Pred_whiting <- predict(m5, newdata=pred_dat, re.form=NA, se.fit=TRUE, nsim=100)
+
+Pred_whiting
+
+#plot(x = pred_dat$X135_degree_winds.standardised, y=Pred_Bream$fit, type = "l",
+#     ylab = "Predicted Bream CPUE standardised", xlab = "Standardised Southeast Winds",
+#     main = "Predicted coastal species abundance \nfor no drought and mean NE winds") #, ylim=c(0,1)
+#lines(x = pred_dat$X135_degree_winds.standardised, y=(Pred_Bream$fit-Pred_Bream$se.fit), type = "l", col = "blue")
+#lines(x = pred_dat$X135_degree_winds.standardised, y=(Pred_Bream$fit+Pred_Bream$se.fit), type = "l", col = "blue")
+
+whiting_plot_dat <- data.frame(Pred_whiting$fit, Pred_whiting$se.fit, pred_dat$X135_degree_winds.standardised)
+head(whiting_plot_dat)
+
+p4 <- ggplot(whiting_plot_dat, aes(x = pred_dat.X135_degree_winds.standardised, y = Pred_whiting.fit)) +
+  theme_classic() + xlab("Standardised Southeast Winds") + ylab("whiting Predicted Standardised CPUE") +
+  geom_ribbon(aes(ymax = Pred_whiting.fit+Pred_whiting.se.fit, ymin = Pred_whiting.fit-Pred_whiting.se.fit), 
+              fill = "grey80", col = "grey80") + 
+  geom_line(col = "blue", size = 1.5) +
+  theme(axis.title = element_text(face="bold", colour="black", size = 14),
+        axis.ticks = element_line(colour="black"),
+        legend.title = element_text(face = "bold", size = 14),
+        legend.text = element_text(size = 12, face = "bold"),
+        axis.text=element_text(size=12, face = "bold", colour = "black"))
+p4
+
+ggsave("plots/whiting CPUE and wind predictions.pdf", height = 14.8, width = 21, units = "cm")
+ggsave("plots/whiting CPUE and wind predictions.png", height = 14.8, width = 21, units = "cm", dpi = 600)
+
+
+
 
 # total <- subset(my.df, Species == "Total")
 # str(total)

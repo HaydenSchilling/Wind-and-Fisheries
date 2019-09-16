@@ -54,6 +54,17 @@ anova(fit1)
 plot(dat2$Year, dat2$Annual_displacement)
 abline(fit1)
 
+
+res <- residuals(fit1)
+acf(res, plot = F)
+head(res, type = "pearson")
+
+library(ggfortify)
+acf_p <- autoplot(acf(res)) + #simulationOutput$fittedResiduals
+  geom_hline(yintercept = 0) +
+  ylab('Autocorrelation function')
+acf_p
+
 # try to remove the outlier 
 dat2_no_outlier <- subset(dat2, Year != 1923)
 
@@ -120,6 +131,18 @@ summary(fit2)
 anova(fit2)
 plot(dat2_NE$Year, dat2_NE$Annual_displacement)
 abline(fit2)
+
+
+res <- residuals(fit2)
+acf(res, plot = F)
+head(res, type = "pearson")
+
+library(ggfortify)
+acf_p <- autoplot(acf(res)) + #simulationOutput$fittedResiduals
+  geom_hline(yintercept = 0) +
+  ylab('Autocorrelation function')
+acf_p
+
 
 p2 <- ggplot(dat2_NE, aes(x = Year, y = Annual_displacement)) + geom_point() + geom_smooth(method = "lm") +
   theme_classic() + ylab("Annual Displacement") + xlab("Year") +
