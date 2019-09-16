@@ -24,6 +24,8 @@ str(mydata)
 dat <- mydata %>% group_by(Year) %>% summarise(Annual_displacement = sum(displacement))
 head(dat)
 
+#write.csv(dat, "Iain Annual 135 degree Sydney.csv", row.names = F)
+
 plot(dat$Year, dat$Annual_displacement)
 
 dat2 <- subset(dat, Year >= 1900)
@@ -107,6 +109,8 @@ str(NEdata)
 
 dat_NE <- NEdata %>% group_by(Year) %>% summarise(Annual_displacement = sum(displacement))
 head(dat_NE)
+
+#write.csv(dat_NE, "Iain Annual 45 degree winds Sydney.csv", row.names = F)
 
 plot(dat_NE$Year, dat_NE$Annual_displacement)
 
@@ -404,3 +408,18 @@ ggsave("plots/Historical Wind Change2.png", height = 14.8, width = 21, units = "
 #   ylab("Monthly Onshore Displacement (km)") + theme_classic()
 # p_November_April
 # 
+
+# ### Sydney Adjusted coastline
+# ### Now do NE Winds
+# NEdata <- read.csv("Wind Data/Daily Modelled Sydney 114 deg Wind Data Final.csv", header = T)
+# 
+# 
+# NEdata$Date <- paste0(NEdata$Year,"-",NEdata$Month,"-",NEdata$Day)
+# NEdata$Date <- as.Date(NEdata$Date)
+# 
+# str(NEdata)
+# 
+# dat_NE <- NEdata %>% group_by(Year) %>% summarise(Annual_displacement = sum(displacement))
+# head(dat_NE)
+# 
+# write.csv(dat_NE, "Iain Annual coastline degree winds Sydney.csv", row.names = F)
