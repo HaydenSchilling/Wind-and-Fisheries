@@ -11,7 +11,7 @@ library(dplyr)
 
 mydata <- read.csv("Wind Data/All Estuaries Modelled Wind Data speed direction.csv", header = T)
 
-
+mydata <- subset(mydata, Estuary == "Sydney")
 #####################################################################################################################################
 ##################### ONSHORE AND OFFSHORE ##########################################################################################
 #####################################################################################################################################
@@ -58,20 +58,23 @@ table(mydata$Onshore_Offshore, mydata$Estuary)
 # mydata$Speed_km_hr[mydata$Onshore_Offshore == "Offshore"] <- mydata$Speed_km_hr * (-1)
 
 
-for (i in 1:nrow(mydata)) {
-  if (mydata$Onshore_Offshore[i] == "Offshore") {
-    mydata$Speed_km_hr[i] = mydata$Speed_km_hr[i] * -1
-  }
-}
+# for (i in 1:nrow(mydata)) {
+#   if (mydata$Onshore_Offshore[i] == "Offshore") {
+#     mydata$Speed_km_hr[i] = mydata$Speed_km_hr[i] * -1
+#   }
+# }
+
+# fast version of above loop
+mydata$output <- ifelse((mydata$Onshore_Offshore) == "Offshore", -1, 1) # make output vector
+mydata$Speed_km_hr <- mydata$Speed_km_hr*mydata$output
 
 
 
+#saveRDS(mydata, file = "22_6_19_progress.rds")
 
-saveRDS(mydata, file = "22_6_19_progress.rds")
+#mydata <- NULL
 
-mydata <- NULL
-
-mydata <- readRDS("22_6_19_progress.rds")
+#mydata <- readRDS("22_6_19_progress.rds")
 
 str(mydata)
 
@@ -90,12 +93,32 @@ mydata$Wind.direction.in.radians.adjusted <- deg2rad(mydata$Direction+mydata$Coa
 
 # Calculate effective wind speed
 mydata$Wind.effect.size = sin(mydata$Wind.direction.in.radians.adjusted)
-mydata$Wind.speed.adjusted = mydata$Wind.effect.size * mydata$Speed_km_hr
+# check
+#plot(mydata$Direction, mydata$Wind.effect.size)
+
+mydata$Wind.effect.size = abs(mydata$Wind.effect.size)
+mydata$Wind.speed.adjusted = mydata$Wind.effect.size * mydata$Speed_km_hr * -1
+# check again
+plot(mydata$Direction, mydata$Wind.speed.adjusted)
+
+#mydata2 <- subset(mydata, Month == 2)
+#mydata2 <- subset(mydata2, Hour == 15)
+
+#plot(mydata2$Direction)
+
+# Group by Month
+dat <- mydata %>% group_by(Estuary, Year, Month) %>%
+  summarise(displacement = (sum(Wind.speed.adjusted, na.rm = TRUE)*3), count = n())
+head(dat)
+
+fwrite(dat, file = "Wind Data/45 degree/Monthly Modelled Sydney 45 deg Wind Data Final.csv")
 
 # Group by Day
 dat <- mydata %>% group_by(Estuary, Year, Month, Day) %>%
   summarise(displacement = (sum(Wind.speed.adjusted, na.rm = TRUE)*3), count = n())
 head(dat)
+
+fwrite(dat, file = "Wind Data/45 degree/Sydney_Daily Modelled Wind Data Final 45 degree.csv")
 
 # # Group by Month
 # dat <- mydata %>% group_by(Estuary, Year, Month, Day) %>%
@@ -118,3 +141,13 @@ for (i in as.character(estuaries)) {
   
 }
 
+# Annual NE winds for Iain
+
+SEdata <- subset(dat, Estuary == "Sydney")
+
+dat_SE <- SEdata %>% group_by(Year) %>% summarise(Annual_displacement = sum(displacement))
+head(dat_SE)
+
+hist(dat_SE$Annual_displacement)
+
+write.csv(dat_SE, "Iain/Iain Annual 45 degree winds Sydney_new.csv", row.names = F)

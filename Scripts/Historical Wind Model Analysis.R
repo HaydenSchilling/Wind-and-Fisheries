@@ -28,37 +28,38 @@ head(dat)
 
 plot(dat$Year, dat$Annual_displacement)
 
-dat2 <- subset(dat, Year >= 1900)
-
+dat2 <- subset(dat, Year >= 1849)
+str(dat2)
 fit1 <- lm(Annual_displacement ~ Year, data = dat2)
 plot(fit1)
 
 hist(fit1$residuals)
 
 # try cooks distance
-#install.packages("olsrr")
-library(olsrr)
+# #install.packages("olsrr")
+# library(olsrr)
+# 
+# ols_plot_cooksd_bar(fit1)
+# ols_plot_cooksd_chart(fit1)
+# ols_plot_dfbetas(fit1)
+# ols_plot_dffits(fit1)
+# ols_plot_resid_stud(fit1) # lots of outliers
+# ols_plot_resid_stand(fit1)
+# ols_plot_resid_lev(fit1) # but none have particularly large leverage
+# ols_plot_resid_stud_fit(fit1)
+# ols_plot_hadi(fit1)
+# ols_plot_resid_pot(fit1)
+# 
 
-ols_plot_cooksd_bar(fit1)
-ols_plot_cooksd_chart(fit1)
-ols_plot_dfbetas(fit1)
-ols_plot_dffits(fit1)
-ols_plot_resid_stud(fit1) # conclusions # 24 is a  outlier
-ols_plot_resid_stand(fit1)
-ols_plot_resid_lev(fit1) # but 24 has low leverage
-ols_plot_resid_stud_fit(fit1)
-ols_plot_hadi(fit1)
-ols_plot_resid_pot(fit1)
-
-
-summary(fit1)
+summary(fit1) # -17.94 decline per year (p = 0.094)
+# 164 * -17 = -2942
 anova(fit1)
 plot(dat2$Year, dat2$Annual_displacement)
 abline(fit1)
 
 
 res <- residuals(fit1)
-acf(res, plot = F)
+acf(res, plot = T)
 head(res, type = "pearson")
 
 library(ggfortify)
@@ -66,16 +67,6 @@ acf_p <- autoplot(acf(res)) + #simulationOutput$fittedResiduals
   geom_hline(yintercept = 0) +
   ylab('Autocorrelation function')
 acf_p
-
-# try to remove the outlier 
-dat2_no_outlier <- subset(dat2, Year != 1923)
-
-fit1_no_outlier <- lm(Annual_displacement ~ Year, data = dat2_no_outlier)
-plot(fit1)
-
-hist(fit1$residuals)
-ols_plot_resid_stud(fit1_no_outlier) # no real outliers now
-summary(fit1_no_outlier)# same significant effect but effect is greater
 
 p1 <- ggplot(dat2, aes(x = Year, y = Annual_displacement)) + geom_point() + geom_smooth(method = "lm") +
   theme_classic() + ylab("Annual Displacement") + xlab("Year") +
@@ -114,31 +105,32 @@ head(dat_NE)
 
 plot(dat_NE$Year, dat_NE$Annual_displacement)
 
-dat2_NE <- subset(dat_NE, Year >= 1900)
+dat2_NE <- subset(dat_NE, Year >= 1849)
 
 fit2 <- lm(Annual_displacement ~ Year, data = dat2_NE)
 plot(fit2)
 
 hist(fit2$residuals)
-ols_plot_cooksd_bar(fit2)
-ols_plot_cooksd_chart(fit2)
-ols_plot_dfbetas(fit2)
-ols_plot_dffits(fit2)
-ols_plot_resid_stud(fit2) # conclusions # 24 is a  outlier
-ols_plot_resid_stand(fit2)
-ols_plot_resid_lev(fit2) # but 24 has low leverage
-ols_plot_resid_stud_fit(fit2)
-ols_plot_hadi(fit2)
-ols_plot_resid_pot(fit2)
+# ols_plot_cooksd_bar(fit2)
+# ols_plot_cooksd_chart(fit2)
+# ols_plot_dfbetas(fit2)
+# ols_plot_dffits(fit2)
+# ols_plot_resid_stud(fit2)
+# ols_plot_resid_stand(fit2)
+# ols_plot_resid_lev(fit2) # All have low leverage
+# ols_plot_resid_stud_fit(fit2)
+# ols_plot_hadi(fit2)
+# ols_plot_resid_pot(fit2)
 
-summary(fit2)
+summary(fit2) # increase by 48.307 per year (p < 0.001)
+# 48 * 164 = 
 anova(fit2)
 plot(dat2_NE$Year, dat2_NE$Annual_displacement)
 abline(fit2)
 
 
 res <- residuals(fit2)
-acf(res, plot = F)
+acf(res, plot = T)
 head(res, type = "pearson")
 
 library(ggfortify)

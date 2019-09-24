@@ -72,11 +72,11 @@ mydata$output <- ifelse((mydata$Onshore_Offshore) == "Offshore", -1, 1) # make o
 mydata$Speed_km_hr <- mydata$Speed_km_hr*mydata$output
 
 
-saveRDS(mydata, file = "2_8_19_progress.rds")
+#saveRDS(mydata, file = "18_9_19_progress.rds")
 
-mydata <- NULL
+#mydata <- NULL
 
-mydata <- readRDS("2_8_19_progress.rds")
+#mydata <- readRDS("18_9_19_progress.rds")
 
 
 
@@ -94,21 +94,34 @@ mydata$Wind.direction.in.radians.adjusted <- NULL
 mydata$Wind.direction.in.radians.adjusted <- deg2rad(mydata$Direction+mydata$Coastline_angle)
 
 # Calculate effective wind speed
-mydata$Wind.effect.size = sin(mydata$Wind.direction.in.radians.adjusted)
-mydata$Wind.speed.adjusted = mydata$Wind.effect.size * mydata$Speed_km_hr
+mydata$Wind.effect.size = sin(mydata$Wind.direction.in.radians.adjusted)*-1
+#plot(mydata$Direction, mydata$Wind.effect.size) # check
+
+mydata$Wind.effect.size = abs(mydata$Wind.effect.size)
+mydata$Wind.speed.adjusted = mydata$Wind.effect.size * mydata$Speed_km_hr * -1
+
+
+plot(mydata$Direction, mydata$Wind.speed.adjusted)
 
 #write.csv(mydata, "Wind Data/135 degree/Sydney 3hourly winds.csv", row.names = FALSE)
 
-# Group
+# 
+# Group by day
+dat <- mydata %>% group_by(Estuary, Year, Month, Day) %>%
+  summarise(displacement = (sum(Wind.speed.adjusted, na.rm = TRUE)*3), count = n())
+head(dat)
+
+fwrite(dat, file = "Wind Data/135 degree/Sydney_Daily Modelled Wind Data Final 135 degree.csv")
+
+
+# Group by month
 dat <- mydata %>% group_by(Estuary, Year, Month) %>%
   summarise(displacement = (sum(Wind.speed.adjusted, na.rm = TRUE)*3), count = n())
 head(dat)
-# 
-# # Group
-# dat <- mydata %>% group_by(Estuary, Year, Month, Day) %>%
-#   summarise(displacement = (sum(Wind.speed.adjusted, na.rm = TRUE)*3), count = n())
-# head(dat)
 
+hist(dat$displacement)
+
+fwrite(dat, file = "Wind Data/135 degree/Sydney_Monthly Modelled Wind Data Final 135 degree.csv")
 #library(ggplot2)
 #p1 <- ggplot(mydata, aes(x= Time, y = Wind.speed.adjusted)) + #geom_point() +
 #  facet_wrap(~Estuary) + geom_smooth()
@@ -125,3 +138,13 @@ for (i in as.character(estuaries)) {
   
 }
 
+# Annual SE winds for Iain
+
+SEdata <- subset(dat, Estuary == "Sydney")
+
+dat_SE <- SEdata %>% group_by(Year) %>% summarise(Annual_displacement = sum(displacement))
+head(dat_SE)
+
+hist(dat_SE$Annual_displacement)
+
+write.csv(dat_SE, "Iain/Iain Annual 135 degree winds Sydney_new.csv", row.names = F)

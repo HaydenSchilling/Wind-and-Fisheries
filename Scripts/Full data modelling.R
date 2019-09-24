@@ -6,7 +6,7 @@ library(DHARMa)
 # Load Data
 mydata <- read.csv("Full_Data_Modelling.csv", header = T)
 
-p1 <- ggplot(mydata, aes(x = Onshore_Winds, y = CPUE)) + geom_point() +
+p1 <- ggplot(mydata, aes(x = X135_degree_winds, y = CPUE)) + geom_point() +
   facet_wrap(~Species, scales = "free") + geom_smooth()
 p1
 
@@ -33,7 +33,7 @@ library(dplyr)
 my.df <-  mydata %>% group_by(Estuary, Species) %>% mutate(CPUE.standardised = as.numeric(scale(CPUE)))
 head(my.df)
 
-p1 <- ggplot(my.df, aes(x = Onshore_Winds, y = CPUE.standardised)) + geom_point() +
+p1 <- ggplot(my.df, aes(x = X135_degree_winds, y = CPUE.standardised)) + geom_point() +
   facet_wrap(~Species, scales = "free") + geom_smooth()
 p1
 
@@ -97,7 +97,8 @@ library(effects)
 
 ### Standardise Winds
 my.df <-  my.df %>% mutate(X45_degree_winds.standardised = as.numeric(scale(X45_degree_winds)),
-                                   X135_degree_winds.standardised = as.numeric(scale(X135_degree_winds)))
+                                   X135_degree_winds.standardised = as.numeric(scale(X135_degree_winds)),
+                           Onshore_Winds.standardised = as.numeric(scale(Onshore_Winds)))
 
 # bream <- subset(my.df, Species == "Bream")
 # 
@@ -169,9 +170,12 @@ bream <- subset(my.df, Species == "Bream")
 
 m1 <- lmer(CPUE.standardised ~ X135_degree_winds.standardised * X45_degree_winds.standardised + 
            Estuary_Type + Drought_Months + (1|Estuary), data = bream)
+#m1 <- lmer(CPUE.standardised ~ Onshore_Winds.standardised + 
+#             Estuary_Type + Drought_Months + (1|Estuary), data = bream)
+
 plot(m1)
 summary(m1)
-anova(m1) # bream increase with SE Winds
+anova(m1) # bream interaction with winds
 
 plot(allEffects(m1))
 
@@ -183,7 +187,7 @@ hist(simulationOutput$fittedResiduals)
 
 #autocorrelation
 res <- residuals(m1)
-acf(res, plot = F)
+acf(res, plot = T)
 head(res, type = "pearson")
 
 library(ggfortify)
@@ -209,7 +213,7 @@ plotFEsim(feEx) +
 str(bream)
 pred_dat <- data.frame("X135_degree_winds.standardised" = seq(from = -2,
                                                   to =2, by = 0.05),
-                    "X45_degree_winds.standardised" = 0,
+                    "X45_degree_winds.standardised" = -2,
                     "Estuary" = "Hawkesbury River",
                     "Estuary_Type" = "Barrier Lagoon",
                     #"Current_Wind" = mean(bream$Current_Wind),
@@ -255,7 +259,7 @@ p4 <- ggplot(bream_plot_dat, aes(x = pred_dat.X135_degree_winds.standardised, y 
         legend.title = element_text(face = "bold", size = 14),
         legend.text = element_text(size = 12, face = "bold"),
         axis.text=element_text(size=12, face = "bold", colour = "black"))
-p4
+p4 ### need to do multiple levels of NE winds, weaker shows effect of SE
 
 ggsave("plots/Bream CPUE and wind predictions.pdf", height = 14.8, width = 21, units = "cm")
 ggsave("plots/Bream CPUE and wind predictions.png", height = 14.8, width = 21, units = "cm", dpi = 600)
@@ -281,7 +285,7 @@ plot(simulationOutput)
 hist(simulationOutput$fittedResiduals)
 
 summary(m2)
-anova(m2) # No effects from mullet
+anova(m2) # Wind interaction effects from mullet
 
 plot(allEffects(m2))
 
@@ -372,6 +376,18 @@ anova(m3) # No effects for Flathead
 
 plot(allEffects(m3))
 
+fastdisp(m3)
+
+feEx <- FEsim(m3, 1000)
+cbind(feEx[,1] , round(feEx[, 2:4], 3))
+
+
+plotFEsim(feEx) + 
+  theme_bw() + labs(title = "Coefficient Plot of InstEval Model", 
+                    x = "Median Effect Estimate", y = "Evaluation Rating")
+
+
+
 ### Make Predictions
 str(flathead)
 pred_dat <- data.frame("X135_degree_winds.standardised" = seq(from = -2,
@@ -450,10 +466,22 @@ plot(simulationOutput)
 hist(simulationOutput$fittedResiduals)
 
 summary(m4)
-anova(m4)
+anova(m4) # weak effect of NE Winds
 
 plot(allEffects(m4)) # weak evidence for an interaction between NE and SE Winds
-#plot(Effect(c("SE_Winds.standardised","NE_Winds.standardised"), fit2))
+plot(Effect(c("X45_degree_winds.standardised"), m4))
+
+
+fastdisp(m4)
+
+feEx <- FEsim(m4, 1000)
+cbind(feEx[,1] , round(feEx[, 2:4], 3))
+
+
+plotFEsim(feEx) + 
+  theme_bw() + labs(title = "Coefficient Plot of InstEval Model", 
+                    x = "Median Effect Estimate", y = "Evaluation Rating")
+
 
 
 ### Make Predictions
@@ -534,6 +562,19 @@ anova(m5) # drought increases catch of Whiting, no wind effects
 plot(allEffects(m5))
 
 
+fastdisp(m5)
+
+feEx <- FEsim(m5, 1000)
+cbind(feEx[,1] , round(feEx[, 2:4], 3))
+
+
+plotFEsim(feEx) + 
+  theme_bw() + labs(title = "Coefficient Plot of InstEval Model", 
+                    x = "Median Effect Estimate", y = "Evaluation Rating")
+
+
+
+
 ### Make Predictions
 str(whiting)
 pred_dat <- data.frame("X135_degree_winds.standardised" = seq(from = -2,
@@ -604,11 +645,70 @@ ggsave("plots/whiting CPUE and wind predictions.png", height = 14.8, width = 21,
 # plot(allEffects(m6)) # No effects for total CPUE
 
 # Test Single model with Species as a random effect
-# m7 <- lmer(CPUE.standardised~ Current_Wind + X135_degree_winds.standardised * X45_degree_winds.standardised + 
-#             Estuary_Type *Drought_Months +
-#              (1|Estuary) + (1|Species), data = my.df)
-# plot(m7)
-# summary(m7)
-# anova(m7) # drought increases catch of Whiting, no wind effects
+m7 <- lmer(CPUE.standardised~  X135_degree_winds.standardised * X45_degree_winds.standardised +
+            Estuary_Type *Drought_Months +
+             (1|Estuary) + (1|Species), data = my.df)
+plot(m7)
+summary(m7)
+anova(m7) # drought increases catch of Whiting, no wind effects
 
-# plot(allEffects(m7))
+plot(allEffects(m7))
+
+plot(m7)
+
+simulationOutput <- simulateResiduals(fittedModel = m7, n = 250)
+plot(simulationOutput)
+
+hist(simulationOutput$fittedResiduals)
+
+
+fastdisp(m7)
+
+feEx <- FEsim(m7, 1000)
+cbind(feEx[,1] , round(feEx[, 2:4], 3))
+
+
+plotFEsim(feEx) + 
+  theme_bw() + labs(title = "Coefficient Plot of InstEval Model", 
+                    x = "Median Effect Estimate", y = "Evaluation Rating")
+
+### Make Predictions
+str(my.df)
+pred_dat <- data.frame("X135_degree_winds.standardised" = seq(from = -2,
+                                                              to =2, by = 0.05),
+                       "X45_degree_winds.standardised" = 0,
+                       "Estuary" = "Hawkesbury River",
+                       "Estuary_Type" = "Barrier Lagoon",
+                       #"Current_Wind" = mean(bream$Current_Wind),
+                       "Drought_Months" = 4,
+                       "Species" == "Bream")
+
+library(bootpredictlme4)
+Pred_Total <- predict(m7, newdata=pred_dat, re.form=NA, se.fit=TRUE, nsim=100)
+
+Pred_Total
+
+#plot(x = pred_dat$X135_degree_winds.standardised, y=Pred_Bream$fit, type = "l",
+#     ylab = "Predicted Bream CPUE standardised", xlab = "Standardised Southeast Winds",
+#     main = "Predicted coastal species abundance \nfor no drought and mean NE winds") #, ylim=c(0,1)
+#lines(x = pred_dat$X135_degree_winds.standardised, y=(Pred_Bream$fit-Pred_Bream$se.fit), type = "l", col = "blue")
+#lines(x = pred_dat$X135_degree_winds.standardised, y=(Pred_Bream$fit+Pred_Bream$se.fit), type = "l", col = "blue")
+
+total_plot_dat <- data.frame(Pred_Total$fit, Pred_Total$se.fit, pred_dat$X135_degree_winds.standardised)
+head(total_plot_dat)
+
+p4 <- ggplot(total_plot_dat, aes(x = pred_dat.X135_degree_winds.standardised, y = Pred_Total.fit)) +
+  theme_classic() + xlab("Standardised Southeast Winds") + ylab("Predicted Standardised CPUE") +
+  geom_ribbon(aes(ymax = Pred_Total.fit+Pred_Total.se.fit, ymin = Pred_Total.fit-Pred_Total.se.fit), 
+              fill = "grey80", col = "grey80") + 
+  geom_line(col = "blue", size = 1.5) +
+  theme(axis.title = element_text(face="bold", colour="black", size = 14),
+        axis.ticks = element_line(colour="black"),
+        legend.title = element_text(face = "bold", size = 14),
+        legend.text = element_text(size = 12, face = "bold"),
+        axis.text=element_text(size=12, face = "bold", colour = "black"))
+p4 ### need to do multiple levels of NE winds, weaker shows effect of SE
+
+ggsave("plots/All Species CPUE and wind predictions.pdf", height = 14.8, width = 21, units = "cm")
+ggsave("plots/All Species CPUE and wind predictions.png", height = 14.8, width = 21, units = "cm", dpi = 600)
+
