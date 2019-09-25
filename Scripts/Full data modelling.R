@@ -2,6 +2,8 @@
 
 library(ggplot2)
 library(DHARMa)
+library(bootpredictlme4)
+library(merTools)
 
 # Load Data
 mydata <- read.csv("Full_Data_Modelling.csv", header = T)
@@ -197,7 +199,7 @@ acf_p <- autoplot(acf(res)) + #simulationOutput$fittedResiduals
 acf_p
 
 
-library(merTools)
+
 fastdisp(m1)
 
 feEx <- FEsim(m1, 1000)
@@ -645,14 +647,15 @@ ggsave("plots/whiting CPUE and wind predictions.png", height = 14.8, width = 21,
 # plot(allEffects(m6)) # No effects for total CPUE
 
 # Test Single model with Species as a random effect
-m7 <- lmer(CPUE.standardised~  X135_degree_winds.standardised * X45_degree_winds.standardised +
+m7 <- lmer(CPUE.standardised~  poly(cbind(X135_degree_winds.standardised, X45_degree_winds.standardised), degree = 2) +
             Estuary_Type *Drought_Months +
-             (1|Estuary) + (1|Species), data = my.df)
+             (Species|Estuary), data = my.df)
 plot(m7)
 summary(m7)
 anova(m7) # drought increases catch of Whiting, no wind effects
 
 plot(allEffects(m7))
+plot(Effect(c("Estuary_Type"), m7))
 
 plot(m7)
 
