@@ -157,6 +157,106 @@ p2 <- ggplot(dat2_NE, aes(x = Year, y = Annual_displacement)) + geom_point() + g
   )
 p2
 
+
+## Try to remove autocorrelation
+
+NEdata <- read.csv("Wind Data/45 degree/Sydney_Daily Modelled Wind Data Final 45 degree.csv", header = T)
+
+
+NEdata$Date <- paste0(NEdata$Year,"-",NEdata$Month,"-",NEdata$Day)
+NEdata$Date <- as.Date(NEdata$Date)
+
+str(NEdata)
+
+dat_NE <- NEdata %>% group_by(Year) %>% summarise(Annual_displacement = sum(displacement))
+head(dat_NE)
+
+#write.csv(dat_NE, "Iain Annual 45 degree winds Sydney.csv", row.names = F)
+
+plot(dat_NE$Year, dat_NE$Annual_displacement)
+
+dat2_NE <- subset(dat_NE, Year >= 1849)
+
+fit2 <- lm(Annual_displacement ~ Year, data = dat2_NE)
+plot(fit2)
+
+hist(fit2$residuals)
+# ols_plot_cooksd_bar(fit2)
+# ols_plot_cooksd_chart(fit2)
+# ols_plot_dfbetas(fit2)
+# ols_plot_dffits(fit2)
+# ols_plot_resid_stud(fit2)
+# ols_plot_resid_stand(fit2)
+# ols_plot_resid_lev(fit2) # All have low leverage
+# ols_plot_resid_stud_fit(fit2)
+# ols_plot_hadi(fit2)
+# ols_plot_resid_pot(fit2)
+
+summary(fit2) # increase by 48.307 per year (p < 0.001)
+# 48 * 164 = 
+anova(fit2)
+plot(dat2_NE$Year, dat2_NE$Annual_displacement)
+abline(fit2)
+
+
+res <- residuals(fit2)
+acf(res, plot = T)
+head(res, type = "pearson")
+
+dat_NE2 <- dat_NE %>%
+  slice(which(row_number() %% 3 == 1))
+
+
+fit2 <- lm(Annual_displacement ~ Year, data = dat_NE2)
+plot(fit2)
+
+hist(fit2$residuals)
+# ols_plot_cooksd_bar(fit2)
+# ols_plot_cooksd_chart(fit2)
+# ols_plot_dfbetas(fit2)
+# ols_plot_dffits(fit2)
+# ols_plot_resid_stud(fit2)
+# ols_plot_resid_stand(fit2)
+# ols_plot_resid_lev(fit2) # All have low leverage
+# ols_plot_resid_stud_fit(fit2)
+# ols_plot_hadi(fit2)
+# ols_plot_resid_pot(fit2)
+
+summary(fit2) # increase by 52.64 per year (p = 0.002)
+# 48 * 164 = 
+anova(fit2)
+plot(dat2_NE$Year, dat2_NE$Annual_displacement)
+abline(fit2)
+
+
+res <- residuals(fit2)
+acf(res, plot = T)
+
+library(ggfortify)
+acf_p <- autoplot(acf(res)) + #simulationOutput$fittedResiduals
+  geom_hline(yintercept = 0) +
+  ylab('Autocorrelation function')
+acf_p
+
+
+p2 <- ggplot(dat2_NE, aes(x = Year, y = Annual_displacement)) + geom_point() + geom_smooth(method = "lm") +
+  theme_classic() + ylab("Annual Displacement") + xlab("Year") +
+  theme(axis.title.x = element_text(face="bold", colour="black", size = 18),
+        axis.text.x  = element_text(colour="black", size = 12), 
+        axis.title.y = element_text(face="bold", colour="black", size = 18),
+        axis.text.y  = element_text(colour="black", size = 14),
+        axis.ticks = element_line(colour="black"),
+        #strip.text = element_text(colour="black", face = "bold", size = 14),
+        #strip.background = element_rect(colour = "white"),
+        #legend.justification=c(1,0), legend.position="right",
+        panel.border = element_rect(colour = "black", fill=NA, size = 1)
+        #legend.key.size = unit(1, "cm"),
+        #legend.title = element_text(face = "bold", size = 14),
+        #legend.text = element_text(size = 12, face = "bold"))
+  )
+p2
+
+
 #install.packages("ggpubr")
 library(ggpubr)
 
@@ -164,8 +264,46 @@ ggarrange(p1, p2, labels = c("a) SE Winds", "b) NE Winds"), ncol=1)
 
 
 ## Try facet designed plot
-SE <- dat2
-NE <- dat2_NE
+dat2_2 <- dat2 %>%
+  slice(which(row_number() %% 3 == 1))
+
+
+fit1 <- lm(Annual_displacement ~ Year, data = dat2_2)
+plot(fit1)
+
+hist(fit1$residuals)
+
+# try cooks distance
+# #install.packages("olsrr")
+# library(olsrr)
+# 
+# ols_plot_cooksd_bar(fit1)
+# ols_plot_cooksd_chart(fit1)
+# ols_plot_dfbetas(fit1)
+# ols_plot_dffits(fit1)
+# ols_plot_resid_stud(fit1) # lots of outliers
+# ols_plot_resid_stand(fit1)
+# ols_plot_resid_lev(fit1) # but none have particularly large leverage
+# ols_plot_resid_stud_fit(fit1)
+# ols_plot_hadi(fit1)
+# ols_plot_resid_pot(fit1)
+# 
+
+summary(fit1) # -0.161 decline per year (p = 0.02)
+# 164 * -0.161 = -26
+anova(fit1)
+plot(dat2_2$Year, dat2_2$Annual_displacement)
+abline(fit1)
+
+
+res <- residuals(fit1)
+acf(res, plot = T)
+head(res, type = "pearson")
+
+
+
+SE <- dat2_2
+NE <- dat_NE2
 
 full_data <- bind_rows(list("b) SE Winds" = SE,"a) NE Winds" = NE), .id ="Direction")
 
@@ -187,8 +325,9 @@ p3 <- ggplot(full_data, aes(x = Year, y = Annual_displacement)) + geom_point() +
   )
 p3
 
-ggsave("plots/Historical Wind Change2.pdf", height = 14.8, width = 21, units = "cm")
-ggsave("plots/Historical Wind Change2.png", height = 14.8, width = 21, units = "cm", dpi = 600)
+ggsave("plots/Historical Wind Change3.pdf", height = 14.8, width = 21, units = "cm")
+ggsave("plots/Historical Wind Change3.png", height = 14.8, width = 21, units = "cm", dpi = 600)
+
 
 #mydata$Time <- ymd_hms(mydata$Time, tz="GMT")
 
