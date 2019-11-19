@@ -1,7 +1,7 @@
 # Historical Wind data from v3
 # install.packages("remotes")
 # install.packages("Rtools")
-remotes::install_github("skgrange/threadr")
+#remotes::install_github("skgrange/threadr")
 
 library(threadr)
 
@@ -11,7 +11,7 @@ library(threadr)
 # A test URL
 URL2 <- "ftp://ftp.cdc.noaa.gov/Datasets/20thC_ReanV3/10mSI/uwnd.10m.1836.nc"
 
-years <- seq(1836,1980,1)
+years <- seq(1884,1980,1)
 
 URLS <- paste("ftp://ftp.cdc.noaa.gov/Datasets/20thC_ReanV3/10mSI/uwnd.10m.",years, sep = "")
 URLS <- paste(URLS, ".nc", sep = "")

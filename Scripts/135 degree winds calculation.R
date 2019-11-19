@@ -9,9 +9,10 @@ library(dplyr)
 
 
 
-mydata <- read.csv("Wind Data/All Estuaries Modelled Wind Data speed direction.csv", header = T)
+mydata <- read.csv("Wind DataV3/All Estuaries Modelled Wind Data speed direction.csv", header = T)
 levels(mydata$Estuary)
-mydata <- subset(mydata, Estuary == "Sydney")
+#mydata <- subset(mydata, Estuary == "Sydney")
+table(mydata$Year)
 
 #####################################################################################################################################
 ##################### ONSHORE AND OFFSHORE ##########################################################################################
@@ -101,7 +102,7 @@ mydata$Wind.effect.size = abs(mydata$Wind.effect.size)
 mydata$Wind.speed.adjusted = mydata$Wind.effect.size * mydata$Speed_km_hr * -1
 
 
-plot(mydata$Direction, mydata$Wind.speed.adjusted)
+#plot(mydata$Direction, mydata$Wind.speed.adjusted)
 
 #write.csv(mydata, "Wind Data/135 degree/Sydney 3hourly winds.csv", row.names = FALSE)
 
@@ -111,17 +112,19 @@ dat <- mydata %>% group_by(Estuary, Year, Month, Day) %>%
   summarise(displacement = (sum(Wind.speed.adjusted, na.rm = TRUE)*3), count = n())
 head(dat)
 
-fwrite(dat, file = "Wind Data/135 degree/Sydney_Daily Modelled Wind Data Final 135 degree.csv")
+fwrite(dat, file = "Wind DataV3/135 degree/Estuaries_Daily Modelled Wind Data Final 135 degree.csv")
 
+syd_dat <- subset(dat, Estuary == "Sydney")
+fwrite(dat, file = "Wind DataV3/135 degree/Sydney_Daily Modelled Wind Data Final 135 degree.csv")
 
 # Group by month
-dat <- mydata %>% group_by(Estuary, Year, Month) %>%
+datM <- mydata %>% group_by(Estuary, Year, Month) %>%
   summarise(displacement = (sum(Wind.speed.adjusted, na.rm = TRUE)*3), count = n())
-head(dat)
+head(datM)
 
-hist(dat$displacement)
+hist(datM$displacement)
 
-fwrite(dat, file = "Wind Data/135 degree/Sydney_Monthly Modelled Wind Data Final 135 degree.csv")
+fwrite(datM, file = "Wind DataV3/135 degree/Estuary_Monthly Modelled Wind Data Final 135 degree.csv")
 #library(ggplot2)
 #p1 <- ggplot(mydata, aes(x= Time, y = Wind.speed.adjusted)) + #geom_point() +
 #  facet_wrap(~Estuary) + geom_smooth()
@@ -133,8 +136,8 @@ fwrite(dat, file = "Wind Data/135 degree/Sydney_Monthly Modelled Wind Data Final
 estuaries <- levels(mydata$Estuary)
 
 for (i in as.character(estuaries)) {
-  dat2 <- subset(dat, Estuary == i)
-  fwrite(dat2, file = paste("Wind Data/135 degree/", i, "_Monthly Modelled Wind Data Final 135 degree.csv", sep = ""))
+  dat2 <- subset(datM, Estuary == i)
+  fwrite(dat2, file = paste("Wind DataV3/135 degree/", i, "_Monthly Modelled Wind Data Final 135 degree.csv", sep = ""))
   
 }
 
@@ -147,4 +150,4 @@ head(dat_SE)
 
 hist(dat_SE$Annual_displacement)
 
-write.csv(dat_SE, "Iain/Iain Annual 135 degree winds Sydney_new.csv", row.names = F)
+write.csv(dat_SE, "Iain/Iain Annual 135 degree winds Sydney_newV3.csv", row.names = F)

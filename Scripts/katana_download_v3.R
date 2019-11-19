@@ -18,7 +18,7 @@ URLS <- paste(URLS, ".nc", sep = "")
 
 head(URLS)
 
-save_name_base <- "../../srv/scratch/z3374139/Wind DataV3/Wind_10m_u_"
+save_name_base <- "../../srv/scratch/z3374139/Wind DataV3/135 degree/Wind_10m_u_"
 save_names <- paste(save_name_base, years, sep = "")
 save_names <- paste(save_names, ".nc", sep = "")
 

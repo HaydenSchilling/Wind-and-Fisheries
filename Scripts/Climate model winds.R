@@ -32,7 +32,7 @@ t <- ncvar_get(nc_data, "time")
 tunits <- ncatt_get(nc_data, "time","units")
 Time <- as.POSIXct(t*3600, origin ="1800-01-01 00:00", tz = "GMT") #+ as.difftime(t, units = "hours")
 
-head(lat) # look at the first few entries in the longitude vector
+head(lat) # look at the first few entries in the latitude vector
 
 wind.array <- ncvar_get(nc_data, "uwnd") # store the data in a 3-dimensional array
 dim(wind.array)

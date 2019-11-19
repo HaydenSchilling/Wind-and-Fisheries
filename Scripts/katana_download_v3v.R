@@ -9,9 +9,10 @@ library(threadr)
 # height above surface (12 m version)
 
 # A test URL
-URL2 <- "ftp://ftp.cdc.noaa.gov/Datasets/20thC_ReanV3/10mSI/uwnd.10m.1836.nc"
+URL2 <- "ftp://ftp.cdc.noaa.gov/Datasets/20thC_ReanV3/10mSI/vwnd.10m.1884.nc"
 
-years <- seq(1836,1900,1)
+
+years <- seq(1895,1900,1) # 1884 had issues
 
 # URLS <- paste("ftp://ftp.cdc.noaa.gov/Datasets/20thC_ReanV3/10mSI/uwnd.10m.",years, sep = "")
 # URLS <- paste(URLS, ".nc", sep = "")
@@ -37,4 +38,5 @@ save_names <- paste(save_names, ".nc", sep = "")
 
 
 download_ftp_file(file_remote = URLS, file_local = save_names, verbose = TRUE)
+download_ftp_file(file_remote = URL2, file_local = "test2.nc", verbose = TRUE)
 

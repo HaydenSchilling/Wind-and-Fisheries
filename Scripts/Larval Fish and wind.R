@@ -19,14 +19,10 @@ fish_data <- read.csv("allNIMO_dist.csv", header = T)
 str(fish_data)
 
 # Restrict to NSW and on the continental shelf
-fish_data <- filter(fish_data, Latitude <= -30 & Latitude >= -36)
+fish_data <- filter(fish_data, Latitude <= -30 & Latitude >= -36 & Longitude > 140)
 fish_data <- filter(fish_data, Bathym_m <= 200)
 summary(fish_data$Bathym_m)
 hist(fish_data$Bathym_m)
-
-# Recognise Dates
-fish_data$Date <- as.Date(as.character(fish_data$Date), format = "%d/%m/%Y")
-fish_data <- filter(fish_data, Date < "2015-1-1")
 
 # Load Wind Data
 wind_data <- read.csv("Wind Data/45 degree/Sydney_Daily Modelled Wind Data Final 45 degree.csv", header = T)
@@ -34,6 +30,10 @@ str(wind_data)
 
 wind_data_SE <- read.csv("Wind Data/135 degree/Sydney_Daily Modelled Wind Data Final 135 degree.csv", header = T)
 str(wind_data_SE)
+
+# Recognise Dates
+fish_data$Date <- as.Date(as.character(fish_data$Date), format = "%d/%m/%Y")
+fish_data <- filter(fish_data, Date < "2015-12-31")
 
 # Make Date Column and recognise as dates
 wind_data <- unite(wind_data, col = "Date", c("Day","Month","Year"), sep="/")
@@ -54,10 +54,10 @@ head(fish_data)
 
 # For each sample, find the wind two weeks prior, sum displacement and assign to wind column
 for (i in 1:nrow(fish_data)){
-  dat2 <- filter(wind_data, Date <= fish_data$Date[i] & Date >= (fish_data$Date[i])-3)
+  dat2 <- filter(wind_data, Date <= fish_data$Date[i] & Date >= (fish_data$Date[i])-28)
   wind_tot <- sum(dat2$displacement)
   fish_data$NE_Winds[i] <- wind_tot
-  dat3 <- filter(wind_data_SE, Date <= fish_data$Date[i] & Date >= (fish_data$Date[i])-3)
+  dat3 <- filter(wind_data_SE, Date <= fish_data$Date[i] & Date >= (fish_data$Date[i])-28)
   wind_tot_SE <- sum(dat3$displacement)
   fish_data$SE_Winds[i] <- wind_tot_SE
 }
@@ -289,8 +289,8 @@ fish_data$Coastal_Normalised_Abund <- norm_abund
 #                 family=nbinom1, data = fish_data)
 
 ## Tweedie Family for positive continuous response variable
-fit3 <- glmmTMB(Coastal_Normalised_Abund ~ SE_Winds.standardised * NE_Winds.standardised*dists_km + (1|Project_ID), 
-                family=tweedie(), data = fish_data)
+#fit3 <- glmmTMB(Coastal_Normalised_Abund ~ SE_Winds.standardised * NE_Winds.standardised*dists_km + (1|Project_ID), 
+#                family=tweedie(), data = fish_data)
 fit3 <- glmmTMB(Coastal_Normalised_Abund ~
                   poly(cbind(SE_Winds.standardised, NE_Winds.standardised), degree = 2)*
                   dists_km + (1|Project_ID), 
@@ -298,6 +298,26 @@ fit3 <- glmmTMB(Coastal_Normalised_Abund ~
 
 simulationOutput <- simulateResiduals(fittedModel = fit3, n = 250)
 plot(simulationOutput)
+
+
+### larval plot
+
+pI <- ggplot(fish_data, aes(x = SE_Winds.standardised,y = NE_Winds.standardised, size = Coastal_Normalised_Abund)) + geom_point(alpha = 0.5) +
+  theme_classic() + labs(title = "Winds 3 days prior")
+pI
+
+#ggsave("Plots/Winds Larval dot size 3 days.png", width = 21, height = 14.8, units = "cm", dpi = 600)
+
+
+pI2 <- ggplot(fish_data, aes(x = SE_Winds.standardised,y = Coastal_Normalised_Abund)) + geom_point(alpha = 0.5) + geom_smooth()+
+  theme_classic() + labs(title = "Winds 3 days prior")
+pI2
+ggsave("Plots/SE Winds Larval Abund 3 days.png", width = 21, height = 14.8, units = "cm", dpi = 600)
+
+pI3 <- ggplot(fish_data, aes(x = NE_Winds.standardised,y = Coastal_Normalised_Abund)) + geom_point(alpha = 0.5) + geom_smooth() +
+  theme_classic() + labs(title = "Winds 3 days prior")
+pI3
+ggsave("Plots/NE Winds Larval Abund 3 days.png", width = 21, height = 14.8, units = "cm", dpi = 600)
 
 
 # Test Jon Gillson comments about residuals (still to do autocorrelation?)
@@ -333,6 +353,9 @@ cor.test(fish_data$NE_Winds.standardised, fish_data$SE_Winds.standardised)
 
 ### Try caterpillar plots
 library(ggplot2)
+summary(fit3)
+
+broom::tidy(fit3)
 
 coefficients(fit3)
 
@@ -406,7 +429,7 @@ lines(x = pred2$SE_Winds.standardised, y=(Pred2$fit+Pred2$se.fit), type = "l", c
 SE_1km_plot_dat <- data.frame(Pred2$fit, Pred2$se.fit, pred2$SE_Winds.standardised)
 head(SE_1km_plot_dat)
 
-p1 <- ggplot(SE_1km_plot_dat, aes(x = pred2.SE_Winds.standardised, y = Pred2.fit)) + ylim(0,0.03) +
+p1 <- ggplot(SE_1km_plot_dat, aes(x = pred2.SE_Winds.standardised, y = Pred2.fit)) + ylim(-0.01,0.1) +
   theme_classic() + xlab("Standardised Southeast Winds") + ylab("Predicted Normalised Abundance") +
   geom_ribbon(aes(ymax = Pred2.fit+Pred2.se.fit, ymin = Pred2.fit-Pred2.se.fit), fill = "grey80", col = "grey80") + 
   geom_line(col = "blue", size = 1.5) +
@@ -436,7 +459,7 @@ lines(x = pred2$SE_Winds.standardised, y=(Pred2$fit+Pred2$se.fit), type = "l", c
 SE_10km_plot_dat <- data.frame(Pred2$fit, Pred2$se.fit, pred2$SE_Winds.standardised)
 head(SE_1km_plot_dat)
 
-p2 <- ggplot(SE_10km_plot_dat, aes(x = pred2.SE_Winds.standardised, y = Pred2.fit)) + ylim(0,0.03) +
+p2 <- ggplot(SE_10km_plot_dat, aes(x = pred2.SE_Winds.standardised, y = Pred2.fit)) + ylim(-0.01,0.1) +
   theme_classic() + xlab("Standardised Southeast Winds") + ylab("Predicted Normalised Abundance") +
   geom_ribbon(aes(ymax = Pred2.fit+Pred2.se.fit, ymin = Pred2.fit-Pred2.se.fit), fill = "grey80", col = "grey80") + 
   geom_line(col = "blue", size = 1.5) +
@@ -466,7 +489,7 @@ lines(x = pred2$NE_Winds.standardised, y=(Pred2$fit+Pred2$se.fit), type = "l", c
 NE_1km_plot_dat <- data.frame(Pred2$fit, Pred2$se.fit, pred2$NE_Winds.standardised)
 head(SE_1km_plot_dat)
 
-p3 <- ggplot(NE_1km_plot_dat, aes(x = pred2.NE_Winds.standardised, y = Pred2.fit)) + ylim(0,0.03) +
+p3 <- ggplot(NE_1km_plot_dat, aes(x = pred2.NE_Winds.standardised, y = Pred2.fit)) + ylim(-0.01,0.1) +
   theme_classic() + xlab("Standardised Northeast Winds") + ylab("Predicted Normalised Abundance") +
   geom_ribbon(aes(ymax = Pred2.fit+Pred2.se.fit, ymin = Pred2.fit-Pred2.se.fit), fill = "grey80", col = "grey80") + 
   geom_line(col = "blue", size = 1.5) +
@@ -497,7 +520,7 @@ lines(x = pred2$NE_Winds.standardised, y=(Pred2$fit+Pred2$se.fit), type = "l", c
 NE_10km_plot_dat <- data.frame(Pred2$fit, Pred2$se.fit, pred2$NE_Winds.standardised)
 head(SE_1km_plot_dat)
 
-p4 <- ggplot(NE_10km_plot_dat, aes(x = pred2.NE_Winds.standardised, y = Pred2.fit)) + ylim(0,0.03) +
+p4 <- ggplot(NE_10km_plot_dat, aes(x = pred2.NE_Winds.standardised, y = Pred2.fit)) + ylim(-0.01,0.1) +
   theme_classic() + xlab("Standardised Northeast Winds") + ylab("Predicted Normalised Abundance") +
   geom_ribbon(aes(ymax = Pred2.fit+Pred2.se.fit, ymin = Pred2.fit-Pred2.se.fit), fill = "grey80", col = "grey80") + 
   geom_line(col = "blue", size = 1.5) +
@@ -516,8 +539,8 @@ ggarrange(p1, p2, p3, p4,
                      "c) 1km from Coast\n    Mean SE Winds", "d) 10km from Coast\n    Mean SE Winds"))
 
 
-ggsave("plots/Larvae wind predictions_30 day prior_mean.pdf", width = 21, height = 14.8, units = "cm")
-ggsave("plots/Larvae wind predictions_30 day prior_mean.png", width = 21, height = 14.8, units = "cm", dpi = 600)
+ggsave("plots/Larvae wind predictions_14 day prior_mean vary distances.pdf", width = 21, height = 14.8, units = "cm")
+ggsave("plots/Larvae wind predictions_14 day prior_mean vary distances.png", width = 21, height = 14.8, units = "cm", dpi = 600)
 # Note these were all edited after to fix labels
 
 
@@ -543,7 +566,7 @@ lines(x = pred2$SE_Winds.standardised, y=(Pred2$fit+Pred2$se.fit), type = "l", c
 SE_5km_weak_plot_dat <- data.frame(Pred2$fit, Pred2$se.fit, pred2$SE_Winds.standardised)
 head(SE_1km_plot_dat)
 
-f1 <- ggplot(SE_5km_weak_plot_dat, aes(x = pred2.SE_Winds.standardised, y = Pred2.fit)) + ylim(0,0.02) +
+f1 <- ggplot(SE_5km_weak_plot_dat, aes(x = pred2.SE_Winds.standardised, y = Pred2.fit)) + ylim(-0.001,0.03) +
   theme_classic() + xlab("Standardised Southeast Winds") + ylab("Predicted Normalised Abundance") +
   geom_ribbon(aes(ymax = Pred2.fit+Pred2.se.fit, ymin = Pred2.fit-Pred2.se.fit), fill = "grey80", col = "grey80") + 
   geom_line(col = "blue", size = 1.5) +
@@ -573,7 +596,7 @@ lines(x = pred2$SE_Winds.standardised, y=(Pred2$fit+Pred2$se.fit), type = "l", c
 SE_5km_mean_plot_dat <- data.frame(Pred2$fit, Pred2$se.fit, pred2$SE_Winds.standardised)
 head(SE_1km_plot_dat)
 
-f2 <- ggplot(SE_5km_mean_plot_dat, aes(x = pred2.SE_Winds.standardised, y = Pred2.fit)) + ylim(0,0.02) +
+f2 <- ggplot(SE_5km_mean_plot_dat, aes(x = pred2.SE_Winds.standardised, y = Pred2.fit)) + ylim(-0.001,0.03) +
   theme_classic() + xlab("Standardised Southeast Winds") + ylab("Predicted Normalised Abundance") +
   geom_ribbon(aes(ymax = Pred2.fit+Pred2.se.fit, ymin = Pred2.fit-Pred2.se.fit), fill = "grey80", col = "grey80") + 
   geom_line(col = "blue", size = 1.5) +
@@ -603,7 +626,7 @@ lines(x = pred2$SE_Winds.standardised, y=(Pred2$fit+Pred2$se.fit), type = "l", c
 SE_5km_strong_plot_dat <- data.frame(Pred2$fit, Pred2$se.fit, pred2$SE_Winds.standardised)
 head(SE_1km_strong_plot_dat)
 
-f3 <- ggplot(SE_5km_strong_plot_dat, aes(x = pred2.SE_Winds.standardised, y = Pred2.fit)) + ylim(0,0.02) +
+f3 <- ggplot(SE_5km_strong_plot_dat, aes(x = pred2.SE_Winds.standardised, y = Pred2.fit)) + ylim(-0.001,0.03) +
   theme_classic() + xlab("Standardised Southeast Winds") + ylab("Predicted Normalised Abundance") +
   geom_ribbon(aes(ymax = Pred2.fit+Pred2.se.fit, ymin = Pred2.fit-Pred2.se.fit), fill = "grey80", col = "grey80") + 
   geom_line(col = "blue", size = 1.5) +
@@ -635,7 +658,7 @@ lines(x = pred2$NE_Winds.standardised, y=(Pred2$fit+Pred2$se.fit), type = "l", c
 NE_5km_weak_plot_dat <- data.frame(Pred2$fit, Pred2$se.fit, pred2$NE_Winds.standardised)
 head(SE_5km_weak_plot_dat)
 
-f4 <- ggplot(NE_5km_weak_plot_dat, aes(x = pred2.NE_Winds.standardised, y = Pred2.fit)) + ylim(0,0.02) +
+f4 <- ggplot(NE_5km_weak_plot_dat, aes(x = pred2.NE_Winds.standardised, y = Pred2.fit)) + ylim(-0.001,0.03) +
   theme_classic() + xlab("Standardised Northeast Winds") + ylab("Predicted Normalised Abundance") +
   geom_ribbon(aes(ymax = Pred2.fit+Pred2.se.fit, ymin = Pred2.fit-Pred2.se.fit), fill = "grey80", col = "grey80") + 
   geom_line(col = "blue", size = 1.5) +
@@ -666,7 +689,7 @@ lines(x = pred2$NE_Winds.standardised, y=(Pred2$fit+Pred2$se.fit), type = "l", c
 NE_5km_mean_plot_dat <- data.frame(Pred2$fit, Pred2$se.fit, pred2$NE_Winds.standardised)
 head(NE_5km_mean_plot_dat)
 
-f5 <- ggplot(NE_5km_mean_plot_dat, aes(x = pred2.NE_Winds.standardised, y = Pred2.fit)) + ylim(0,0.02) +
+f5 <- ggplot(NE_5km_mean_plot_dat, aes(x = pred2.NE_Winds.standardised, y = Pred2.fit)) + ylim(-0.001,0.03) +
   theme_classic() + xlab("Standardised Northeast Winds") + ylab("Predicted Normalised Abundance") +
   geom_ribbon(aes(ymax = Pred2.fit+Pred2.se.fit, ymin = Pred2.fit-Pred2.se.fit), fill = "grey80", col = "grey80") + 
   geom_line(col = "blue", size = 1.5) +
@@ -696,7 +719,7 @@ lines(x = pred2$NE_Winds.standardised, y=(Pred2$fit+Pred2$se.fit), type = "l", c
 NE_5km_strong_plot_dat <- data.frame(Pred2$fit, Pred2$se.fit, pred2$NE_Winds.standardised)
 head(NE_5km_strong_plot_dat)
 
-f6 <- ggplot(NE_5km_strong_plot_dat, aes(x = pred2.NE_Winds.standardised, y = Pred2.fit)) + ylim(0,0.02) +
+f6 <- ggplot(NE_5km_strong_plot_dat, aes(x = pred2.NE_Winds.standardised, y = Pred2.fit)) + ylim(-0.001,0.03) +
   theme_classic() + xlab("Standardised Northeast Winds") + ylab("Predicted Normalised Abundance") +
   geom_ribbon(aes(ymax = Pred2.fit+Pred2.se.fit, ymin = Pred2.fit-Pred2.se.fit), fill = "grey80", col = "grey80") + 
   geom_line(col = "blue", size = 1.5) +
@@ -713,8 +736,8 @@ ggarrange(f1, f2, f3, f4, f5, f6,
                      "d) Weak SE Winds ", "e) Mean SE Winds", "f) Strong SE Winds"))
 
 
-ggsave("plots/Larvae wind predictions_30 day prior_mean.pdf", width = 21, height = 14.8, units = "cm")
-ggsave("plots/Larvae wind predictions_30 day prior_mean.png", width = 21, height = 14.8, units = "cm", dpi = 600)
+ggsave("plots/Larvae wind predictions_3 day prior_mean.pdf", width = 21, height = 14.8, units = "cm")
+ggsave("plots/Larvae wind predictions_3 day prior_mean.png", width = 21, height = 14.8, units = "cm", dpi = 600)
 # Note these were all edited after to fix labels
 
 
@@ -740,14 +763,14 @@ for (i in 1:length(nums)){
   }
 }
 
-#write.csv(heat_data, "heatmap data larval 3 day lag.csv", row.names = F)
+#write.csv(heat_data, "heatmap data larval 28 day lag.csv", row.names = F)
 
 library(ggplot2)
 library(viridis)
 
 p <- ggplot(heat_data, aes(x = Southeast.Winds,y = Northeast.Winds)) + geom_tile(aes(fill = Abundance)) +
   #scale_fill_gradient(low = "blue", high = "red") + 
-  theme_classic() + scale_fill_viridis() + # or geom_raster()
+  theme_classic() + scale_fill_viridis(option = "magma") + # or geom_raster()
   xlab("Standardised Southeast Winds") + ylab("Standardised Northeast Winds") +
   theme(axis.title.x = element_text(face="bold", colour="black", size = 18),
         axis.text.x  = element_text(colour="black", size = 14), 
@@ -757,14 +780,16 @@ p <- ggplot(heat_data, aes(x = Southeast.Winds,y = Northeast.Winds)) + geom_tile
   
 p
 
-ggsave("plots/Larvae heatmap 3 day.pdf", width = 21, height = 14.8, units = "cm")
-ggsave("plots/Larvae heatmap 3 day.png", width = 21, height = 14.8, units = "cm", dpi = 600)
+ggsave("plots/Larvae heatmap 28 day.pdf", width = 21, height = 14.8, units = "cm")
+ggsave("plots/Larvae heatmap 28 day.png", width = 21, height = 14.8, units = "cm", dpi = 600)
 
-heat3 <- read.csv("heatmap data larval 3 day lag.csv", header = T)
-heat14 <- read.csv("heatmap data larval 14 day lag.csv", header = T)
+heat3 <- read.csv("heatmap data with error larval 3 day lag.csv", header = T)
+heat14 <- read.csv("heatmap data with error larval 14 day lag.csv", header = T)
+#heat28 <- read.csv("heatmap data larval 28 day lag.csv", header = T)
 
 heat3$Lag <- "3"
 heat14$Lag <- "14"
+#heat28$Lag <- "28"
 
 heat_full <- rbind(heat3, heat14)
 head(heat_full)
@@ -780,14 +805,14 @@ variable_labeller <- function(variable,value){
   return(variable_names[value])
 }
 
-
+library(scales) # without this, oob = squish doesn't work in below plot code
 
 
 p <- ggplot(heat_full, aes(x = Southeast.Winds,y = Northeast.Winds)) + geom_tile(aes(fill = Abundance)) +
   facet_wrap(~Lag, labeller=variable_labeller) +
   #scale_fill_gradient(low = "blue", high = "red") + 
   theme_classic() + 
-  scale_fill_viridis(name = "Predicted \nNormalised \nAbundance", limits=c(0,0.015)) + # or geom_raster()
+  scale_fill_viridis(name = "Predicted \nNormalised \nAbundance",  oob = squish, option = "magma") + # ,limits = c(0.001, 0.1) or geom_raster() ,limits=c(0,0.055),
   scale_x_continuous(expand = c(0,0)) + 
   scale_y_continuous(expand = c(0,0)) +
   xlab("Standardised Southeast Winds") + ylab("Standardised Northeast Winds") +
@@ -833,8 +858,8 @@ p
 ggsave("plots/Larvae heatmap 3 day error.pdf", width = 21, height = 14.8, units = "cm")
 ggsave("plots/Larvae heatmap 3 day error.png", width = 21, height = 14.8, units = "cm", dpi = 600)
 
-heat3 <- read.csv("heatmap data with error larval 3 day lag.csv", header = T)
-heat14 <- read.csv("heatmap data with error larval 14 day lag.csv", header = T)
+#heat3 <- read.csv("heatmap dataV3 with error larval 3 day lag.csv", header = T)
+#heat14 <- read.csv("heatmap dataV3 with error larval 14 day lag.csv", header = T)
 
 heat3$Lag <- "3"
 heat14$Lag <- "14"
@@ -882,3 +907,108 @@ p
 
 ggsave("plots/Larvae combined heatmap error.pdf", width = 21, height = 14.8, units = "cm")
 ggsave("plots/Larvae combined heatmap error.png", width = 21, height = 14.8, units = "cm", dpi = 600)
+
+
+### Test Myctophids???? Not really what I wanted.
+fitM <- glmmTMB(Myctophidae_37122000 ~ # Myctophidae_37122000
+                  poly(cbind(SE_Winds.standardised, NE_Winds.standardised), degree = 2)*
+                  dists_km + (1|Project_ID), offset = log(Volume_m3),
+                family=genpois(link = "log"), data = fish_data) #genpois(link = "log") or tweedie(link = "log")
+
+fish_data$Macroramphosidae_Macroramphosus.spp_37279902
+
+simulationOutput <- simulateResiduals(fittedModel = fitM, n = 250)
+plot(simulationOutput)
+Anova(fitM)
+plot(allEffects(fitM))
+plot(Myctophidae_37122000/Volume_m3 ~ NE_Winds.standardised, data = fish_data)
+FF <- lm(Myctophidae_37122000/Volume_m3 ~ NE_Winds.standardised, data = fish_data)
+summary(FF)
+abline(FF)
+
+pM <- ggplot(fish_data, aes(x = SE_Winds.standardised, y = NE_Winds.standardised, size = Myctophidae_37122000/Volume_m3)) +
+  geom_point(alpha = 0.5)
+pM
+
+# Test Jon Gillson comments about residuals (still to do autocorrelation?)
+hist(simulationOutput$scaledResiduals)
+hist(residuals(fitM))
+
+hist(simulationOutput$fittedResiduals)
+
+res <- residuals(fitM)
+acf(res, plot = T)
+head(res, type = "pearson")
+
+library(ggfortify)
+acf_p <- autoplot(acf(res)) + #simulationOutput$fittedResiduals
+  geom_hline(yintercept = 0) +
+  ylab('Autocorrelation function')
+acf_p
+
+### Continue on
+plotResiduals(fish_data$Project_ID, simulationOutput$scaledResiduals)
+
+Anova(fitM,type="II",test="Chisq")
+summary(fitM)
+
+hist(fish_data$Coastal_Normalised_Abund)
+
+
+# Heatmap making (Run from here)
+nums <- seq(-2,2, by = 0.05)
+heat_dataM <- data.frame("Southeast Winds" = rep(0,81*81), # makes empty dataframe ready for values
+                        "Northeast Winds" =  rep(0,81*81), 
+                        "Abundance" =  rep(0,81*81))
+Nn <- 1
+# loop for NE
+for (i in 1:length(nums)){
+  for (j in 1:length(nums)){
+    pred_map <- data.frame("NE_Winds.standardised" = nums[i],
+                           "SE_Winds.standardised" = nums[j],
+                           "dists_km" = 5,
+                           "Project_ID" = "P1",
+                           "Volume_m3" = 1000)
+    PredX <- predict(fitM, newdata = pred_map, type = "response", se.fit = F)
+    heat_dataM$Southeast.Winds[Nn] <- pred_map$SE_Winds.standardised[1]
+    heat_dataM$Northeast.Winds[Nn] <- pred_map$NE_Winds.standardised[1]
+    heat_dataM$Abundance[Nn] <- PredX#$fit
+    print(paste("This is line ", Nn, " out of 6561"))
+    Nn <- Nn + 1
+  }
+}
+
+library(ggplot2)
+library(viridis)
+
+p <- ggplot(heat_dataM, aes(x = Southeast.Winds,y = Northeast.Winds)) + geom_tile(aes(fill = Abundance)) +
+  #scale_fill_gradient(low = "blue", high = "red") + 
+  theme_classic() + scale_fill_viridis() + # or geom_raster()
+  xlab("Standardised Southeast Winds") + ylab("Standardised Northeast Winds") +
+  theme(axis.title.x = element_text(face="bold", colour="black", size = 18),
+        axis.text.x  = element_text(colour="black", size = 14), 
+        axis.title.y = element_text(face="bold", colour="black", size = 18),
+        axis.text.y  = element_text(colour="black", size = 14),
+        axis.ticks = element_line(colour="black"))
+
+p
+
+ggsave("plots/Larvae Macroramphosidae 3 day.pdf", width = 21, height = 14.8, units = "cm")
+ggsave("plots/Larvae Macroramphosidae 3 day.png", width = 21, height = 14.8, units = "cm", dpi = 600)
+
+
+plot(fish_data$NE_Winds.standardised, sqrt(fish_data$Myctophidae_37122000)/fish_data$Volume_m3)
+fitM <- lm(sqrt(Myctophidae_37122000)/Volume_m3 ~ NE_Winds.standardised, data = fish_data)
+summary(fitM)
+abline(fitM)
+
+fitM <- glmmTMB(Myctophidae_37122000 ~
+                  SE_Winds.standardised * NE_Winds.standardised *
+                  dists_km + (1|Project_ID), offset = log(Volume_m3),
+                family=genpois(link = "log"), data = fish_data) #genpois(link = "log")
+
+simulationOutput <- simulateResiduals(fittedModel = fitM, n = 250)
+plot(simulationOutput)
+plot(allEffects(fitM))
+
+summary(fitM)

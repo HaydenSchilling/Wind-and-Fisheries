@@ -7,7 +7,14 @@ library(merTools)
 library(MuMIn)
 
 # Load Data
-mydata <- read.csv("Full_Data_Modelling.csv", header = T)
+mydata <- read.csv("Full_Data_Modelling.csv", header = T) # Full_Data_ModellingV3_by_estuary.csv
+# mydata2 <-  read.csv("Full_Data_Modelling.csv", header = T)
+# 
+# cor.test(mydata$X45_degree_winds, mydata2$X135_degree_winds)
+# cor.test(mydata$X135_degree_winds, mydata2$X45_degree_winds)
+# cor.test(mydata$X135_degree_winds, mydata2$X135_degree_winds)
+# cor.test(mydata$X45_degree_winds, mydata2$X45_degree_winds)
+# # NE winds not correlated by SE winds are.....
 
 p1 <- ggplot(mydata, aes(x = X135_degree_winds, y = CPUE)) + geom_point() +
   facet_wrap(~Species, scales = "free") + geom_smooth()
@@ -100,8 +107,8 @@ library(effects)
 
 ### Standardise Winds
 my.df <-  my.df %>% mutate(X45_degree_winds.standardised = as.numeric(scale(X45_degree_winds)),
-                                   X135_degree_winds.standardised = as.numeric(scale(X135_degree_winds)),
-                           Onshore_Winds.standardised = as.numeric(scale(Onshore_Winds)))
+                                   X135_degree_winds.standardised = as.numeric(scale(X135_degree_winds)))#, # Onshore winds removed
+                          # Onshore_Winds.standardised = as.numeric(scale(Onshore_Winds)))
 
 # bream <- subset(my.df, Species == "Bream")
 # 
@@ -298,7 +305,7 @@ pred_dat <- data.frame("X45_degree_winds.standardised" = seq(from = -2,
 #install_github("remkoduursma/bootpredictlme4")
 
 library(bootpredictlme4)
-Pred_Bream <- predict(m1, newdata=pred_dat, re.form=NA, se.fit=TRUE, nsim=100)
+Pred_Bream <- predict(m1, newdata=pred_dat, re.form=NA, se.fit=TRUE, nsim=500)
 
 Pred_Bream
 
@@ -331,7 +338,8 @@ ggsave("plots/Bream CPUE and NE wind predictions.png", height = 14.8, width = 21
 nums <- seq(-2,2, by = 0.05)
 heat_data <- data.frame("Southeast Winds" = rep(0,81*81), # makes empty dataframe ready for values
                         "Northeast Winds" =  rep(0,81*81), 
-                        "Abundance" =  rep(0,81*81))
+                        "Abundance" =  rep(0,81*81),
+                        "Error" =  rep(0,81*81))
 Nn <- 1
 # loop for NE
 for (i in 1:length(nums)){
@@ -342,14 +350,17 @@ for (i in 1:length(nums)){
                            "Estuary_Type" = "Barrier Lagoon",
                            #"Current_Wind" = mean(bream$Current_Wind),
                            "Drought_Months" = 4)
-    PredX <- predict(m1, newdata = pred_map, type = "response", se.fit = F)
+    PredX <- predict(m1, newdata = pred_map, type = "response", se.fit = T, nsim = 500)
     heat_data$Southeast.Winds[Nn] <- pred_map$X135_degree_winds.standardised[1]
     heat_data$Northeast.Winds[Nn] <- pred_map$X45_degree_winds.standardised[1]
-    heat_data$Abundance[Nn] <- PredX
+    heat_data$Abundance[Nn] <- PredX$fit
+    heat_data$Error[Nn] <- PredX$se.fit
     print(paste("This is line ", Nn, " out of 6561"))
     Nn <- Nn + 1
   }
 }
+
+write.csv(heat_data, "Bream CPUE heatmap data.csv", row.names = FALSE)
 
 # visualise the matrix
 library(viridis)
@@ -522,7 +533,8 @@ ggsave("plots/Mullet CPUE and NE wind predictions.png", height = 14.8, width = 2
 nums <- seq(-2,2, by = 0.05)
 heat_data <- data.frame("Southeast Winds" = rep(0,81*81), # makes empty dataframe ready for values
                         "Northeast Winds" =  rep(0,81*81), 
-                        "Abundance" =  rep(0,81*81))
+                        "Abundance" =  rep(0,81*81),
+                        "Error" =  rep(0,81*81))
 Nn <- 1
 # loop for NE
 for (i in 1:length(nums)){
@@ -536,11 +548,14 @@ for (i in 1:length(nums)){
     PredX <- predict(m2, newdata = pred_map, type = "response", se.fit = F)
     heat_data$Southeast.Winds[Nn] <- pred_map$X135_degree_winds.standardised[1]
     heat_data$Northeast.Winds[Nn] <- pred_map$X45_degree_winds.standardised[1]
-    heat_data$Abundance[Nn] <- PredX
+    heat_data$Abundance[Nn] <- PredX$fit
+    heat_data$Error[Nn] <- PredX$se.fit
     print(paste("This is line ", Nn, " out of 6561"))
     Nn <- Nn + 1
   }
 }
+
+write.csv(heat_data, "Mullet CPUE heatmap data.csv", row.names = FALSE)
 
 # visualise the matrix
 library(viridis)
@@ -711,7 +726,8 @@ ggsave("plots/flathead CPUE and NE wind predictions.png", height = 14.8, width =
 nums <- seq(-2,2, by = 0.05)
 heat_data <- data.frame("Southeast Winds" = rep(0,81*81), # makes empty dataframe ready for values
                         "Northeast Winds" =  rep(0,81*81), 
-                        "Abundance" =  rep(0,81*81))
+                        "Abundance" =  rep(0,81*81),
+                        "Error" =  rep(0,81*81))
 Nn <- 1
 # loop for NE
 for (i in 1:length(nums)){
@@ -725,11 +741,14 @@ for (i in 1:length(nums)){
     PredX <- predict(m3, newdata = pred_map, type = "response", se.fit = F)
     heat_data$Southeast.Winds[Nn] <- pred_map$X135_degree_winds.standardised[1]
     heat_data$Northeast.Winds[Nn] <- pred_map$X45_degree_winds.standardised[1]
-    heat_data$Abundance[Nn] <- PredX
+    heat_data$Abundance[Nn] <- PredX$fit
+    heat_data$Error[Nn] <- PredX$se.fit
     print(paste("This is line ", Nn, " out of 6561"))
     Nn <- Nn + 1
   }
 }
+
+write.csv(heat_data, "Flathead CPUE heatmap data.csv", row.names = FALSE)
 
 # visualise the matrix
 library(viridis)
@@ -774,10 +793,10 @@ plot(simulationOutput)
 hist(simulationOutput$fittedResiduals)
 
 summary(m4)
-anova(m4, type = 1) # weak effect of NE Winds
+anova(m4) # weak effect of NE Winds
 
 plot(allEffects(m4)) # weak evidence for an interaction between NE and SE Winds
-plot(Effect(c("X45_degree_winds.standardised"), m4))
+plot(Effect(c("X135_degree_winds.standardised"), m4))
 
 
 fastdisp(m4)
@@ -908,7 +927,8 @@ ggsave("plots/luderick CPUE and NE wind predictions.png", height = 14.8, width =
 nums <- seq(-2,2, by = 0.05)
 heat_data <- data.frame("Southeast Winds" = rep(0,81*81), # makes empty dataframe ready for values
                         "Northeast Winds" =  rep(0,81*81), 
-                        "Abundance" =  rep(0,81*81))
+                        "Abundance" =  rep(0,81*81),
+                        "Error" =  rep(0,81*81))
 Nn <- 1
 # loop for NE
 for (i in 1:length(nums)){
@@ -919,14 +939,17 @@ for (i in 1:length(nums)){
                            "Estuary_Type" = "Barrier Lagoon",
                            #"Current_Wind" = mean(bream$Current_Wind),
                            "Drought_Months" = 4)
-    PredX <- predict(m4, newdata = pred_map, type = "response", se.fit = F)
+    PredX <- predict(m4, newdata = pred_map, type = "response", se.fit = T)
     heat_data$Southeast.Winds[Nn] <- pred_map$X135_degree_winds.standardised[1]
     heat_data$Northeast.Winds[Nn] <- pred_map$X45_degree_winds.standardised[1]
-    heat_data$Abundance[Nn] <- PredX
+    heat_data$Abundance[Nn] <- PredX$fit
+    heat_data$Error[Nn] <- PredX$se.fit
     print(paste("This is line ", Nn, " out of 6561"))
     Nn <- Nn + 1
   }
 }
+
+write.csv(heat_data, "luderick CPUE heatmap data.csv", row.names = FALSE)
 
 # visualise the matrix
 library(viridis)
@@ -1105,7 +1128,8 @@ ggsave("plots/whiting CPUE and NE wind predictions.png", height = 14.8, width = 
 nums <- seq(-2,2, by = 0.05)
 heat_data <- data.frame("Southeast Winds" = rep(0,81*81), # makes empty dataframe ready for values
                         "Northeast Winds" =  rep(0,81*81), 
-                        "Abundance" =  rep(0,81*81))
+                        "Abundance" =  rep(0,81*81),
+                        "Error" =  rep(0,81*81))
 Nn <- 1
 # loop for NE
 for (i in 1:length(nums)){
@@ -1116,14 +1140,17 @@ for (i in 1:length(nums)){
                            "Estuary_Type" = "Barrier Lagoon",
                            #"Current_Wind" = mean(bream$Current_Wind),
                            "Drought_Months" = 4)
-    PredX <- predict(m5, newdata = pred_map, type = "response", se.fit = F)
+    PredX <- predict(m5, newdata = pred_map, type = "response", se.fit = T)
     heat_data$Southeast.Winds[Nn] <- pred_map$X135_degree_winds.standardised[1]
     heat_data$Northeast.Winds[Nn] <- pred_map$X45_degree_winds.standardised[1]
-    heat_data$Abundance[Nn] <- PredX
+    heat_data$Abundance[Nn] <- PredX$fit
+    heat_data$Error[Nn] <- PredX$se.fit
     print(paste("This is line ", Nn, " out of 6561"))
     Nn <- Nn + 1
   }
 }
+
+write.csv(heat_data, "Whiting CPUE heatmap data.csv", row.names = FALSE)
 
 # visualise the matrix
 library(viridis)
@@ -1217,7 +1244,7 @@ pred_dat <- data.frame("X135_degree_winds.standardised" = seq(from = -2,
                        "Species" == "Bream")
 
 library(bootpredictlme4)
-Pred_Total <- predict(m7, newdata=pred_dat, re.form=NA, se.fit=TRUE, nsim=100)
+Pred_Total <- predict(m7, newdata=pred_dat, re.form=NA, se.fit=F, nsim=100)
 
 
 # Pred_Total <- predict(m7, newdata=my.df, re.form=NA, se.fit=TRUE, nsim=100)
@@ -1327,13 +1354,22 @@ library(viridis)
 
 p <- ggplot(heat_data, aes(x = Southeast.Winds,y = Northeast.Winds)) + geom_tile(aes(fill = Abundance)) +
   #scale_fill_gradient(low = "blue", high = "red") + 
-  theme_classic() + scale_fill_viridis() + # or geom_raster()
+  theme_classic() + scale_fill_viridis(name = "Predicted \nStandardised \n CPUE", option = "magma") + # or geom_raster()
+  scale_x_continuous(expand = c(0,0)) + 
+  scale_y_continuous(expand = c(0,0)) + geom_contour(col="white", aes(z = Abundance)) +
   xlab("Standardised Southeast Winds") + ylab("Standardised Northeast Winds") +
   theme(axis.title.x = element_text(face="bold", colour="black", size = 18),
         axis.text.x  = element_text(colour="black", size = 14), 
         axis.title.y = element_text(face="bold", colour="black", size = 18),
         axis.text.y  = element_text(colour="black", size = 14),
-        axis.ticks = element_line(colour="black"))
+        axis.ticks = element_line(colour="black"),
+        strip.text = element_text(colour="black", face = "bold", size = 14, hjust=0),
+        strip.background = element_rect(colour = "white"),
+        #legend.justification=c(1,0), legend.position="right",
+        panel.border = element_rect(colour = "black", fill=NA, size = 1),
+        #legend.key.size = unit(1, "cm"),
+        legend.title = element_text(face = "bold", size = 14),
+        legend.text = element_text(size = 12, face = "bold"))
 
 p
 

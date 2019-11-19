@@ -1,6 +1,6 @@
 # Calculate adjusted wind for 45 deg to north
 # Hayden Schilling 25/7/19
-
+#install.packages("rWind")
 library(rWind)
 library(lubridate)
 library(REdaS)
@@ -9,9 +9,9 @@ library(dplyr)
 
 
 
-mydata <- read.csv("Wind Data/All Estuaries Modelled Wind Data speed direction.csv", header = T)
+mydata <- read.csv("Wind DataV3/All Estuaries Modelled Wind Data speed direction.csv", header = T)
 
-mydata <- subset(mydata, Estuary == "Sydney")
+#mydata <- subset(mydata, Estuary == "Sydney")
 #####################################################################################################################################
 ##################### ONSHORE AND OFFSHORE ##########################################################################################
 #####################################################################################################################################
@@ -107,19 +107,21 @@ plot(mydata$Direction, mydata$Wind.speed.adjusted)
 #plot(mydata2$Direction)
 
 # Group by Month
-dat <- mydata %>% group_by(Estuary, Year, Month) %>%
+datM <- mydata %>% group_by(Estuary, Year, Month) %>%
   summarise(displacement = (sum(Wind.speed.adjusted, na.rm = TRUE)*3), count = n())
-head(dat)
+head(datM)
 
-fwrite(dat, file = "Wind Data/45 degree/Monthly Modelled Sydney 45 deg Wind Data Final.csv")
+fwrite(datM, file = "Wind DataV3/45 degree/Monthly Modelled Estuary 45 deg Wind Data Final.csv")
 
 # Group by Day
 dat <- mydata %>% group_by(Estuary, Year, Month, Day) %>%
   summarise(displacement = (sum(Wind.speed.adjusted, na.rm = TRUE)*3), count = n())
 head(dat)
 
-fwrite(dat, file = "Wind Data/45 degree/Sydney_Daily Modelled Wind Data Final 45 degree.csv")
+fwrite(dat, file = "Wind DataV3/45 degree/Daily Estuary Modelled Wind Data Final 45 degree.csv")
 
+syd_dat <- subset(dat, Estuary == "Sydney")
+fwrite(dat, file = "Wind DataV3/45 degree/Sydney_Daily Modelled Wind Data Final 45 degree.csv")
 # # Group by Month
 # dat <- mydata %>% group_by(Estuary, Year, Month, Day) %>%
 #   summarise(displacement = (sum(Wind.speed.adjusted, na.rm = TRUE)*3), count = n())
@@ -136,8 +138,8 @@ p1
 estuaries <- levels(mydata$Estuary)
 
 for (i in as.character(estuaries)) {
-  dat2 <- subset(dat, Estuary == i)
-  fwrite(dat2, file = paste("Wind Data/45 degree/", i, "_Daily Modelled Wind Data Final 45 degree.csv", sep = ""))
+  dat2 <- subset(datM, Estuary == i)
+  fwrite(dat2, file = paste("Wind DataV3/45 degree/", i, "_Monthly Modelled Wind Data Final 45 degree.csv", sep = ""))
   
 }
 
@@ -150,4 +152,4 @@ head(dat_SE)
 
 hist(dat_SE$Annual_displacement)
 
-write.csv(dat_SE, "Iain/Iain Annual 45 degree winds Sydney_new.csv", row.names = F)
+write.csv(dat_SE, "Iain/Iain Annual 45 degree winds Sydney_newV3.csv", row.names = F)

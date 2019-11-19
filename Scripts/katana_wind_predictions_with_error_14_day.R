@@ -18,14 +18,14 @@ fish_data <- read.csv("allNIMO_dist.csv", header = T)
 str(fish_data)
 
 # Restrict to NSW and on the continental shelf
-fish_data <- filter(fish_data, Latitude <= -30 & Latitude >= -36)
+fish_data <- filter(fish_data, Latitude <= -30 & Latitude >= -36 & Longitude > 140)
 fish_data <- filter(fish_data, Bathym_m <= 200)
 summary(fish_data$Bathym_m)
 hist(fish_data$Bathym_m)
 
 # Recognise Dates
 fish_data$Date <- as.Date(as.character(fish_data$Date), format = "%d/%m/%Y")
-fish_data <- filter(fish_data, Date < "2015-1-1")
+#fish_data <- filter(fish_data, Date < "2015-1-1")
 
 # Load Wind Data
 wind_data <- read.csv("Sydney_Daily Modelled Wind Data Final 45 degree.csv", header = T)

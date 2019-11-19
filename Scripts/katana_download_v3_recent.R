@@ -11,7 +11,7 @@ library(threadr)
 # A test URL
 URL2 <- "ftp://ftp.cdc.noaa.gov/Datasets/20thC_ReanV3/10mMO/uwnd.10m.1836.nc"
 
-years <- seq(1981,2015,1)
+years <- seq(2000,2015,1)
 
 # URLS <- paste("ftp://ftp.cdc.noaa.gov/Datasets/20thC_ReanV3/10mMO/uwnd.10m.",years, sep = "")
 # URLS <- paste(URLS, ".nc", sep = "")

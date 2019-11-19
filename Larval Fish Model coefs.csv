@@ -1,0 +1,25 @@
+,Estimate,Std.Error,z value,Pr(>|z|),Lag
+(Intercept),-4.98768,0.42671,-11.689,<0.0000000000000002,3 Day
+SE Winds,7.44148,4.74152,1.569,0.11655,3 Day
+SE Winds Quadratic,-4.92911,3.88594,-1.268,0.20464,3 Day
+NE Winds,-4.20438,4.66417,-0.901,0.36736,3 Day
+SE Winds * NE Winds ,186.01829,193.25778,0.963,0.33578,3 Day
+NE Winds Quadratic,-12.01793,4.44312,-2.705,0.00683,3 Day
+Distance from Coast,-0.01971,0.01045,-1.887,0.05914,3 Day
+SE Winds * Distance,0.25891,0.39276,0.659,0.50977,3 Day
+SE Winds Quadratic * Distance,0.01017,0.25978,0.039,0.96877,3 Day
+NE Winds * Distance,0.6459,0.38733,1.668,0.0954,3 Day
+SE Winds * NE Winds * Distance,-29.76352,15.00683,-1.983,0.04733,3 Day
+NE Winds Quadratic * Distance,0.094,0.35538,0.265,0.79138,3 Day
+(Intercept),-6.26E+00,4.52E-01,-13.871,2.00E-16,14 Day
+SE Winds,-4.17E+00,7.85E+00,-0.532,0.595,14 Day
+SE Winds Quadratic,-2.41E+01,5.93E+00,-4.071,4.68E-05,14 Day
+NE Winds,2.62E+01,6.30E+00,4.152,3.30E-05,14 Day
+SE Winds * NE Winds ,1.88E+03,4.72E+02,3.994,6.48E-05,14 Day
+NE Winds Quadratic,-3.60E+01,7.00E+00,-5.148,2.63E-07,14 Day
+Distance from Coast,-5.20E-03,1.64E-02,-0.317,0.751,14 Day
+SE Winds * Distance,8.98E-01,5.52E-01,1.626,0.104,14 Day
+SE Winds Quadratic * Distance,1.16E-01,4.14E-01,0.281,0.778,14 Day
+NE Winds * Distance,-4.61E-01,4.97E-01,-0.927,0.354,14 Day
+SE Winds * NE Winds * Distance,-2.82E+01,2.79E+01,-1.013,0.311,14 Day
+NE Winds Quadratic * Distance,3.18E-01,4.78E-01,0.665,0.506,14 Day
