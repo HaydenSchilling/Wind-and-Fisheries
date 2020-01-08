@@ -7,7 +7,7 @@ library(merTools)
 library(MuMIn)
 
 # Load Data
-mydata <- read.csv("Full_Data_Modelling.csv", header = T) # Full_Data_ModellingV3_by_estuary.csv
+mydata <- read.csv("../Full_Data_Modelling.csv", header = T) # Full_Data_ModellingV3_by_estuary.csv
 # mydata2 <-  read.csv("Full_Data_Modelling.csv", header = T)
 # 
 # cor.test(mydata$X45_degree_winds, mydata2$X135_degree_winds)
@@ -184,8 +184,9 @@ bream <- subset(my.df, Species == "Bream")
 
 m1 <- lmer(CPUE.standardised ~ poly(cbind(X135_degree_winds.standardised, X45_degree_winds.standardised), degree = 2) + 
              Estuary_Type * Drought_Months + (1|Estuary), data = bream)
-
+r.squaredGLMM(m1)
 AIC(m1) # 197.0064
+
 
 plot(m1)
 summary(m1)
@@ -393,7 +394,7 @@ m2 <- lmer(CPUE.standardised~  poly(cbind(X135_degree_winds.standardised, X45_de
              Estuary_Type * Drought_Months +
              (1|Estuary), data = mullet)
 AIC(m2) # 223.645
-
+r.squaredGLMM(m2)
 
 plot(m2)
 
@@ -587,7 +588,7 @@ m3 <- lmer(CPUE.standardised~  poly(cbind(X135_degree_winds.standardised, X45_de
              Estuary_Type * Drought_Months +
              (1|Estuary), data = flathead)
 AIC(m3) # 221.5996
-
+r.squaredGLMM(m3)
 plot(m3)
 
 simulationOutput <- simulateResiduals(fittedModel = m3, n = 250)
@@ -784,6 +785,7 @@ m4 <- lmer(CPUE.standardised~ poly(cbind(X135_degree_winds.standardised, X45_deg
              Estuary_Type * Drought_Months +
              (1|Estuary), data = luderick)
 AIC(m4) # 228.734
+r.squaredGLMM(m4)
 
 plot(m4)
 
@@ -985,6 +987,7 @@ m5 <- lmer(CPUE.standardised ~ poly(cbind(X135_degree_winds.standardised, X45_de
              Estuary_Type * Drought_Months +
              (1|Estuary), data = whiting)
 AIC(m5) # 217.227
+r.squaredGLMM(m5)
 
 plot(m5)
 
