@@ -187,9 +187,16 @@ m1 <- lmer(CPUE.standardised ~ poly(cbind(X135_degree_winds.standardised, X45_de
 r.squaredGLMM(m1)
 AIC(m1) # 197.0064
 
-write.csv(bream, "example_data.csv")
+# Alternate model structure gives the same results
+m1 <- lmer(CPUE.standardised ~ poly(X135_degree_winds.standardised, degree = 2) + 
+             poly(X45_degree_winds.standardised, degree = 2) +
+             X135_degree_winds.standardised:X45_degree_winds.standardised+
+             Estuary_Type * Drought_Months + (1|Estuary), data = bream)
 
-plot_model(m1)
+#write.csv(bream, "example_data.csv")
+
+# library(ggeffects)
+# ggpredict(m1, terms = "X135_degree_winds.standardised")
 
 plot(m1)
 summary(m1)
@@ -1362,7 +1369,7 @@ p <- ggplot(heat_data, aes(x = Southeast.Winds,y = Northeast.Winds)) + geom_tile
   #scale_fill_gradient(low = "blue", high = "red") + 
   theme_classic() + scale_fill_viridis(name = "Predicted \nStandardised \n CPUE", option = "magma") + # or geom_raster()
   scale_x_continuous(expand = c(0,0)) + 
-  scale_y_continuous(expand = c(0,0)) + geom_contour(col="white", aes(z = Abundance)) +
+  scale_y_continuous(expand = c(0,0)) + geom_contour(col="white", aes(z = Abundance), binwidth = 0.2) +
   xlab("Standardised Southeast Winds") + ylab("Standardised Northeast Winds") +
   theme(axis.title.x = element_text(face="bold", colour="black", size = 18),
         axis.text.x  = element_text(colour="black", size = 14), 
@@ -1379,8 +1386,8 @@ p <- ggplot(heat_data, aes(x = Southeast.Winds,y = Northeast.Winds)) + geom_tile
 
 p
 
-ggsave("plots/All Species NE_SE wind interaction predictions.pdf", height = 14.8, width = 21, units = "cm")
-ggsave("plots/All Species NE_SE wind interaction predictions.png", height = 14.8, width = 21, units = "cm", dpi = 600)
+ggsave("../plots/All Species NE_SE wind interaction predictions.pdf", height = 14.8, width = 21, units = "cm")
+ggsave("../plots/All Species NE_SE wind interaction predictions.png", height = 14.8, width = 21, units = "cm", dpi = 600)
 
 
 p <- ggplot(heat_data, aes(x = Southeast.Winds,y = Northeast.Winds, z = Abundance)) + geom_tile(aes(fill = Abundance)) + stat_contour() +

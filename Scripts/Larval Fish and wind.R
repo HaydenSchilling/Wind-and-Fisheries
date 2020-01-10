@@ -54,10 +54,10 @@ head(fish_data)
 
 # For each sample, find the wind two weeks prior, sum displacement and assign to wind column
 for (i in 1:nrow(fish_data)){
-  dat2 <- filter(wind_data, Date <= fish_data$Date[i] & Date >= (fish_data$Date[i])-28)
+  dat2 <- filter(wind_data, Date <= fish_data$Date[i] & Date >= (fish_data$Date[i])-3)
   wind_tot <- sum(dat2$displacement)
   fish_data$NE_Winds[i] <- wind_tot
-  dat3 <- filter(wind_data_SE, Date <= fish_data$Date[i] & Date >= (fish_data$Date[i])-28)
+  dat3 <- filter(wind_data_SE, Date <= fish_data$Date[i] & Date >= (fish_data$Date[i])-3)
   wind_tot_SE <- sum(dat3$displacement)
   fish_data$SE_Winds[i] <- wind_tot_SE
 }
@@ -299,6 +299,24 @@ fit3 <- glmmTMB(Coastal_Normalised_Abund ~
 simulationOutput <- simulateResiduals(fittedModel = fit3, n = 250)
 plot(simulationOutput)
 
+# equivalent code but allows marginal effects to be calculated
+fit4 <- glmmTMB(Coastal_Normalised_Abund ~
+                  poly(NE_Winds.standardised, degree = 2)*dists_km+
+                  poly(SE_Winds.standardised, degree = 2)*dists_km+
+                  SE_Winds.standardised:NE_Winds.standardised*
+                  dists_km + (1|Project_ID), family=tweedie(), data = fish_data)
+
+simulationOutput <- simulateResiduals(fittedModel = fit4, n = 250)
+plot(simulationOutput)
+
+ggpredict(fit4, terms = "dists_km")
+
+# marginal effects plot for distance from coast
+library(ggplot2)
+mydf <- ggpredict(fit4, terms = "dists_km")
+ggplot(mydf, aes(x, predicted)) +
+  geom_line() +
+  geom_ribbon(aes(ymin = conf.low, ymax = conf.high), alpha = .1)
 
 ### larval plot
 
