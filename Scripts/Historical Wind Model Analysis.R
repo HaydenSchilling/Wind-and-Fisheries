@@ -9,7 +9,7 @@ library(splines)
 library(dplyr)
 
 
-mydata <- read.csv("Wind DataV3/135 degree/Sydney_Daily Modelled Wind Data Final 135 degree.csv", header = T)
+mydata <- read.csv("../Wind Data/135 degree/Sydney_Daily Modelled Wind Data Final 135 degree.csv", header = T)
 #soi_data <- read.csv("SOI data long.csv", header = T)
 
 head(mydata)
@@ -87,12 +87,12 @@ p1 <- ggplot(dat2, aes(x = Year, y = Annual_displacement)) + geom_point() + geom
   )
 p1
 
-ggsave("plots/Historical SE Wind ChangeV3.pdf", height = 14.8, width = 21, units = "cm")
-ggsave("plots/Historical SE Wind ChangeV3.png", height = 14.8, width = 21, units = "cm", dpi = 600)
+#ggsave("../plots/Historical SE Wind ChangeV3.pdf", height = 14.8, width = 21, units = "cm")
+#ggsave("../plots/Historical SE Wind ChangeV3.png", height = 14.8, width = 21, units = "cm", dpi = 600)
 
 
 ### Now do NE Winds
-NEdata <- read.csv("Wind DataV3/45 degree/Sydney_Daily Modelled Wind Data Final 45 degree.csv", header = T)
+NEdata <- read.csv("../Wind Data/45 degree/Sydney_Daily Modelled Wind Data Final 45 degree.csv", header = T)
 
 
 NEdata$Date <- paste0(NEdata$Year,"-",NEdata$Month,"-",NEdata$Day)
@@ -162,7 +162,7 @@ p2
 
 ## Try to remove autocorrelation
 
-NEdata <- read.csv("Wind DataV3/45 degree/Sydney_Daily Modelled Wind Data Final 45 degree.csv", header = T)
+NEdata <- read.csv("../Wind Data/45 degree/Sydney_Daily Modelled Wind Data Final 45 degree.csv", header = T)
 
 
 NEdata$Date <- paste0(NEdata$Year,"-",NEdata$Month,"-",NEdata$Day)
@@ -311,6 +311,7 @@ full_data <- bind_rows(list("b) SE Winds" = SE,"a) NE Winds" = NE), .id ="Direct
 
 p3 <- ggplot(full_data, aes(x = Year, y = Annual_displacement)) + geom_point() + geom_smooth(method = "lm") +
   theme_classic() + ylab("Annual Displacement") + xlab("Year") + 
+  scale_y_continuous(limits = c(-20000, 20000), breaks = seq(-20000, 20000, by = 10000)) +
   facet_wrap(~Direction, ncol = 2) +
   theme(axis.title.x = element_text(face="bold", colour="black", size = 18),
         axis.text.x  = element_text(colour="black", size = 14), 
@@ -327,8 +328,8 @@ p3 <- ggplot(full_data, aes(x = Year, y = Annual_displacement)) + geom_point() +
   )
 p3
 
-ggsave("plots/Historical Wind Change3V3.pdf", height = 14.8, width = 21, units = "cm")
-ggsave("plots/Historical Wind Change3V3.png", height = 14.8, width = 21, units = "cm", dpi = 600)
+ggsave("../plots/Historical Wind Change.pdf", height = 14.8, width = 21, units = "cm")
+ggsave("../plots/Historical Wind Change.png", height = 14.8, width = 21, units = "cm", dpi = 600)
 
 
 #mydata$Time <- ymd_hms(mydata$Time, tz="GMT")

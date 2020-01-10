@@ -10,12 +10,12 @@ library(glmmTMB)
 library(DHARMa)
 library(car)
 library(effects)
-
+library(viridis)
 
 
 
 # Load Fish Data
-fish_data <- read.csv("allNIMO_dist.csv", header = T)
+fish_data <- read.csv("../allNIMO_dist.csv", header = T)
 str(fish_data)
 
 # Restrict to NSW and on the continental shelf
@@ -25,10 +25,10 @@ summary(fish_data$Bathym_m)
 hist(fish_data$Bathym_m)
 
 # Load Wind Data
-wind_data <- read.csv("Wind Data/45 degree/Sydney_Daily Modelled Wind Data Final 45 degree.csv", header = T)
+wind_data <- read.csv("../Wind Data/45 degree/Sydney_Daily Modelled Wind Data Final 45 degree.csv", header = T)
 str(wind_data)
 
-wind_data_SE <- read.csv("Wind Data/135 degree/Sydney_Daily Modelled Wind Data Final 135 degree.csv", header = T)
+wind_data_SE <- read.csv("../Wind Data/135 degree/Sydney_Daily Modelled Wind Data Final 135 degree.csv", header = T)
 str(wind_data_SE)
 
 # Recognise Dates
@@ -783,8 +783,8 @@ p
 ggsave("plots/Larvae heatmap 28 day.pdf", width = 21, height = 14.8, units = "cm")
 ggsave("plots/Larvae heatmap 28 day.png", width = 21, height = 14.8, units = "cm", dpi = 600)
 
-heat3 <- read.csv("heatmap data with error larval 3 day lag.csv", header = T)
-heat14 <- read.csv("heatmap data with error larval 14 day lag.csv", header = T)
+heat3 <- read.csv("../heatmap data with error larval 3 day lag.csv", header = T)
+heat14 <- read.csv("../heatmap data with error larval 14 day lag.csv", header = T)
 #heat28 <- read.csv("heatmap data larval 28 day lag.csv", header = T)
 
 heat3$Lag <- "3"
@@ -814,7 +814,7 @@ p <- ggplot(heat_full, aes(x = Southeast.Winds,y = Northeast.Winds)) + geom_tile
   theme_classic() + 
   scale_fill_viridis(name = "Predicted \nNormalised \nAbundance",  oob = squish, option = "magma") + # ,limits = c(0.001, 0.1) or geom_raster() ,limits=c(0,0.055),
   scale_x_continuous(expand = c(0,0)) + 
-  scale_y_continuous(expand = c(0,0)) +
+  scale_y_continuous(expand = c(0,0)) + geom_contour(col="white", aes(z = Abundance), binwidth = 0.002) +
   xlab("Standardised Southeast Winds") + ylab("Standardised Northeast Winds") +
   theme(axis.title.x = element_text(face="bold", colour="black", size = 18),
         axis.text.x  = element_text(colour="black", size = 14), 
@@ -832,8 +832,8 @@ p <- ggplot(heat_full, aes(x = Southeast.Winds,y = Northeast.Winds)) + geom_tile
 )
 p
 
-ggsave("plots/Larvae combined heatmap.pdf", width = 21, height = 14.8, units = "cm")
-ggsave("plots/Larvae combined heatmap.png", width = 21, height = 14.8, units = "cm", dpi = 600)
+ggsave("../plots/Larvae combined heatmap.pdf", width = 21, height = 14.8, units = "cm")
+ggsave("../plots/Larvae combined heatmap.png", width = 21, height = 14.8, units = "cm", dpi = 600)
 
 
 # Heatmap making error (Run from here)

@@ -187,6 +187,9 @@ m1 <- lmer(CPUE.standardised ~ poly(cbind(X135_degree_winds.standardised, X45_de
 r.squaredGLMM(m1)
 AIC(m1) # 197.0064
 
+write.csv(bream, "example_data.csv")
+
+plot_model(m1)
 
 plot(m1)
 summary(m1)
