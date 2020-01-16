@@ -170,7 +170,9 @@ my.df <-  my.df %>% mutate(X45_degree_winds.standardised = as.numeric(scale(X45_
 # 
 # # plot(allEffects(m6))
 
-
+pI <- ggplot(my.df, aes(x = X135_degree_winds.standardised,y = X45_degree_winds.standardised, size = CPUE.standardised)) + geom_point(alpha = 0.1) +
+  theme_classic() + labs(title = "CPUE by lagged Winds")
+pI
 
 ### Try random effect of estuary
 
@@ -182,6 +184,10 @@ bream <- subset(my.df, Species == "Bream")
 #           Estuary_Type + Drought_Months + (1|Estuary), data = bream)
 #AIC(m1) #215.42
 
+pI <- ggplot(bream, aes(x = X135_degree_winds.standardised,y = X45_degree_winds.standardised, size = CPUE.standardised)) + geom_point(alpha = 0.1) +
+  theme_classic() + labs(title = "CPUE by lagged Winds")
+pI
+
 m1 <- lmer(CPUE.standardised ~ poly(cbind(X135_degree_winds.standardised, X45_degree_winds.standardised), degree = 2) + 
              Estuary_Type * Drought_Months + (1|Estuary), data = bream)
 r.squaredGLMM(m1)
@@ -192,15 +198,23 @@ m1 <- lmer(CPUE.standardised ~ poly(X135_degree_winds.standardised, degree = 2) 
              poly(X45_degree_winds.standardised, degree = 2) +
              X135_degree_winds.standardised:X45_degree_winds.standardised+
              Estuary_Type * Drought_Months + (1|Estuary), data = bream)
-
+r.squaredGLMM(m1)
+AIC(m1) # 197.0064
 #write.csv(bream, "example_data.csv")
 
+# Alternate model structure gives the same results
+m1x <- lmer(CPUE.standardised ~ poly(X135_degree_winds.standardised, degree = 2) * 
+             poly(X45_degree_winds.standardised, degree = 2) +
+             Estuary_Type * Drought_Months + (1|Estuary), data = bream)
+
+r.squaredGLMM(m1x)
+AIC(m1x)
 # library(ggeffects)
 # ggpredict(m1, terms = "X135_degree_winds.standardised")
 
-plot(m1)
-summary(m1)
-anova(m1) # bream interaction with winds
+plot(m1x)
+summary(m1x)
+anova(m1x) # bream interaction with winds
 
 plot(allEffects(m1))
 
@@ -399,6 +413,11 @@ mullet <- subset(my.df, Species == "Mullet")
 #           Estuary_Type * Drought_Months +
 #           (1|Estuary), data = mullet)
 #AIC(m2) # 241.189
+
+pI <- ggplot(mullet, aes(x = X135_degree_winds.standardised,y = X45_degree_winds.standardised, size = CPUE.standardised, col = as.factor(Year))) + 
+  geom_jitter(alpha = 0.3, height = 0.1, width = 0.1) +
+  theme_classic() + labs(title = "CPUE by lagged Winds")
+pI
 
 m2 <- lmer(CPUE.standardised~  poly(cbind(X135_degree_winds.standardised, X45_degree_winds.standardised), degree = 2) + 
              Estuary_Type * Drought_Months +
@@ -1198,7 +1217,7 @@ ggsave("plots/Whiting CPUE and NE_SE wind interaction predictions.png", height =
 # plot(allEffects(m6)) # No effects for total CPUE
 
 # Test Single model with Species as a random effect
- m7 <- lmer(CPUE.standardised~  poly(cbind(X135_degree_winds.standardised, X45_degree_winds.standardised), degree = 2) +
+m7 <- lmer(CPUE.standardised~  poly(cbind(X135_degree_winds.standardised, X45_degree_winds.standardised), degree = 2) +
             Estuary_Type *Drought_Months +
              (Species|Estuary), data = my.df) # AIC 1131.193
 AIC(m7) # 1095.78
@@ -1206,6 +1225,33 @@ AIC(m7) # 1095.78
 
 r.squaredGLMM(m7) # 0.14
  
+
+m7a <- lmer(CPUE.standardised~  poly(X135_degree_winds.standardised, degree = 2) + 
+              poly(X45_degree_winds.standardised, degree = 2) +
+             X135_degree_winds.standardised:X45_degree_winds.standardised+
+             Estuary_Type *Drought_Months +
+             (Species|Estuary), data = my.df) # AIC 1131.193
+AIC(m7a) # 1095.78
+
+m7x <- lmer(CPUE.standardised~  poly(X135_degree_winds.standardised, degree = 2)* + 
+              poly(X45_degree_winds.standardised, degree = 2) +
+              Estuary_Type *Drought_Months +
+              (Species|Estuary), data = my.df) # AIC 1131.193
+AIC(m7x) # 1095.78
+
+r.squaredGLMM(m7a) # 0.14
+###
+m1 <- lmer(CPUE.standardised ~ poly(cbind(X135_degree_winds.standardised, X45_degree_winds.standardised), degree = 2) + 
+             Estuary_Type * Drought_Months + (1|Estuary), data = bream)
+r.squaredGLMM(m1)
+AIC(m1) # 197.0064
+
+# Alternate model structure gives the same results
+m1 <- lmer(CPUE.standardised ~ poly(X135_degree_winds.standardised, degree = 2) + 
+             poly(X45_degree_winds.standardised, degree = 2) +
+             X135_degree_winds.standardised:X45_degree_winds.standardised+
+             Estuary_Type * Drought_Months + (1|Estuary), data = bream)
+
 #m7 <- lmer(CPUE.standardised~  X135_degree_winds.standardised *X45_degree_winds.standardised+
 #             Estuary_Type *Drought_Months +
 #             (Species|Estuary), data = my.df) # AIC 1129.727
@@ -1353,7 +1399,7 @@ for (i in 1:length(nums)){
                            #"Current_Wind" = mean(bream$Current_Wind),
                            "Drought_Months" = 4,
                            "Species" = "Bream")
-    PredX <- predict(m7, newdata = pred_map, type = "response", se.fit = F)
+    PredX <- predict(m7a, newdata = pred_map, type = "response", se.fit = F)
     heat_data$Southeast.Winds[Nn] <- pred_map$X135_degree_winds.standardised[1]
     heat_data$Northeast.Winds[Nn] <- pred_map$X45_degree_winds.standardised[1]
     heat_data$Abundance[Nn] <- PredX

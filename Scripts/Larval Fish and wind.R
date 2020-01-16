@@ -11,7 +11,7 @@ library(DHARMa)
 library(car)
 library(effects)
 library(viridis)
-
+library(ggeffects)
 
 
 # Load Fish Data
@@ -54,10 +54,10 @@ head(fish_data)
 
 # For each sample, find the wind two weeks prior, sum displacement and assign to wind column
 for (i in 1:nrow(fish_data)){
-  dat2 <- filter(wind_data, Date <= fish_data$Date[i] & Date >= (fish_data$Date[i])-3)
+  dat2 <- filter(wind_data, Date <= fish_data$Date[i] & Date >= (fish_data$Date[i])-14)
   wind_tot <- sum(dat2$displacement)
   fish_data$NE_Winds[i] <- wind_tot
-  dat3 <- filter(wind_data_SE, Date <= fish_data$Date[i] & Date >= (fish_data$Date[i])-3)
+  dat3 <- filter(wind_data_SE, Date <= fish_data$Date[i] & Date >= (fish_data$Date[i])-14)
   wind_tot_SE <- sum(dat3$displacement)
   fish_data$SE_Winds[i] <- wind_tot_SE
 }
@@ -306,14 +306,19 @@ fit4 <- glmmTMB(Coastal_Normalised_Abund ~
                   SE_Winds.standardised:NE_Winds.standardised*
                   dists_km + (1|Project_ID), family=tweedie(), data = fish_data)
 
+fit4 <- glmmTMB(Coastal_Normalised_Abund ~
+                  poly(NE_Winds.standardised, degree = 2)*dists_km*
+                  poly(SE_Winds.standardised, degree = 2) +
+                  (1|Project_ID), family=tweedie(), data = fish_data)
+
 simulationOutput <- simulateResiduals(fittedModel = fit4, n = 250)
 plot(simulationOutput)
 
-ggpredict(fit4, terms = "dists_km")
+ggpredict(fit4, terms = "NE_Winds.standardised [all]")
 
 # marginal effects plot for distance from coast
 library(ggplot2)
-mydf <- ggpredict(fit4, terms = "dists_km")
+mydf <- ggpredict(fit4, terms = "NE_Winds.standardised")
 ggplot(mydf, aes(x, predicted)) +
   geom_line() +
   geom_ribbon(aes(ymin = conf.low, ymax = conf.high), alpha = .1)
@@ -321,7 +326,7 @@ ggplot(mydf, aes(x, predicted)) +
 ### larval plot
 
 pI <- ggplot(fish_data, aes(x = SE_Winds.standardised,y = NE_Winds.standardised, size = Coastal_Normalised_Abund)) + geom_point(alpha = 0.5) +
-  theme_classic() + labs(title = "Winds 3 days prior")
+  theme_classic() + labs(title = "Winds 14 days prior")
 pI
 
 #ggsave("Plots/Winds Larval dot size 3 days.png", width = 21, height = 14.8, units = "cm", dpi = 600)
@@ -772,7 +777,7 @@ for (i in 1:length(nums)){
                           "SE_Winds.standardised" = nums[j],
                           "dists_km" = 5,
                           "Project_ID" = "P1")
-    PredX <- predict(fit3, newdata = pred_map, type = "response", se.fit = F)
+    PredX <- predict(fit4, newdata = pred_map, type = "response", se.fit = F)
     heat_data$Southeast.Winds[Nn] <- pred_map$SE_Winds.standardised[1]
     heat_data$Northeast.Winds[Nn] <- pred_map$NE_Winds.standardised[1]
     heat_data$Abundance[Nn] <- PredX#$fit
@@ -798,8 +803,8 @@ p <- ggplot(heat_data, aes(x = Southeast.Winds,y = Northeast.Winds)) + geom_tile
   
 p
 
-ggsave("plots/Larvae heatmap 28 day.pdf", width = 21, height = 14.8, units = "cm")
-ggsave("plots/Larvae heatmap 28 day.png", width = 21, height = 14.8, units = "cm", dpi = 600)
+ggsave("../plots/Larvae heatmap 14 day tester.pdf", width = 21, height = 14.8, units = "cm")
+ggsave("../plots/Larvae heatmap 14 day tester.png", width = 21, height = 14.8, units = "cm", dpi = 600)
 
 heat3 <- read.csv("../heatmap data with error larval 3 day lag.csv", header = T)
 heat14 <- read.csv("../heatmap data with error larval 14 day lag.csv", header = T)
