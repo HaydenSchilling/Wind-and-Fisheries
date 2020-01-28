@@ -54,10 +54,10 @@ head(fish_data)
 
 # For each sample, find the wind two weeks prior, sum displacement and assign to wind column
 for (i in 1:nrow(fish_data)){
-  dat2 <- filter(wind_data, Date <= fish_data$Date[i] & Date >= (fish_data$Date[i])-14)
+  dat2 <- filter(wind_data, Date <= fish_data$Date[i] & Date >= (fish_data$Date[i])-3)
   wind_tot <- sum(dat2$displacement)
   fish_data$NE_Winds[i] <- wind_tot
-  dat3 <- filter(wind_data_SE, Date <= fish_data$Date[i] & Date >= (fish_data$Date[i])-14)
+  dat3 <- filter(wind_data_SE, Date <= fish_data$Date[i] & Date >= (fish_data$Date[i])-3)
   wind_tot_SE <- sum(dat3$displacement)
   fish_data$SE_Winds[i] <- wind_tot_SE
 }
@@ -318,7 +318,7 @@ ggpredict(fit4, terms = "NE_Winds.standardised [all]")
 
 # marginal effects plot for distance from coast
 library(ggplot2)
-mydf <- ggpredict(fit4, terms = "NE_Winds.standardised")
+mydf <- ggpredict(fit4, terms = "SE_Winds.standardised [all]")
 ggplot(mydf, aes(x, predicted)) +
   geom_line() +
   geom_ribbon(aes(ymin = conf.low, ymax = conf.high), alpha = .1)
@@ -326,7 +326,7 @@ ggplot(mydf, aes(x, predicted)) +
 ### larval plot
 
 pI <- ggplot(fish_data, aes(x = SE_Winds.standardised,y = NE_Winds.standardised, size = Coastal_Normalised_Abund)) + geom_point(alpha = 0.5) +
-  theme_classic() + labs(title = "Winds 14 days prior")
+  theme_classic() + labs(title = "Winds 3 days prior")
 pI
 
 #ggsave("Plots/Winds Larval dot size 3 days.png", width = 21, height = 14.8, units = "cm", dpi = 600)

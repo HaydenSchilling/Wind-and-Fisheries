@@ -1226,7 +1226,7 @@ AIC(m7) # 1095.78
 r.squaredGLMM(m7) # 0.14
  
 
-m7a <- lmer(CPUE.standardised~  poly(X135_degree_winds.standardised, degree = 2) + 
+m7 <- lmer(CPUE.standardised~  poly(X135_degree_winds.standardised, degree = 2) + 
               poly(X45_degree_winds.standardised, degree = 2) +
              X135_degree_winds.standardised:X45_degree_winds.standardised+
              Estuary_Type *Drought_Months +
@@ -1271,7 +1271,7 @@ coef(m7)
 
 
 plot(allEffects(m7))
-plot(Effect(c("Estuary_Type"), m7))
+plot(Effect(c("X135_degree_winds.standardised"), m7))
 
 plot(m7)
 
@@ -1295,7 +1295,7 @@ plotFEsim(feEx) +
 str(my.df)
 pred_dat <- data.frame("X135_degree_winds.standardised" = seq(from = -2,
                                                               to =2, by = 0.05),
-                       "X45_degree_winds.standardised" = 1,
+                       "X45_degree_winds.standardised" = 0,
                        "Estuary" = "Hawkesbury River",
                        "Estuary_Type" = "Barrier Lagoon",
                        #"Current_Wind" = mean(bream$Current_Wind),
@@ -1303,7 +1303,7 @@ pred_dat <- data.frame("X135_degree_winds.standardised" = seq(from = -2,
                        "Species" == "Bream")
 
 library(bootpredictlme4)
-Pred_Total <- predict(m7, newdata=pred_dat, re.form=NA, se.fit=F, nsim=100)
+Pred_Total <- predict(m7, newdata=pred_dat, re.form=NA, se.fit=T, nsim=100)
 
 
 # Pred_Total <- predict(m7, newdata=my.df, re.form=NA, se.fit=TRUE, nsim=100)
