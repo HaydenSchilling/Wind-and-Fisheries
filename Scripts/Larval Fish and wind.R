@@ -20,7 +20,7 @@ str(fish_data)
 
 # Restrict to NSW and on the continental shelf
 fish_data <- filter(fish_data, Latitude <= -30 & Latitude >= -36 & Longitude > 140)
-fish_data <- filter(fish_data, Bathym_m <= 200)
+fish_data <- filter(fish_data, Bathy >= -1000)
 summary(fish_data$Bathym_m)
 hist(fish_data$Bathym_m)
 
@@ -33,7 +33,9 @@ str(wind_data_SE)
 
 # Recognise Dates
 fish_data$Date <- as.Date(as.character(fish_data$Date), format = "%d/%m/%Y")
-fish_data <- filter(fish_data, Date < "2015-12-31")
+range(fish_data$Date)
+plot(fish_data$Date)
+fish_data <- filter(fish_data, Date > "1990-01-01") # to match wind model BARRA # loses ~100 points from 1980s
 
 # Make Date Column and recognise as dates
 wind_data <- unite(wind_data, col = "Date", c("Day","Month","Year"), sep="/")
