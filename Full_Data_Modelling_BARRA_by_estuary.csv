@@ -1,0 +1,481 @@
+Year,CPUE,Species,Estuary,Estuary_Type,45_degree_winds,135_degree_winds,Drought_declared_1m,Drought_declared_6m,Drought_Months,Modal_Age,Spawning_Period
+1997,5.597157168,Bream,Camden River,Barrier River,9994.508521,18851.29673,Drought,No Drought,2,7,Oct-Feb
+1998,6.25404711,Bream,Camden River,Barrier River,19603.42146,10395.82627,No Drought,No Drought,0,7,Oct-Feb
+1999,4.68974359,Bream,Camden River,Barrier River,16838.52541,47951.5936,No Drought,No Drought,0,7,Oct-Feb
+2000,3.711016394,Bream,Camden River,Barrier River,15562.65941,18534.24737,No Drought,No Drought,0,7,Oct-Feb
+2001,8.869224316,Bream,Camden River,Barrier River,24531.57742,25886.31199,No Drought,No Drought,0,7,Oct-Feb
+2002,12.2446134,Bream,Camden River,Barrier River,17726.59708,33310.35301,Drought,Drought,8,7,Oct-Feb
+2003,9.574212755,Bream,Camden River,Barrier River,4456.424169,34150.15722,Drought,No Drought,3,7,Oct-Feb
+2004,18.23563683,Bream,Camden River,Barrier River,11329.05342,29427.9804,Drought,No Drought,4,7,Oct-Feb
+2005,23.4765118,Bream,Camden River,Barrier River,26027.00644,2216.462622,Drought,No Drought,4,7,Oct-Feb
+2006,26.56351562,Bream,Camden River,Barrier River,7904.249611,46961.14488,Drought,No Drought,9,7,Oct-Feb
+1997,47.25135191,Flathead,Camden River,Barrier River,20385.28817,37802.90221,Drought,No Drought,2,3,Dec-Mar
+1998,85.69940314,Flathead,Camden River,Barrier River,2752.381326,57125.5298,No Drought,No Drought,0,3,Dec-Mar
+1999,62.95076694,Flathead,Camden River,Barrier River,-1108.827932,40455.23252,No Drought,No Drought,0,3,Dec-Mar
+2000,58.71175306,Flathead,Camden River,Barrier River,11481.02481,27829.89433,No Drought,No Drought,0,3,Dec-Mar
+2001,59.16029123,Flathead,Camden River,Barrier River,18498.14144,12783.45717,No Drought,No Drought,0,3,Dec-Mar
+2002,67.89609187,Flathead,Camden River,Barrier River,10070.77741,44170.98072,Drought,Drought,8,3,Dec-Mar
+2003,55.49858463,Flathead,Camden River,Barrier River,16540.17973,17857.88877,Drought,No Drought,3,3,Dec-Mar
+2004,52.73840227,Flathead,Camden River,Barrier River,18046.16974,37646.88334,Drought,No Drought,4,3,Dec-Mar
+2005,52.84915453,Flathead,Camden River,Barrier River,9172.892514,42917.5986,Drought,No Drought,4,3,Dec-Mar
+2006,47.77321092,Flathead,Camden River,Barrier River,12300.80163,44423.72862,Drought,No Drought,9,3,Dec-Mar
+1997,88.85401596,Luderick,Camden River,Barrier River,17054.6137,8609.751967,Drought,No Drought,2,4,Dec-Feb
+1998,151.5477548,Luderick,Camden River,Barrier River,21210.78937,15034.68611,No Drought,No Drought,0,4,Dec-Feb
+1999,106.7530811,Luderick,Camden River,Barrier River,7931.939205,37831.71186,No Drought,No Drought,0,4,Dec-Feb
+2000,103.4438131,Luderick,Camden River,Barrier River,-663.9011426,25609.87107,No Drought,No Drought,0,4,Dec-Feb
+2001,158.2850122,Luderick,Camden River,Barrier River,9036.099172,22582.28025,No Drought,No Drought,0,4,Dec-Feb
+2002,124.6567836,Luderick,Camden River,Barrier River,18865.84474,5450.933088,Drought,Drought,8,4,Dec-Feb
+2003,102.2868599,Luderick,Camden River,Barrier River,9835.30449,37737.37887,Drought,No Drought,3,4,Dec-Feb
+2004,71.71628485,Luderick,Camden River,Barrier River,12122.35299,18401.46332,Drought,No Drought,4,4,Dec-Feb
+2005,60.7684407,Luderick,Camden River,Barrier River,17659.3141,15503.47775,Drought,No Drought,4,4,Dec-Feb
+2006,61.68609928,Luderick,Camden River,Barrier River,9671.903427,24261.86957,Drought,No Drought,9,4,Dec-Feb
+1997,10.6851209,Whiting,Camden River,Barrier River,9235.252969,38148.77076,Drought,No Drought,2,5,Dec-Feb
+1998,14.63876216,Whiting,Camden River,Barrier River,17054.6137,8609.751967,No Drought,No Drought,0,5,Dec-Feb
+1999,12.03970416,Whiting,Camden River,Barrier River,21210.78937,15034.68611,No Drought,No Drought,0,5,Dec-Feb
+2000,11.95319777,Whiting,Camden River,Barrier River,7931.939205,37831.71186,No Drought,No Drought,0,5,Dec-Feb
+2001,17.46809588,Whiting,Camden River,Barrier River,-663.9011426,25609.87107,No Drought,No Drought,0,5,Dec-Feb
+2002,20.61490831,Whiting,Camden River,Barrier River,9036.099172,22582.28025,Drought,Drought,8,5,Dec-Feb
+2003,19.78833347,Whiting,Camden River,Barrier River,18865.84474,5450.933088,Drought,No Drought,3,5,Dec-Feb
+2004,19.07381474,Whiting,Camden River,Barrier River,9835.30449,37737.37887,Drought,No Drought,4,5,Dec-Feb
+2005,14.04145523,Whiting,Camden River,Barrier River,12122.35299,18401.46332,Drought,No Drought,4,5,Dec-Feb
+2006,23.8425051,Whiting,Camden River,Barrier River,17659.3141,15503.47775,Drought,No Drought,9,5,Dec-Feb
+1997,388.7941404,Mullet,Camden River,Barrier River,-24875.98545,-29119.53194,Drought,No Drought,2,2,Apr-Jul
+1998,481.9822236,Mullet,Camden River,Barrier River,-16413.80101,-10382.58605,No Drought,No Drought,0,2,Apr-Jul
+1999,540.634036,Mullet,Camden River,Barrier River,-33384.31497,-6814.866762,No Drought,No Drought,0,2,Apr-Jul
+2000,437.3503749,Mullet,Camden River,Barrier River,-30433.6008,-34813.22787,No Drought,No Drought,0,2,Apr-Jul
+2001,477.4740783,Mullet,Camden River,Barrier River,-31017.72332,17907.97633,No Drought,No Drought,0,2,Apr-Jul
+2002,479.0233986,Mullet,Camden River,Barrier River,-27165.19133,-17549.08711,Drought,Drought,8,2,Apr-Jul
+2003,476.1757521,Mullet,Camden River,Barrier River,-31068.8132,-30732.28058,Drought,No Drought,3,2,Apr-Jul
+2004,386.8828894,Mullet,Camden River,Barrier River,-28570.29665,-26175.56357,Drought,No Drought,4,2,Apr-Jul
+2005,375.2289928,Mullet,Camden River,Barrier River,-23841.1672,-9264.565373,Drought,No Drought,4,2,Apr-Jul
+2006,321.3406301,Mullet,Camden River,Barrier River,-21319.67675,-32855.43162,Drought,No Drought,9,2,Apr-Jul
+1997,541.1817863,Total,Camden River,Barrier River,-2558.570075,22547.25619,Drought,No Drought,2,4,Fin_Year
+1998,740.1221908,Total,Camden River,Barrier River,-1653.554359,9802.116433,No Drought,No Drought,0,4,Fin_Year
+1999,727.0673319,Total,Camden River,Barrier River,-23484.19354,19122.6783,No Drought,No Drought,0,4,Fin_Year
+2000,615.1701552,Total,Camden River,Barrier River,-17071.67866,13617.35244,No Drought,No Drought,0,4,Fin_Year
+2001,721.2567019,Total,Camden River,Barrier River,-19888.54283,7374.583498,No Drought,No Drought,0,4,Fin_Year
+2002,704.4357958,Total,Camden River,Barrier River,-15915.82106,-6214.656141,Drought,Drought,8,4,Fin_Year
+2003,663.3237428,Total,Camden River,Barrier River,-21962.67228,55385.36193,Drought,No Drought,3,4,Fin_Year
+2004,548.6470281,Total,Camden River,Barrier River,-1722.59379,-14334.61539,Drought,No Drought,4,4,Fin_Year
+2005,526.3645551,Total,Camden River,Barrier River,-18031.62491,-27038.67896,Drought,No Drought,4,4,Fin_Year
+2006,481.205961,Total,Camden River,Barrier River,-10073.17026,9457.107014,Drought,No Drought,9,4,Fin_Year
+1997,2.501276723,Bream,Clarence River,Barrier River,12355.41397,37545.88728,No Drought,No Drought,0,7,Oct-Feb
+1998,3.14383288,Bream,Clarence River,Barrier River,28839.78812,39931.96219,No Drought,No Drought,0,7,Oct-Feb
+1999,2.743074855,Bream,Clarence River,Barrier River,21515.91903,67997.20216,No Drought,No Drought,0,7,Oct-Feb
+2000,2.602287779,Bream,Clarence River,Barrier River,23829.98254,46110.09556,Drought,No Drought,1,7,Oct-Feb
+2001,3.575420394,Bream,Clarence River,Barrier River,30402.05464,59086.62894,No Drought,No Drought,0,7,Oct-Feb
+2002,5.170993232,Bream,Clarence River,Barrier River,19838.26117,72908.65591,Drought,Drought,11,7,Oct-Feb
+2003,4.729132577,Bream,Clarence River,Barrier River,10172.09167,58337.52072,Drought,Drought,8,7,Oct-Feb
+2004,3.925346181,Bream,Clarence River,Barrier River,17441.00478,72006.66944,Drought,Drought,12,7,Oct-Feb
+2005,6.470302425,Bream,Clarence River,Barrier River,31458.1667,23928.92622,Drought,No Drought,5,7,Oct-Feb
+2006,5.164218562,Bream,Clarence River,Barrier River,5634.428358,101814.1106,No Drought,No Drought,0,7,Oct-Feb
+1997,1.963136824,Flathead,Clarence River,Barrier River,20041.60245,81558.55811,No Drought,No Drought,0,3,Dec-Mar
+1998,2.827054048,Flathead,Clarence River,Barrier River,4242.544167,95374.5234,No Drought,No Drought,0,3,Dec-Mar
+1999,2.454066644,Flathead,Clarence River,Barrier River,2695.792984,79277.82266,No Drought,No Drought,0,3,Dec-Mar
+2000,2.094022113,Flathead,Clarence River,Barrier River,15471.47021,72620.90305,Drought,No Drought,1,3,Dec-Mar
+2001,1.493305405,Flathead,Clarence River,Barrier River,18376.9398,41383.09804,No Drought,No Drought,0,3,Dec-Mar
+2002,1.482035351,Flathead,Clarence River,Barrier River,6141.426041,94032.35447,Drought,Drought,11,3,Dec-Mar
+2003,1.844136545,Flathead,Clarence River,Barrier River,12301.5144,81965.1293,Drought,Drought,8,3,Dec-Mar
+2004,1.173401859,Flathead,Clarence River,Barrier River,17387.22294,76009.72184,Drought,Drought,12,3,Dec-Mar
+2005,1.864036054,Flathead,Clarence River,Barrier River,12845.21305,69790.73184,Drought,No Drought,5,3,Dec-Mar
+2006,2.19369445,Flathead,Clarence River,Barrier River,9804.859301,86157.27726,No Drought,No Drought,0,3,Dec-Mar
+1997,3.215763259,Luderick,Clarence River,Barrier River,21121.36936,26438.36334,No Drought,No Drought,0,4,Dec-Feb
+1998,2.824734243,Luderick,Clarence River,Barrier River,20564.45276,39794.682,No Drought,No Drought,0,4,Dec-Feb
+1999,4.837611782,Luderick,Clarence River,Barrier River,6970.56425,74557.68867,No Drought,No Drought,0,4,Dec-Feb
+2000,3.66421527,Luderick,Clarence River,Barrier River,1224.893853,46534.27902,Drought,No Drought,1,4,Dec-Feb
+2001,3.457611958,Luderick,Clarence River,Barrier River,10791.03461,57596.70793,No Drought,No Drought,0,4,Dec-Feb
+2002,1.809932787,Luderick,Clarence River,Barrier River,18192.54403,24640.6239,Drought,Drought,11,4,Dec-Feb
+2003,1.859787437,Luderick,Clarence River,Barrier River,5526.721499,76998.35682,Drought,Drought,8,4,Dec-Feb
+2004,1.563796971,Luderick,Clarence River,Barrier River,10590.7353,71640.98351,Drought,Drought,12,4,Dec-Feb
+2005,1.662328801,Luderick,Clarence River,Barrier River,16865.65179,42745.15116,Drought,No Drought,5,4,Dec-Feb
+2006,1.581300541,Luderick,Clarence River,Barrier River,13168.50863,44304.78618,No Drought,No Drought,0,4,Dec-Feb
+1997,0.951279277,Whiting,Clarence River,Barrier River,11589.44125,42162.89646,No Drought,No Drought,0,5,Dec-Feb
+1998,1.119747529,Whiting,Clarence River,Barrier River,21121.36936,26438.36334,No Drought,No Drought,0,5,Dec-Feb
+1999,0.817808526,Whiting,Clarence River,Barrier River,20564.45276,39794.682,No Drought,No Drought,0,5,Dec-Feb
+2000,0.804396756,Whiting,Clarence River,Barrier River,6970.56425,74557.68867,Drought,No Drought,1,5,Dec-Feb
+2001,0.721219091,Whiting,Clarence River,Barrier River,1224.893853,46534.27902,No Drought,No Drought,0,5,Dec-Feb
+2002,1.015914521,Whiting,Clarence River,Barrier River,10791.03461,57596.70793,Drought,Drought,11,5,Dec-Feb
+2003,0.806113977,Whiting,Clarence River,Barrier River,18192.54403,24640.6239,Drought,Drought,8,5,Dec-Feb
+2004,1.198933257,Whiting,Clarence River,Barrier River,5526.721499,76998.35682,Drought,Drought,12,5,Dec-Feb
+2005,1.177006577,Whiting,Clarence River,Barrier River,10590.7353,71640.98351,Drought,No Drought,5,5,Dec-Feb
+2006,0.814223345,Whiting,Clarence River,Barrier River,16865.65179,42745.15116,No Drought,No Drought,0,5,Dec-Feb
+1997,51.92840431,Mullet,Clarence River,Barrier River,-25673.02384,1162.151562,No Drought,No Drought,0,2,Apr-Jul
+1998,54.22647083,Mullet,Clarence River,Barrier River,-17359.26606,33829.12721,No Drought,No Drought,0,2,Apr-Jul
+1999,40.46933863,Mullet,Clarence River,Barrier River,-34076.51665,55417.16901,No Drought,No Drought,0,2,Apr-Jul
+2000,52.77973321,Mullet,Clarence River,Barrier River,-28750.79131,4064.127338,Drought,No Drought,1,2,Apr-Jul
+2001,48.23498945,Mullet,Clarence River,Barrier River,-32911.17674,84448.35326,No Drought,No Drought,0,2,Apr-Jul
+2002,30.60144536,Mullet,Clarence River,Barrier River,-27444.19374,40941.98963,Drought,Drought,11,2,Apr-Jul
+2003,43.00954009,Mullet,Clarence River,Barrier River,-30129.48937,24257.88892,Drought,Drought,8,2,Apr-Jul
+2004,45.56546809,Mullet,Clarence River,Barrier River,-26948.19617,35176.11684,Drought,Drought,12,2,Apr-Jul
+2005,60.17217787,Mullet,Clarence River,Barrier River,-29281.31019,44332.17349,Drought,No Drought,5,2,Apr-Jul
+2006,46.60746323,Mullet,Clarence River,Barrier River,-23917.36927,19388.83824,No Drought,No Drought,0,2,Apr-Jul
+1997,60.5598604,Total,Clarence River,Barrier River,-20671.20821,141686.0288,No Drought,No Drought,0,4,Fin_Year
+1998,64.14183953,Total,Clarence River,Barrier River,2900.422969,114929.3656,No Drought,No Drought,0,4,Fin_Year
+1999,51.32190044,Total,Clarence River,Barrier River,1892.04698,110233.8792,No Drought,No Drought,0,4,Fin_Year
+2000,61.94465513,Total,Clarence River,Barrier River,-14136.78848,98005.46126,Drought,No Drought,1,4,Fin_Year
+2001,57.4825463,Total,Clarence River,Barrier River,-7513.963791,125707.965,No Drought,No Drought,0,4,Fin_Year
+2002,40.08032125,Total,Clarence River,Barrier River,-5688.019274,95513.08274,Drought,Drought,11,4,Fin_Year
+2003,52.24871063,Total,Clarence River,Barrier River,-11828.56709,221552.8838,Drought,Drought,8,4,Fin_Year
+2004,53.42694636,Total,Clarence River,Barrier River,-25696.33185,117942.9239,Drought,Drought,12,4,Fin_Year
+2005,71.34585173,Total,Clarence River,Barrier River,6416.62599,92033.33886,Drought,No Drought,5,4,Fin_Year
+2006,56.36090012,Total,Clarence River,Barrier River,-12233.06045,131829.2427,No Drought,No Drought,0,4,Fin_Year
+1997,7.556259507,Bream,Hawkesbury River,Drowned River Valley,-4507.167213,29615.51997,Drought,No Drought,2,7,Oct-Feb
+1998,8.111938236,Bream,Hawkesbury River,Drowned River Valley,8764.612594,42355.95358,No Drought,No Drought,0,7,Oct-Feb
+1999,6.880125081,Bream,Hawkesbury River,Drowned River Valley,9108.759697,63251.17004,No Drought,No Drought,0,7,Oct-Feb
+2000,4.861860996,Bream,Hawkesbury River,Drowned River Valley,7338.398016,43504.54036,No Drought,No Drought,0,7,Oct-Feb
+2001,6.133478473,Bream,Hawkesbury River,Drowned River Valley,12369.89198,37242.88,No Drought,No Drought,0,7,Oct-Feb
+2002,4.915643941,Bream,Hawkesbury River,Drowned River Valley,9424.090784,50171.92232,Drought,Drought,9,7,Oct-Feb
+2003,5.928503339,Bream,Hawkesbury River,Drowned River Valley,740.6536947,49203.2479,Drought,No Drought,2,7,Oct-Feb
+2004,4.324132841,Bream,Hawkesbury River,Drowned River Valley,2463.397038,48805.20123,Drought,No Drought,4,7,Oct-Feb
+2005,4.693900242,Bream,Hawkesbury River,Drowned River Valley,10173.39947,40988.52609,Drought,No Drought,3,7,Oct-Feb
+2006,11.34886449,Bream,Hawkesbury River,Drowned River Valley,2046.058019,54763.90204,Drought,Drought,9,7,Oct-Feb
+1997,0.930196538,Flathead,Hawkesbury River,Drowned River Valley,10002.98532,44236.93363,Drought,No Drought,2,3,Dec-Mar
+1998,0.854070158,Flathead,Hawkesbury River,Drowned River Valley,5232.910147,66182.34685,No Drought,No Drought,0,3,Dec-Mar
+1999,0.762154699,Flathead,Hawkesbury River,Drowned River Valley,667.5858761,51478.36079,No Drought,No Drought,0,3,Dec-Mar
+2000,0.742759495,Flathead,Hawkesbury River,Drowned River Valley,2228.442778,51721.34319,No Drought,No Drought,0,3,Dec-Mar
+2001,1.135395343,Flathead,Hawkesbury River,Drowned River Valley,8832.299684,40886.5468,No Drought,No Drought,0,3,Dec-Mar
+2002,1.644508967,Flathead,Hawkesbury River,Drowned River Valley,6279.549452,53231.70206,Drought,Drought,9,3,Dec-Mar
+2003,0.884450934,Flathead,Hawkesbury River,Drowned River Valley,7736.46696,47938.73521,Drought,No Drought,2,3,Dec-Mar
+2004,0.907138718,Flathead,Hawkesbury River,Drowned River Valley,9284.65958,52082.64753,Drought,No Drought,4,3,Dec-Mar
+2005,1.097278156,Flathead,Hawkesbury River,Drowned River Valley,3962.8799,50256.64255,Drought,No Drought,3,3,Dec-Mar
+2006,0.860232243,Flathead,Hawkesbury River,Drowned River Valley,10267.71973,47914.04941,Drought,Drought,9,3,Dec-Mar
+1997,2.97761908,Luderick,Hawkesbury River,Drowned River Valley,7074.070894,31532.44049,Drought,No Drought,2,4,Dec-Feb
+1998,2.852319585,Luderick,Hawkesbury River,Drowned River Valley,11131.18833,28663.87551,No Drought,No Drought,0,4,Dec-Feb
+1999,2.444762497,Luderick,Hawkesbury River,Drowned River Valley,7341.583178,45039.09819,No Drought,No Drought,0,4,Dec-Feb
+2000,2.290856397,Luderick,Hawkesbury River,Drowned River Valley,-800.2999194,39793.21193,No Drought,No Drought,0,4,Dec-Feb
+2001,2.101350639,Luderick,Hawkesbury River,Drowned River Valley,2784.05476,39715.96617,No Drought,No Drought,0,4,Dec-Feb
+2002,2.816192499,Luderick,Hawkesbury River,Drowned River Valley,8834.094321,27395.95492,Drought,Drought,9,4,Dec-Feb
+2003,5.370903365,Luderick,Hawkesbury River,Drowned River Valley,5168.366854,45043.26022,Drought,No Drought,2,4,Dec-Feb
+2004,2.451064543,Luderick,Hawkesbury River,Drowned River Valley,8356.927705,35689.17301,Drought,No Drought,4,4,Dec-Feb
+2005,3.942818062,Luderick,Hawkesbury River,Drowned River Valley,8258.69042,40269.24894,Drought,No Drought,3,4,Dec-Feb
+2006,1.724344647,Luderick,Hawkesbury River,Drowned River Valley,3523.903414,33931.43106,Drought,Drought,9,4,Dec-Feb
+1997,0.502851925,Whiting,Hawkesbury River,Drowned River Valley,5069.999108,45644.19633,Drought,No Drought,2,5,Dec-Feb
+1998,0.425567318,Whiting,Hawkesbury River,Drowned River Valley,7074.070894,31532.44049,No Drought,No Drought,0,5,Dec-Feb
+1999,0.87170063,Whiting,Hawkesbury River,Drowned River Valley,11131.18833,28663.87551,No Drought,No Drought,0,5,Dec-Feb
+2000,0.529857789,Whiting,Hawkesbury River,Drowned River Valley,7341.583178,45039.09819,No Drought,No Drought,0,5,Dec-Feb
+2001,0.973830632,Whiting,Hawkesbury River,Drowned River Valley,-800.2999194,39793.21193,No Drought,No Drought,0,5,Dec-Feb
+2002,1.954259599,Whiting,Hawkesbury River,Drowned River Valley,2784.05476,39715.96617,Drought,Drought,9,5,Dec-Feb
+2003,0.631419941,Whiting,Hawkesbury River,Drowned River Valley,8834.094321,27395.95492,Drought,No Drought,2,5,Dec-Feb
+2004,0.908302165,Whiting,Hawkesbury River,Drowned River Valley,5168.366854,45043.26022,Drought,No Drought,4,5,Dec-Feb
+2005,0.831931592,Whiting,Hawkesbury River,Drowned River Valley,8356.927705,35689.17301,Drought,No Drought,3,5,Dec-Feb
+2006,0.430084254,Whiting,Hawkesbury River,Drowned River Valley,8258.69042,40269.24894,Drought,Drought,9,5,Dec-Feb
+1997,15.23747161,Mullet,Hawkesbury River,Drowned River Valley,-15069.38242,-34997.36908,Drought,No Drought,2,2,Apr-Jul
+1998,13.875562,Mullet,Hawkesbury River,Drowned River Valley,-14712.51058,-28059.43604,No Drought,No Drought,0,2,Apr-Jul
+1999,18.2180905,Mullet,Hawkesbury River,Drowned River Valley,-20088.57803,-10016.27963,No Drought,No Drought,0,2,Apr-Jul
+2000,20.83622402,Mullet,Hawkesbury River,Drowned River Valley,-17211.36125,-24867.70275,No Drought,No Drought,0,2,Apr-Jul
+2001,29.11191156,Mullet,Hawkesbury River,Drowned River Valley,-19773.54923,-7524.368867,No Drought,No Drought,0,2,Apr-Jul
+2002,13.99690136,Mullet,Hawkesbury River,Drowned River Valley,-16835.00614,-29206.85821,Drought,Drought,9,2,Apr-Jul
+2003,13.33475213,Mullet,Hawkesbury River,Drowned River Valley,-21734.18062,-22551.10321,Drought,No Drought,2,2,Apr-Jul
+2004,14.17624191,Mullet,Hawkesbury River,Drowned River Valley,-15891.31663,-26371.43674,Drought,No Drought,4,2,Apr-Jul
+2005,19.75347201,Mullet,Hawkesbury River,Drowned River Valley,-13914.3044,-18530.71537,Drought,No Drought,3,2,Apr-Jul
+2006,17.32062477,Mullet,Hawkesbury River,Drowned River Valley,-15134.06254,-34814.28747,Drought,Drought,9,2,Apr-Jul
+1997,27.20439866,Total,Hawkesbury River,Drowned River Valley,-4115.675422,22937.16017,Drought,No Drought,2,4,Fin_Year
+1998,26.11945729,Total,Hawkesbury River,Drowned River Valley,-13012.69341,17632.27999,No Drought,No Drought,0,4,Fin_Year
+1999,29.17683341,Total,Hawkesbury River,Drowned River Valley,-15093.01181,26842.09939,No Drought,No Drought,0,4,Fin_Year
+2000,29.2615587,Total,Hawkesbury River,Drowned River Valley,-18670.71297,11077.8647,No Drought,No Drought,0,4,Fin_Year
+2001,39.45596665,Total,Hawkesbury River,Drowned River Valley,-20776.82451,42111.7493,No Drought,No Drought,0,4,Fin_Year
+2002,25.32750637,Total,Hawkesbury River,Drowned River Valley,-14728.08638,27828.68199,Drought,Drought,9,4,Fin_Year
+2003,26.15002971,Total,Hawkesbury River,Drowned River Valley,-13814.46658,49857.53628,Drought,No Drought,2,4,Fin_Year
+2004,22.76688018,Total,Hawkesbury River,Drowned River Valley,-9374.203694,9067.44168,Drought,No Drought,4,4,Fin_Year
+2005,30.31940006,Total,Hawkesbury River,Drowned River Valley,-18990.88385,3498.310744,Drought,No Drought,3,4,Fin_Year
+2006,31.6841504,Total,Hawkesbury River,Drowned River Valley,-11226.18954,31021.83763,Drought,Drought,9,4,Fin_Year
+1997,30.47277051,Bream,Hunter River,Barrier River,7036.494886,37542.47938,Drought,No Drought,3,7,Oct-Feb
+1998,44.43608405,Bream,Hunter River,Barrier River,12279.546,63409.88086,No Drought,No Drought,0,7,Oct-Feb
+1999,22.25087783,Bream,Hunter River,Barrier River,15535.00163,87649.34611,No Drought,No Drought,0,7,Oct-Feb
+2000,26.4157425,Bream,Hunter River,Barrier River,11452.19289,65619.68996,No Drought,No Drought,0,7,Oct-Feb
+2001,21.07978746,Bream,Hunter River,Barrier River,18056.32663,61616.8762,No Drought,No Drought,0,7,Oct-Feb
+2002,17.8573822,Bream,Hunter River,Barrier River,13319.15313,75440.0296,Drought,Drought,8,7,Oct-Feb
+2003,23.02008408,Bream,Hunter River,Barrier River,3558.147888,63048.11831,Drought,No Drought,3,7,Oct-Feb
+2004,31.63898231,Bream,Hunter River,Barrier River,5771.422165,66121.59647,Drought,No Drought,4,7,Oct-Feb
+2005,47.45296417,Bream,Hunter River,Barrier River,13874.75239,64000.11597,Drought,No Drought,3,7,Oct-Feb
+2006,38.90111231,Bream,Hunter River,Barrier River,6475.441718,69717.80085,Drought,Drought,9,7,Oct-Feb
+1997,29.04095657,Flathead,Hunter River,Barrier River,14558.84001,65367.41936,Drought,No Drought,3,3,Dec-Mar
+1998,40.44235435,Flathead,Hunter River,Barrier River,7441.284174,87359.09221,No Drought,No Drought,0,3,Dec-Mar
+1999,50.58289442,Flathead,Hunter River,Barrier River,3305.575003,67017.01534,No Drought,No Drought,0,3,Dec-Mar
+2000,47.42712566,Flathead,Hunter River,Barrier River,6030.559476,64246.0767,No Drought,No Drought,0,3,Dec-Mar
+2001,38.03448022,Flathead,Hunter River,Barrier River,12515.19075,64232.64556,No Drought,No Drought,0,3,Dec-Mar
+2002,15.3601905,Flathead,Hunter River,Barrier River,11134.85079,70960.74926,Drought,Drought,8,3,Dec-Mar
+2003,31.26514573,Flathead,Hunter River,Barrier River,13404.18202,65966.02627,Drought,No Drought,3,3,Dec-Mar
+2004,28.05278287,Flathead,Hunter River,Barrier River,13545.01966,74618.11448,Drought,No Drought,4,3,Dec-Mar
+2005,20.40108826,Flathead,Hunter River,Barrier River,8886.450628,62222.92894,Drought,No Drought,3,3,Dec-Mar
+2006,19.21250601,Flathead,Hunter River,Barrier River,14304.26884,71789.35608,Drought,Drought,9,3,Dec-Mar
+1997,15.04963766,Luderick,Hunter River,Barrier River,10239.99832,47601.91621,Drought,No Drought,3,4,Dec-Feb
+1998,24.38468858,Luderick,Hunter River,Barrier River,14575.4245,44123.36557,No Drought,No Drought,0,4,Dec-Feb
+1999,10.13078403,Luderick,Hunter River,Barrier River,9574.350268,64059.43445,No Drought,No Drought,0,4,Dec-Feb
+2000,15.05021715,Luderick,Hunter River,Barrier River,1248.045944,48844.05322,No Drought,No Drought,0,4,Dec-Feb
+2001,13.94550715,Luderick,Hunter River,Barrier River,5640.840049,49890.26932,No Drought,No Drought,0,4,Dec-Feb
+2002,16.43346515,Luderick,Hunter River,Barrier River,12240.45219,45101.20409,Drought,Drought,8,4,Dec-Feb
+2003,10.38159294,Luderick,Hunter River,Barrier River,8841.83608,57051.29101,Drought,No Drought,3,4,Dec-Feb
+2004,16.41099109,Luderick,Hunter River,Barrier River,12395.61511,51398.3658,Drought,No Drought,4,4,Dec-Feb
+2005,24.9720178,Luderick,Hunter River,Barrier River,11867.70545,58938.57139,Drought,No Drought,3,4,Dec-Feb
+2006,32.07047559,Luderick,Hunter River,Barrier River,7211.036064,42522.33934,Drought,Drought,9,4,Dec-Feb
+1997,5.539273247,Whiting,Hunter River,Barrier River,8928.494137,58781.81748,Drought,No Drought,3,5,Dec-Feb
+1998,14.77894744,Whiting,Hunter River,Barrier River,10239.99832,47601.91621,No Drought,No Drought,0,5,Dec-Feb
+1999,16.5710107,Whiting,Hunter River,Barrier River,14575.4245,44123.36557,No Drought,No Drought,0,5,Dec-Feb
+2000,20.33488788,Whiting,Hunter River,Barrier River,9574.350268,64059.43445,No Drought,No Drought,0,5,Dec-Feb
+2001,30.95733375,Whiting,Hunter River,Barrier River,1248.045944,48844.05322,No Drought,No Drought,0,5,Dec-Feb
+2002,6.725624376,Whiting,Hunter River,Barrier River,5640.840049,49890.26932,Drought,Drought,8,5,Dec-Feb
+2003,18.83219096,Whiting,Hunter River,Barrier River,12240.45219,45101.20409,Drought,No Drought,3,5,Dec-Feb
+2004,18.52407639,Whiting,Hunter River,Barrier River,8841.83608,57051.29101,Drought,No Drought,4,5,Dec-Feb
+2005,6.596121934,Whiting,Hunter River,Barrier River,12395.61511,51398.3658,Drought,No Drought,3,5,Dec-Feb
+2006,39.76242785,Whiting,Hunter River,Barrier River,11867.70545,58938.57139,Drought,Drought,9,5,Dec-Feb
+1997,355.4698612,Mullet,Hunter River,Barrier River,-14068.33135,-50998.82996,Drought,No Drought,3,2,Apr-Jul
+1998,334.2404087,Mullet,Hunter River,Barrier River,-11614.67436,-43890.13912,No Drought,No Drought,0,2,Apr-Jul
+1999,158.4188342,Mullet,Hunter River,Barrier River,-17756.53951,-12554.42139,No Drought,No Drought,0,2,Apr-Jul
+2000,358.585645,Mullet,Hunter River,Barrier River,-17618.72794,-46272.30974,No Drought,No Drought,0,2,Apr-Jul
+2001,244.8921612,Mullet,Hunter River,Barrier River,-19117.46303,-13580.67693,No Drought,No Drought,0,2,Apr-Jul
+2002,173.9578061,Mullet,Hunter River,Barrier River,-17173.74387,-37871.68072,Drought,Drought,8,2,Apr-Jul
+2003,301.067828,Mullet,Hunter River,Barrier River,-19574.2777,-37619.79196,Drought,No Drought,3,2,Apr-Jul
+2004,288.3463969,Mullet,Hunter River,Barrier River,-18314.05432,-46331.32275,Drought,No Drought,4,2,Apr-Jul
+2005,256.6983646,Mullet,Hunter River,Barrier River,-13555.9784,-28503.61825,Drought,No Drought,3,2,Apr-Jul
+2006,240.191838,Mullet,Hunter River,Barrier River,-14090.20429,-52670.24796,Drought,Drought,9,2,Apr-Jul
+1997,435.5724992,Total,Hunter River,Barrier River,3643.78453,47625.97198,Drought,No Drought,3,4,Fin_Year
+1998,458.2824831,Total,Hunter River,Barrier River,-3925.790735,34961.42861,No Drought,No Drought,0,4,Fin_Year
+1999,257.9544012,Total,Hunter River,Barrier River,-10377.39624,30133.75959,No Drought,No Drought,0,4,Fin_Year
+2000,467.8136182,Total,Hunter River,Barrier River,-14147.78541,4071.55408,No Drought,No Drought,0,4,Fin_Year
+2001,348.9092698,Total,Hunter River,Barrier River,-13633.41507,57113.68329,No Drought,No Drought,0,4,Fin_Year
+2002,230.3344683,Total,Hunter River,Barrier River,-8797.609732,30960.00856,Drought,Drought,8,4,Fin_Year
+2003,384.5668417,Total,Hunter River,Barrier River,-6108.260258,72286.25097,Drought,No Drought,3,4,Fin_Year
+2004,382.9732295,Total,Hunter River,Barrier River,-3348.248543,16807.68247,Drought,No Drought,4,4,Fin_Year
+2005,356.1205568,Total,Hunter River,Barrier River,-11422.82003,7872.652544,Drought,No Drought,3,4,Fin_Year
+2006,370.1383598,Total,Hunter River,Barrier River,-5245.065312,35647.5527,Drought,Drought,9,4,Fin_Year
+1997,64.0148922,Bream,Lake Illawarra,Barrier Lagoon,3534.715758,28539.31052,Drought,No Drought,6,7,Oct-Feb
+1998,57.17810091,Bream,Lake Illawarra,Barrier Lagoon,10537.15393,34747.79998,No Drought,No Drought,0,7,Oct-Feb
+1999,32.89926727,Bream,Lake Illawarra,Barrier Lagoon,8787.570584,48890.04556,No Drought,No Drought,0,7,Oct-Feb
+2000,38.58695061,Bream,Lake Illawarra,Barrier Lagoon,8782.084849,26938.23657,No Drought,No Drought,0,7,Oct-Feb
+2001,54.84364781,Bream,Lake Illawarra,Barrier Lagoon,12846.63857,17866.07919,No Drought,No Drought,0,7,Oct-Feb
+2002,54.65569257,Bream,Lake Illawarra,Barrier Lagoon,12562.67545,30446.07416,Drought,Drought,9,7,Oct-Feb
+2003,241.4426754,Bream,Lake Illawarra,Barrier Lagoon,-1384.015153,44985.47864,Drought,No Drought,3,7,Oct-Feb
+2004,422.6516915,Bream,Lake Illawarra,Barrier Lagoon,2073.053942,42475.58332,Drought,Drought,7,7,Oct-Feb
+2005,275.6992531,Bream,Lake Illawarra,Barrier Lagoon,11197.25261,27518.26707,Drought,No Drought,2,7,Oct-Feb
+2006,251.2798535,Bream,Lake Illawarra,Barrier Lagoon,126.4487237,46013.22334,Drought,Drought,8,7,Oct-Feb
+1997,48.1401016,Flathead,Lake Illawarra,Barrier Lagoon,9169.742354,31148.67455,Drought,No Drought,6,3,Dec-Mar
+1998,42.10663309,Flathead,Lake Illawarra,Barrier Lagoon,7749.633996,53884.21489,No Drought,No Drought,0,3,Dec-Mar
+1999,43.78510595,Flathead,Lake Illawarra,Barrier Lagoon,-1438.287013,39134.67561,No Drought,No Drought,0,3,Dec-Mar
+2000,32.73741554,Flathead,Lake Illawarra,Barrier Lagoon,716.750657,49118.99542,No Drought,No Drought,0,3,Dec-Mar
+2001,75.92122607,Flathead,Lake Illawarra,Barrier Lagoon,8731.294076,26967.92445,No Drought,No Drought,0,3,Dec-Mar
+2002,46.93651557,Flathead,Lake Illawarra,Barrier Lagoon,5991.958871,43309.41177,Drought,Drought,9,3,Dec-Mar
+2003,57.99188795,Flathead,Lake Illawarra,Barrier Lagoon,10494.41993,35420.4643,Drought,No Drought,3,3,Dec-Mar
+2004,65.65175848,Flathead,Lake Illawarra,Barrier Lagoon,8668.475417,35715.51981,Drought,Drought,7,3,Dec-Mar
+2005,61.95451086,Flathead,Lake Illawarra,Barrier Lagoon,-838.8177936,49167.81337,Drought,No Drought,2,3,Dec-Mar
+2006,129.5693661,Flathead,Lake Illawarra,Barrier Lagoon,11801.73981,32146.42591,Drought,Drought,8,3,Dec-Mar
+1997,37.28760949,Luderick,Lake Illawarra,Barrier Lagoon,9473.051918,21167.19942,Drought,No Drought,6,4,Dec-Feb
+1998,59.01155845,Luderick,Lake Illawarra,Barrier Lagoon,12197.19317,16433.52929,No Drought,No Drought,0,4,Dec-Feb
+1999,56.95094195,Luderick,Lake Illawarra,Barrier Lagoon,11040.99191,31429.23932,No Drought,No Drought,0,4,Dec-Feb
+2000,81.99589103,Luderick,Lake Illawarra,Barrier Lagoon,-3878.121485,34737.92948,No Drought,No Drought,0,4,Dec-Feb
+2001,99.58576576,Luderick,Lake Illawarra,Barrier Lagoon,2679.533064,37206.05176,No Drought,No Drought,0,4,Dec-Feb
+2002,121.7031051,Luderick,Lake Illawarra,Barrier Lagoon,8884.964643,16487.47341,Drought,Drought,9,4,Dec-Feb
+2003,53.10867986,Luderick,Lake Illawarra,Barrier Lagoon,5503.321215,38023.40391,Drought,No Drought,3,4,Dec-Feb
+2004,63.410088,Luderick,Lake Illawarra,Barrier Lagoon,9624.797387,25029.15326,Drought,Drought,7,4,Dec-Feb
+2005,61.7064615,Luderick,Lake Illawarra,Barrier Lagoon,8505.971672,30134.86692,Drought,No Drought,2,4,Dec-Feb
+2006,146.094639,Luderick,Lake Illawarra,Barrier Lagoon,-393.0955089,31874.01337,Drought,Drought,8,4,Dec-Feb
+1997,0.80520551,Whiting,Lake Illawarra,Barrier Lagoon,3082.651812,37635.79096,Drought,No Drought,6,5,Dec-Feb
+1998,1.868105382,Whiting,Lake Illawarra,Barrier Lagoon,9473.051918,21167.19942,No Drought,No Drought,0,5,Dec-Feb
+1999,3.343964566,Whiting,Lake Illawarra,Barrier Lagoon,12197.19317,16433.52929,No Drought,No Drought,0,5,Dec-Feb
+2000,5.182290221,Whiting,Lake Illawarra,Barrier Lagoon,11040.99191,31429.23932,No Drought,No Drought,0,5,Dec-Feb
+2001,14.10947941,Whiting,Lake Illawarra,Barrier Lagoon,-3878.121485,34737.92948,No Drought,No Drought,0,5,Dec-Feb
+2002,12.66645877,Whiting,Lake Illawarra,Barrier Lagoon,2679.533064,37206.05176,Drought,Drought,9,5,Dec-Feb
+2003,10.80610149,Whiting,Lake Illawarra,Barrier Lagoon,8884.964643,16487.47341,Drought,No Drought,3,5,Dec-Feb
+2004,6.132707223,Whiting,Lake Illawarra,Barrier Lagoon,5503.321215,38023.40391,Drought,Drought,7,5,Dec-Feb
+2005,4.507370942,Whiting,Lake Illawarra,Barrier Lagoon,9624.797387,25029.15326,Drought,No Drought,2,5,Dec-Feb
+2006,20.53274815,Whiting,Lake Illawarra,Barrier Lagoon,8505.971672,30134.86692,Drought,Drought,8,5,Dec-Feb
+1997,244.9317357,Mullet,Lake Illawarra,Barrier Lagoon,-24369.71962,-36584.22913,Drought,No Drought,6,2,Apr-Jul
+1998,363.2193719,Mullet,Lake Illawarra,Barrier Lagoon,-27051.69008,-27168.13148,No Drought,No Drought,0,2,Apr-Jul
+1999,205.2669712,Mullet,Lake Illawarra,Barrier Lagoon,-29635.60463,520.6356519,No Drought,No Drought,0,2,Apr-Jul
+2000,309.3748301,Mullet,Lake Illawarra,Barrier Lagoon,-28629.72968,-26503.10391,No Drought,No Drought,0,2,Apr-Jul
+2001,462.118478,Mullet,Lake Illawarra,Barrier Lagoon,-32318.64742,-6470.955126,No Drought,No Drought,0,2,Apr-Jul
+2002,1095.010445,Mullet,Lake Illawarra,Barrier Lagoon,-26916.39864,-33443.91983,Drought,Drought,9,2,Apr-Jul
+2003,404.4710522,Mullet,Lake Illawarra,Barrier Lagoon,-35390.24185,-12486.07245,Drought,No Drought,3,2,Apr-Jul
+2004,244.2993933,Mullet,Lake Illawarra,Barrier Lagoon,-25221.10624,-33375.54225,Drought,Drought,7,2,Apr-Jul
+2005,217.7539905,Mullet,Lake Illawarra,Barrier Lagoon,-24298.01687,-17651.64871,Drought,No Drought,2,2,Apr-Jul
+2006,383.7246159,Mullet,Lake Illawarra,Barrier Lagoon,-23429.25346,-37324.32597,Drought,Drought,8,2,Apr-Jul
+1997,395.1795445,Total,Lake Illawarra,Barrier Lagoon,-12609.72421,-12181.366,Drought,No Drought,6,4,Fin_Year
+1998,523.3837698,Total,Lake Illawarra,Barrier Lagoon,-23604.53286,-15023.85146,No Drought,No Drought,0,4,Fin_Year
+1999,342.2462509,Total,Lake Illawarra,Barrier Lagoon,-24698.85096,20200.03326,No Drought,No Drought,0,4,Fin_Year
+2000,467.8773775,Total,Lake Illawarra,Barrier Lagoon,-35309.6932,-2025.877899,No Drought,No Drought,0,4,Fin_Year
+2001,706.5785971,Total,Lake Illawarra,Barrier Lagoon,-36244.20269,42809.90128,No Drought,No Drought,0,4,Fin_Year
+2002,1330.972217,Total,Lake Illawarra,Barrier Lagoon,-32510.32356,12581.36958,Drought,Drought,9,4,Fin_Year
+2003,767.8203969,Total,Lake Illawarra,Barrier Lagoon,-25925.56172,37045.2981,Drought,No Drought,3,4,Fin_Year
+2004,802.1456386,Total,Lake Illawarra,Barrier Lagoon,-20115.80624,-14193.02044,Drought,Drought,7,4,Fin_Year
+2005,621.6215869,Total,Lake Illawarra,Barrier Lagoon,-38645.74839,-11114.36838,Drought,No Drought,2,4,Fin_Year
+2006,931.2012226,Total,Lake Illawarra,Barrier Lagoon,-24054.8531,11959.96697,Drought,Drought,8,4,Fin_Year
+1997,71.37934635,Bream,Port Stephens,Drowned River Valley,10723.04523,29267.95224,Drought,No Drought,4,7,Oct-Feb
+1998,59.36651993,Bream,Port Stephens,Drowned River Valley,21855.15634,41611.64697,No Drought,No Drought,0,7,Oct-Feb
+1999,96.13011844,Bream,Port Stephens,Drowned River Valley,24337.49889,76276.6741,No Drought,No Drought,0,7,Oct-Feb
+2000,82.44554154,Bream,Port Stephens,Drowned River Valley,19102.45045,50838.84953,No Drought,No Drought,0,7,Oct-Feb
+2001,87.13727422,Bream,Port Stephens,Drowned River Valley,27665.63413,44698.24126,No Drought,No Drought,0,7,Oct-Feb
+2002,125.3549358,Bream,Port Stephens,Drowned River Valley,21895.16974,60332.29794,Drought,Drought,8,7,Oct-Feb
+2003,116.8016352,Bream,Port Stephens,Drowned River Valley,9221.723187,55141.13856,Drought,No Drought,3,7,Oct-Feb
+2004,81.7032143,Bream,Port Stephens,Drowned River Valley,15731.06254,55341.27877,Drought,No Drought,4,7,Oct-Feb
+2005,142.3733606,Bream,Port Stephens,Drowned River Valley,26740.08828,44594.37187,Drought,No Drought,6,7,Oct-Feb
+2006,208.2427207,Bream,Port Stephens,Drowned River Valley,13754.61671,58093.11598,Drought,Drought,9,7,Oct-Feb
+1997,36.01819623,Flathead,Port Stephens,Drowned River Valley,22248.74824,54182.4492,Drought,No Drought,4,3,Dec-Mar
+1998,41.46749227,Flathead,Port Stephens,Drowned River Valley,11275.28113,80819.55904,No Drought,No Drought,0,3,Dec-Mar
+1999,55.33786139,Flathead,Port Stephens,Drowned River Valley,6656.44868,58175.41154,No Drought,No Drought,0,3,Dec-Mar
+2000,50.91521312,Flathead,Port Stephens,Drowned River Valley,13893.36061,52577.53778,No Drought,No Drought,0,3,Dec-Mar
+2001,30.35693142,Flathead,Port Stephens,Drowned River Valley,22346.64505,48027.22609,No Drought,No Drought,0,3,Dec-Mar
+2002,39.65721739,Flathead,Port Stephens,Drowned River Valley,17587.51271,58366.94131,Drought,Drought,8,3,Dec-Mar
+2003,53.28953853,Flathead,Port Stephens,Drowned River Valley,22147.08078,47265.27858,Drought,No Drought,3,3,Dec-Mar
+2004,47.87033684,Flathead,Port Stephens,Drowned River Valley,21185.36535,59458.78702,Drought,No Drought,4,3,Dec-Mar
+2005,49.76737263,Flathead,Port Stephens,Drowned River Valley,13621.26627,58477.89379,Drought,No Drought,6,3,Dec-Mar
+2006,38.23320013,Flathead,Port Stephens,Drowned River Valley,21043.22628,58471.62211,Drought,Drought,9,3,Dec-Mar
+1997,130.3276744,Luderick,Port Stephens,Drowned River Valley,17215.79056,34139.33212,Drought,No Drought,4,4,Dec-Feb
+1998,154.0631541,Luderick,Port Stephens,Drowned River Valley,22337.97733,30147.16209,No Drought,No Drought,0,4,Dec-Feb
+1999,153.7787381,Luderick,Port Stephens,Drowned River Valley,13920.63018,55144.97603,No Drought,No Drought,0,4,Dec-Feb
+2000,171.7779122,Luderick,Port Stephens,Drowned River Valley,4161.966874,40430.53717,No Drought,No Drought,0,4,Dec-Feb
+2001,239.1936078,Luderick,Port Stephens,Drowned River Valley,12273.53843,39978.06909,No Drought,No Drought,0,4,Dec-Feb
+2002,182.1742319,Luderick,Port Stephens,Drowned River Valley,21184.63031,31594.8614,Drought,Drought,8,4,Dec-Feb
+2003,162.0437437,Luderick,Port Stephens,Drowned River Valley,14474.96937,45523.35426,Drought,No Drought,3,4,Dec-Feb
+2004,130.5637984,Luderick,Port Stephens,Drowned River Valley,17975.65387,36156.98142,Drought,No Drought,4,4,Dec-Feb
+2005,171.8912502,Luderick,Port Stephens,Drowned River Valley,19757.8748,41801.38211,Drought,No Drought,6,4,Dec-Feb
+2006,194.0135314,Luderick,Port Stephens,Drowned River Valley,11730.47936,37045.12628,Drought,Drought,9,4,Dec-Feb
+1997,7.814995349,Whiting,Port Stephens,Drowned River Valley,13678.04235,52849.73075,Drought,No Drought,4,5,Dec-Feb
+1998,7.650112385,Whiting,Port Stephens,Drowned River Valley,17215.79056,34139.33212,No Drought,No Drought,0,5,Dec-Feb
+1999,6.222075668,Whiting,Port Stephens,Drowned River Valley,22337.97733,30147.16209,No Drought,No Drought,0,5,Dec-Feb
+2000,4.459940031,Whiting,Port Stephens,Drowned River Valley,13920.63018,55144.97603,No Drought,No Drought,0,5,Dec-Feb
+2001,4.441916717,Whiting,Port Stephens,Drowned River Valley,4161.966874,40430.53717,No Drought,No Drought,0,5,Dec-Feb
+2002,7.427600589,Whiting,Port Stephens,Drowned River Valley,12273.53843,39978.06909,Drought,Drought,8,5,Dec-Feb
+2003,6.965112373,Whiting,Port Stephens,Drowned River Valley,21184.63031,31594.8614,Drought,No Drought,3,5,Dec-Feb
+2004,9.269628963,Whiting,Port Stephens,Drowned River Valley,14474.96937,45523.35426,Drought,No Drought,4,5,Dec-Feb
+2005,12.52503749,Whiting,Port Stephens,Drowned River Valley,17975.65387,36156.98142,Drought,No Drought,6,5,Dec-Feb
+2006,13.34374118,Whiting,Port Stephens,Drowned River Valley,19757.8748,41801.38211,Drought,Drought,9,5,Dec-Feb
+1997,309.4513861,Mullet,Port Stephens,Drowned River Valley,-19450.23137,-46578.79174,Drought,No Drought,4,2,Apr-Jul
+1998,325.6224149,Mullet,Port Stephens,Drowned River Valley,-15638.68965,-39722.83925,No Drought,No Drought,0,2,Apr-Jul
+1999,304.1092593,Mullet,Port Stephens,Drowned River Valley,-21791.91129,-14050.4709,No Drought,No Drought,0,2,Apr-Jul
+2000,540.2271465,Mullet,Port Stephens,Drowned River Valley,-24587.43073,-47907.43407,No Drought,No Drought,0,2,Apr-Jul
+2001,576.6094688,Mullet,Port Stephens,Drowned River Valley,-24353.47561,-8026.4663,No Drought,No Drought,0,2,Apr-Jul
+2002,479.3546084,Mullet,Port Stephens,Drowned River Valley,-24262.63961,-35873.82016,Drought,Drought,8,2,Apr-Jul
+2003,440.6021748,Mullet,Port Stephens,Drowned River Valley,-25625.58369,-43593.75673,Drought,No Drought,3,2,Apr-Jul
+2004,512.740111,Mullet,Port Stephens,Drowned River Valley,-25064.02141,-47762.66032,Drought,No Drought,4,2,Apr-Jul
+2005,374.7289223,Mullet,Port Stephens,Drowned River Valley,-18427.79103,-24652.35586,Drought,No Drought,6,2,Apr-Jul
+2006,368.4651618,Mullet,Port Stephens,Drowned River Valley,-19223.32434,-52471.10053,Drought,Drought,9,2,Apr-Jul
+1997,554.9915984,Total,Port Stephens,Drowned River Valley,8550.312571,28326.64604,Drought,No Drought,4,4,Fin_Year
+1998,588.1696936,Total,Port Stephens,Drowned River Valley,4387.0029,17277.6769,No Drought,No Drought,0,4,Fin_Year
+1999,615.5780529,Total,Port Stephens,Drowned River Valley,-10940.95362,28069.15381,No Drought,No Drought,0,4,Fin_Year
+2000,849.8257534,Total,Port Stephens,Drowned River Valley,-10093.19765,1697.382958,No Drought,No Drought,0,4,Fin_Year
+2001,937.739199,Total,Port Stephens,Drowned River Valley,-7672.483696,38131.50215,No Drought,No Drought,0,4,Fin_Year
+2002,833.9685941,Total,Port Stephens,Drowned River Valley,-4193.312565,13168.76955,Drought,Drought,8,4,Fin_Year
+2003,779.7022046,Total,Port Stephens,Drowned River Valley,-1910.260637,55558.28666,Drought,No Drought,3,4,Fin_Year
+2004,782.1470894,Total,Port Stephens,Drowned River Valley,3159.375726,-6511.611291,Drought,No Drought,4,4,Fin_Year
+2005,751.2859431,Total,Port Stephens,Drowned River Valley,-8780.843877,-15179.43122,Drought,No Drought,6,4,Fin_Year
+2006,822.2983552,Total,Port Stephens,Drowned River Valley,-116.5750382,20570.47307,Drought,Drought,9,4,Fin_Year
+1997,22.13740303,Bream,Tuggerah,Barrier Lagoon,5886.485762,40919.42302,Drought,No Drought,3,7,Oct-Feb
+1998,31.02259429,Bream,Tuggerah,Barrier Lagoon,14389.01771,62068.57107,No Drought,No Drought,0,7,Oct-Feb
+1999,21.68451717,Bream,Tuggerah,Barrier Lagoon,15839.05578,91660.48392,No Drought,No Drought,0,7,Oct-Feb
+2000,28.22013683,Bream,Tuggerah,Barrier Lagoon,12675.2571,67710.44208,No Drought,No Drought,0,7,Oct-Feb
+2001,22.14733084,Bream,Tuggerah,Barrier Lagoon,20760.70141,60392.90513,No Drought,No Drought,0,7,Oct-Feb
+2002,73.86736652,Bream,Tuggerah,Barrier Lagoon,15575.63234,77142.99693,Drought,Drought,8,7,Oct-Feb
+2003,147.790459,Bream,Tuggerah,Barrier Lagoon,3787.816878,71908.24123,Drought,No Drought,3,7,Oct-Feb
+2004,61.01855534,Bream,Tuggerah,Barrier Lagoon,6296.044839,71811.67449,Drought,No Drought,4,7,Oct-Feb
+2005,61.63338074,Bream,Tuggerah,Barrier Lagoon,16946.21635,65261.40214,Drought,No Drought,5,7,Oct-Feb
+2006,134.2542913,Bream,Tuggerah,Barrier Lagoon,5942.453618,78349.2221,Drought,Drought,9,7,Oct-Feb
+1997,84.01403206,Flathead,Tuggerah,Barrier Lagoon,16452.97756,66980.37801,Drought,No Drought,3,3,Dec-Mar
+1998,94.59213651,Flathead,Tuggerah,Barrier Lagoon,8871.953525,94647.87679,No Drought,No Drought,0,3,Dec-Mar
+1999,130.1395575,Flathead,Tuggerah,Barrier Lagoon,2623.285194,72892.91465,No Drought,No Drought,0,3,Dec-Mar
+2000,90.36044523,Flathead,Tuggerah,Barrier Lagoon,5600.187066,72006.97491,No Drought,No Drought,0,3,Dec-Mar
+2001,67.01079236,Flathead,Tuggerah,Barrier Lagoon,14503.19354,63284.97221,No Drought,No Drought,0,3,Dec-Mar
+2002,77.01349214,Flathead,Tuggerah,Barrier Lagoon,11504.96285,75329.03893,Drought,Drought,8,3,Dec-Mar
+2003,58.45880342,Flathead,Tuggerah,Barrier Lagoon,13551.775,69819.93288,Drought,No Drought,3,3,Dec-Mar
+2004,63.34599834,Flathead,Tuggerah,Barrier Lagoon,14801.33875,74658.6561,Drought,No Drought,4,3,Dec-Mar
+2005,65.53941239,Flathead,Tuggerah,Barrier Lagoon,8919.447766,71845.71532,Drought,No Drought,5,3,Dec-Mar
+2006,76.09107294,Flathead,Tuggerah,Barrier Lagoon,16347.87356,73685.7051,Drought,Drought,9,3,Dec-Mar
+1997,40.77729601,Luderick,Tuggerah,Barrier Lagoon,11375.56761,47197.78878,Drought,No Drought,3,4,Dec-Feb
+1998,68.67990747,Luderick,Tuggerah,Barrier Lagoon,16971.10899,43284.32503,No Drought,No Drought,0,4,Dec-Feb
+1999,133.9242792,Luderick,Tuggerah,Barrier Lagoon,11376.73222,65574.10809,No Drought,No Drought,0,4,Dec-Feb
+2000,124.7305645,Luderick,Tuggerah,Barrier Lagoon,547.3165585,54588.47628,No Drought,No Drought,0,4,Dec-Feb
+2001,115.0015909,Luderick,Tuggerah,Barrier Lagoon,5575.405801,54803.20269,No Drought,No Drought,0,4,Dec-Feb
+2002,147.9981071,Luderick,Tuggerah,Barrier Lagoon,14369.11761,43445.35552,Drought,Drought,8,4,Dec-Feb
+2003,118.5520093,Luderick,Tuggerah,Barrier Lagoon,8952.651733,62229.23881,Drought,No Drought,3,4,Dec-Feb
+2004,113.1565108,Luderick,Tuggerah,Barrier Lagoon,13677.80688,52515.52734,Drought,No Drought,4,4,Dec-Feb
+2005,102.8166734,Luderick,Tuggerah,Barrier Lagoon,13121.59351,57471.29335,Drought,No Drought,5,4,Dec-Feb
+2006,117.258215,Luderick,Tuggerah,Barrier Lagoon,7602.009192,48464.39203,Drought,Drought,9,4,Dec-Feb
+1997,4.485666315,Whiting,Tuggerah,Barrier Lagoon,8619.26927,63479.45168,Drought,No Drought,3,5,Dec-Feb
+1998,3.709142851,Whiting,Tuggerah,Barrier Lagoon,11375.56761,47197.78878,No Drought,No Drought,0,5,Dec-Feb
+1999,7.982537735,Whiting,Tuggerah,Barrier Lagoon,16971.10899,43284.32503,No Drought,No Drought,0,5,Dec-Feb
+2000,2.880926977,Whiting,Tuggerah,Barrier Lagoon,11376.73222,65574.10809,No Drought,No Drought,0,5,Dec-Feb
+2001,6.876564439,Whiting,Tuggerah,Barrier Lagoon,547.3165585,54588.47628,No Drought,No Drought,0,5,Dec-Feb
+2002,10.73532281,Whiting,Tuggerah,Barrier Lagoon,5575.405801,54803.20269,Drought,Drought,8,5,Dec-Feb
+2003,15.38162259,Whiting,Tuggerah,Barrier Lagoon,14369.11761,43445.35552,Drought,No Drought,3,5,Dec-Feb
+2004,15.89522787,Whiting,Tuggerah,Barrier Lagoon,8952.651733,62229.23881,Drought,No Drought,4,5,Dec-Feb
+2005,3.575550487,Whiting,Tuggerah,Barrier Lagoon,13677.80688,52515.52734,Drought,No Drought,5,5,Dec-Feb
+2006,4.851773998,Whiting,Tuggerah,Barrier Lagoon,13121.59351,57471.29335,Drought,Drought,9,5,Dec-Feb
+1997,246.7654619,Mullet,Tuggerah,Barrier Lagoon,-17664.76801,-39398.17223,Drought,No Drought,3,2,Apr-Jul
+1998,322.770441,Mullet,Tuggerah,Barrier Lagoon,-16564.67462,-26497.55772,No Drought,No Drought,0,2,Apr-Jul
+1999,242.0361152,Mullet,Tuggerah,Barrier Lagoon,-25750.44142,-537.5033306,No Drought,No Drought,0,2,Apr-Jul
+2000,231.9364854,Mullet,Tuggerah,Barrier Lagoon,-21812.13596,-25762.3293,No Drought,No Drought,0,2,Apr-Jul
+2001,401.678924,Mullet,Tuggerah,Barrier Lagoon,-24790.88338,3925.453445,No Drought,No Drought,0,2,Apr-Jul
+2002,424.7950615,Mullet,Tuggerah,Barrier Lagoon,-22246.44766,-27955.40437,Drought,Drought,8,2,Apr-Jul
+2003,300.0136261,Mullet,Tuggerah,Barrier Lagoon,-27743.31582,-22239.39958,Drought,No Drought,3,2,Apr-Jul
+2004,427.3630638,Mullet,Tuggerah,Barrier Lagoon,-21690.82932,-29314.78463,Drought,No Drought,4,2,Apr-Jul
+2005,448.4964407,Mullet,Tuggerah,Barrier Lagoon,-17051.39354,-12947.33235,Drought,No Drought,5,2,Apr-Jul
+2006,283.5799802,Mullet,Tuggerah,Barrier Lagoon,-18195.04825,-40422.65222,Drought,Drought,9,2,Apr-Jul
+1997,398.1798593,Total,Tuggerah,Barrier Lagoon,1726.326253,59492.71329,Drought,No Drought,3,4,Fin_Year
+1998,520.7742222,Total,Tuggerah,Barrier Lagoon,-9733.175644,50747.92444,No Drought,No Drought,0,4,Fin_Year
+1999,535.7670068,Total,Tuggerah,Barrier Lagoon,-13436.49821,59650.06859,No Drought,No Drought,0,4,Fin_Year
+2000,478.1285589,Total,Tuggerah,Barrier Lagoon,-18426.23186,36391.74476,No Drought,No Drought,0,4,Fin_Year
+2001,612.7152025,Total,Tuggerah,Barrier Lagoon,-21792.10858,81406.06169,No Drought,No Drought,0,4,Fin_Year
+2002,734.4093501,Total,Tuggerah,Barrier Lagoon,-13162.25604,60209.34622,Drought,Drought,8,4,Fin_Year
+2003,640.1965204,Total,Tuggerah,Barrier Lagoon,-11495.62374,97664.90979,Drought,No Drought,3,4,Fin_Year
+2004,680.7793561,Total,Tuggerah,Barrier Lagoon,-7988.979388,37496.53476,Drought,No Drought,4,4,Fin_Year
+2005,682.0614577,Total,Tuggerah,Barrier Lagoon,-18402.57383,27613.93649,Drought,No Drought,5,4,Fin_Year
+2006,616.0353334,Total,Tuggerah,Barrier Lagoon,-8214.247699,62953.79486,Drought,Drought,9,4,Fin_Year
+1997,16.79456391,Bream,Wallis Lake,Barrier Lagoon,12095.92664,23494.4236,Drought,No Drought,3,7,Oct-Feb
+1998,17.26236099,Bream,Wallis Lake,Barrier Lagoon,26114.81956,28217.19227,No Drought,No Drought,0,7,Oct-Feb
+1999,16.26508677,Bream,Wallis Lake,Barrier Lagoon,25898.59444,66739.77256,No Drought,No Drought,0,7,Oct-Feb
+2000,21.9107373,Bream,Wallis Lake,Barrier Lagoon,22509.34289,32861.63649,No Drought,No Drought,0,7,Oct-Feb
+2001,26.75942361,Bream,Wallis Lake,Barrier Lagoon,31114.70691,41969.94434,No Drought,No Drought,0,7,Oct-Feb
+2002,32.35215677,Bream,Wallis Lake,Barrier Lagoon,25377.76468,48374.32607,Drought,Drought,8,7,Oct-Feb
+2003,19.28856032,Bream,Wallis Lake,Barrier Lagoon,10234.06392,47733.0679,Drought,No Drought,3,7,Oct-Feb
+2004,36.24154532,Bream,Wallis Lake,Barrier Lagoon,19240.82842,44217.479,Drought,No Drought,4,7,Oct-Feb
+2005,29.39987972,Bream,Wallis Lake,Barrier Lagoon,34300.44534,27621.02913,Drought,No Drought,6,7,Oct-Feb
+2006,54.16673972,Bream,Wallis Lake,Barrier Lagoon,14505.71049,52686.00831,Drought,Drought,8,7,Oct-Feb
+1997,55.790024,Flathead,Wallis Lake,Barrier Lagoon,24765.97166,49762.32506,Drought,No Drought,3,3,Dec-Mar
+1998,82.82088563,Flathead,Wallis Lake,Barrier Lagoon,9207.413821,69399.32915,No Drought,No Drought,0,3,Dec-Mar
+1999,97.3812672,Flathead,Wallis Lake,Barrier Lagoon,4862.018498,50835.8712,No Drought,No Drought,0,3,Dec-Mar
+2000,84.09398327,Flathead,Wallis Lake,Barrier Lagoon,16412.97051,38147.80662,No Drought,No Drought,0,3,Dec-Mar
+2001,69.5835074,Flathead,Wallis Lake,Barrier Lagoon,26771.03622,32076.95054,No Drought,No Drought,0,3,Dec-Mar
+2002,72.94709921,Flathead,Wallis Lake,Barrier Lagoon,16575.12106,53472.2216,Drought,Drought,8,3,Dec-Mar
+2003,73.54438771,Flathead,Wallis Lake,Barrier Lagoon,24975.45416,28763.71652,Drought,No Drought,3,3,Dec-Mar
+2004,72.88307764,Flathead,Wallis Lake,Barrier Lagoon,23662.43854,51457.96111,Drought,No Drought,4,3,Dec-Mar
+2005,102.5108048,Flathead,Wallis Lake,Barrier Lagoon,15282.82013,53486.77916,Drought,No Drought,6,3,Dec-Mar
+2006,96.47602387,Flathead,Wallis Lake,Barrier Lagoon,20348.09718,50313.37409,Drought,Drought,8,3,Dec-Mar
+1997,42.31106269,Luderick,Wallis Lake,Barrier Lagoon,21008.90544,21704.53093,Drought,No Drought,3,4,Dec-Feb
+1998,58.79608473,Luderick,Wallis Lake,Barrier Lagoon,24850.33232,26582.31614,No Drought,No Drought,0,4,Dec-Feb
+1999,57.67450672,Luderick,Wallis Lake,Barrier Lagoon,13107.92054,46282.12297,No Drought,No Drought,0,4,Dec-Feb
+2000,57.68088621,Luderick,Wallis Lake,Barrier Lagoon,3769.05592,33558.62386,No Drought,No Drought,0,4,Dec-Feb
+2001,84.39374499,Luderick,Wallis Lake,Barrier Lagoon,14392.76609,31561.3456,No Drought,No Drought,0,4,Dec-Feb
+2002,91.4189247,Luderick,Wallis Lake,Barrier Lagoon,25223.52773,20891.73219,Drought,Drought,8,4,Dec-Feb
+2003,79.34448023,Luderick,Wallis Lake,Barrier Lagoon,14315.44396,41668.26395,Drought,No Drought,3,4,Dec-Feb
+2004,86.95208928,Luderick,Wallis Lake,Barrier Lagoon,19011.79582,24594.84156,Drought,No Drought,4,4,Dec-Feb
+2005,106.9798652,Luderick,Wallis Lake,Barrier Lagoon,22761.1171,30713.42735,Drought,No Drought,6,4,Dec-Feb
+2006,125.3735637,Luderick,Wallis Lake,Barrier Lagoon,13911.8861,32603.15148,Drought,Drought,8,4,Dec-Feb
+1997,12.3405101,Whiting,Wallis Lake,Barrier Lagoon,14002.55982,48621.73778,Drought,No Drought,3,5,Dec-Feb
+1998,12.45338789,Whiting,Wallis Lake,Barrier Lagoon,21008.90544,21704.53093,No Drought,No Drought,0,5,Dec-Feb
+1999,9.943880866,Whiting,Wallis Lake,Barrier Lagoon,24850.33232,26582.31614,No Drought,No Drought,0,5,Dec-Feb
+2000,12.43221259,Whiting,Wallis Lake,Barrier Lagoon,13107.92054,46282.12297,No Drought,No Drought,0,5,Dec-Feb
+2001,9.512756473,Whiting,Wallis Lake,Barrier Lagoon,3769.05592,33558.62386,No Drought,No Drought,0,5,Dec-Feb
+2002,16.1285709,Whiting,Wallis Lake,Barrier Lagoon,14392.76609,31561.3456,Drought,Drought,8,5,Dec-Feb
+2003,17.19368947,Whiting,Wallis Lake,Barrier Lagoon,25223.52773,20891.73219,Drought,No Drought,3,5,Dec-Feb
+2004,23.66925799,Whiting,Wallis Lake,Barrier Lagoon,14315.44396,41668.26395,Drought,No Drought,4,5,Dec-Feb
+2005,12.16295893,Whiting,Wallis Lake,Barrier Lagoon,19011.79582,24594.84156,Drought,No Drought,6,5,Dec-Feb
+2006,21.15672179,Whiting,Wallis Lake,Barrier Lagoon,22761.1171,30713.42735,Drought,Drought,8,5,Dec-Feb
+1997,217.2537591,Mullet,Wallis Lake,Barrier Lagoon,-23304.58983,-40805.08173,Drought,No Drought,3,2,Apr-Jul
+1998,191.631827,Mullet,Wallis Lake,Barrier Lagoon,-17421.8238,-25845.03534,No Drought,No Drought,0,2,Apr-Jul
+1999,193.8869338,Mullet,Wallis Lake,Barrier Lagoon,-30590.75563,-21844.80854,No Drought,No Drought,0,2,Apr-Jul
+2000,203.460398,Mullet,Wallis Lake,Barrier Lagoon,-29307.902,-48118.80985,No Drought,No Drought,0,2,Apr-Jul
+2001,284.3818102,Mullet,Wallis Lake,Barrier Lagoon,-30577.84316,-3633.557644,No Drought,No Drought,0,2,Apr-Jul
+2002,261.9088393,Mullet,Wallis Lake,Barrier Lagoon,-27602.03907,-31731.35882,Drought,Drought,8,2,Apr-Jul
+2003,299.8145745,Mullet,Wallis Lake,Barrier Lagoon,-31051.45868,-44820.94479,Drought,No Drought,3,2,Apr-Jul
+2004,528.0796676,Mullet,Wallis Lake,Barrier Lagoon,-28035.82256,-42946.78054,Drought,No Drought,4,2,Apr-Jul
+2005,265.7707024,Mullet,Wallis Lake,Barrier Lagoon,-23570.40612,-23580.00297,Drought,No Drought,6,2,Apr-Jul
+2006,277.9622219,Mullet,Wallis Lake,Barrier Lagoon,-22323.01884,-50118.69415,Drought,Drought,8,2,Apr-Jul
+1997,344.4899198,Total,Wallis Lake,Barrier Lagoon,9148.874925,28105.46657,Drought,No Drought,3,4,Fin_Year
+1998,362.9645462,Total,Wallis Lake,Barrier Lagoon,7716.678223,15163.21267,No Drought,No Drought,0,4,Fin_Year
+1999,375.1516754,Total,Wallis Lake,Barrier Lagoon,-14460.35453,20834.08425,No Drought,No Drought,0,4,Fin_Year
+2000,379.5782174,Total,Wallis Lake,Barrier Lagoon,-10256.7069,10469.83595,No Drought,No Drought,0,4,Fin_Year
+2001,474.6312427,Total,Wallis Lake,Barrier Lagoon,-11013.50278,9307.178456,No Drought,No Drought,0,4,Fin_Year
+2002,474.7555909,Total,Wallis Lake,Barrier Lagoon,-4499.807292,-1885.390277,Drought,Drought,8,4,Fin_Year
+2003,489.1856922,Total,Wallis Lake,Barrier Lagoon,-9461.224497,45421.63271,Drought,No Drought,3,4,Fin_Year
+2004,747.8256378,Total,Wallis Lake,Barrier Lagoon,5569.07366,-15304.6167,Drought,No Drought,4,4,Fin_Year
+2005,516.8242111,Total,Wallis Lake,Barrier Lagoon,-10908.24286,-28195.65663,Drought,No Drought,6,4,Fin_Year
+2006,575.135271,Total,Wallis Lake,Barrier Lagoon,917.9568309,14332.75393,Drought,Drought,8,4,Fin_Year
