@@ -1,0 +1,387 @@
+---
+title: "CPUE Data Analysis"
+output: html_notebook
+---
+
+Based upon conversations with Pravin, use log10 CPUE rather than standardise by estuary/species
+
+Load data and clean up and standardise the winds
+```{r}
+library(ggplot2)
+library(DHARMa)
+library(bootpredictlme4)
+library(merTools)
+library(effects)
+library(MuMIn)
+library(dplyr)
+library(brms)
+# Use Log10(CPUE) rather than standardise
+
+
+# Load Data
+mydata <- read.csv("../Full_Data_Modelling_BARRA_by_estuary.csv", header = T) # Full_Data_ModellingV3_by_estuary.csv
+# mydata2 <-  read.csv("Full_Data_Modelling.csv", header = T)
+# 
+# cor.test(mydata$X45_degree_winds, mydata2$X135_degree_winds)
+# cor.test(mydata$X135_degree_winds, mydata2$X45_degree_winds)
+# cor.test(mydata$X135_degree_winds, mydata2$X135_degree_winds)
+# cor.test(mydata$X45_degree_winds, mydata2$X45_degree_winds)
+# # NE winds not correlated by SE winds are.....
+
+# Remove Total CPUE
+mydata <- subset(mydata, Species != "Total")
+
+### Standardise Winds
+my.df <-  mydata %>% mutate(X45_degree_winds.standardised = as.numeric(scale(X45_degree_winds)),
+                           X135_degree_winds.standardised = as.numeric(scale(X135_degree_winds)))
+
+p1 <- ggplot(my.df, aes(x = X135_degree_winds.standardised, y = log10(CPUE))) + geom_point() +
+  facet_wrap(~Species, scales = "free") + geom_smooth()
+p1
+```
+
+
+Do full model for all species
+
+```{r}
+m7 <- glmer(CPUE ~ poly(X135_degree_winds.standardised, degree = 2) + 
+       poly(X45_degree_winds.standardised, degree = 2) +
+       X135_degree_winds.standardised:X45_degree_winds.standardised+
+        Estuary_Type *Drought_Months + (Species|Estuary), data = my.df, poisson(link = "log"))
+AIC(m7) # -38.18
+r.squaredGLMM(m7) # 0.08
+
+anova(m7)
+#summary(m7)
+```
+
+```{r}
+fit3 <- glmmTMB((CPUE) ~poly(X135_degree_winds.standardised, degree = 2) + 
+       poly(X45_degree_winds.standardised, degree = 2) +
+       X135_degree_winds.standardised:X45_degree_winds.standardised+
+        Estuary_Type *Drought_Months + (Species|Estuary), data = my.df, family=tweedie(link = "log"))
+
+simulationOutput <- simulateResiduals(fittedModel = fit3, n = 250)
+plot(simulationOutput)
+```
+
+
+```{r}
+B1 <- brm(log10(CPUE) ~poly(X135_degree_winds.standardised, degree = 2) + 
+       poly(X45_degree_winds.standardised, degree = 2) +
+       X135_degree_winds.standardised:X45_degree_winds.standardised+
+        Estuary_Type *Drought_Months + (Species|Estuary), data = my.df, family='skew_normal')
+```
+
+```{r}
+plot(B1)
+summary(B1)
+```
+
+
+Check assumptions - THESE ARE NOT GOOD - WHAT TO DO??? Perhaps do not report this model in the paper?
+
+```{r}
+simulationOutput <- simulateResiduals(fittedModel = m7, n = 250)
+plot(simulationOutput)
+
+hist(simulationOutput$fittedResiduals)
+```
+
+Proceeding despite bad assumptions....
+
+Effect size plot
+```{r}
+fastdisp(m7)
+
+feEx <- FEsim(m2, 1000)
+cbind(feEx[,1] , round(feEx[, 2:4], 3))
+
+
+plotFEsim(feEx) + 
+  theme_bw() + labs(title = "Coefficient Plot of InstEval Model", 
+                    x = "Median Effect Estimate", y = "Evaluation Rating")
+```
+
+
+Now for some species specific examples
+Bream First
+Prepare Data
+```{r}
+bream <- subset(my.df, Species == "Bream")
+
+#m1 <- lmer(CPUE.standardised ~ X135_degree_winds.standardised * X45_degree_winds.standardised + 
+#           Estuary_Type + Drought_Months + (1|Estuary), data = bream)
+#AIC(m1) #215.42
+
+pI <- ggplot(bream, aes(x = X135_degree_winds.standardised,y = X45_degree_winds.standardised, size = log10(CPUE))) + geom_point(alpha = 0.1) +
+  theme_classic() + labs(title = "CPUE by lagged Winds")
+pI
+```
+
+Model
+```{r}
+m1 <- lmer(log10(CPUE) ~ poly(X135_degree_winds.standardised, degree = 2) + 
+             poly(X45_degree_winds.standardised, degree = 2) +
+             X135_degree_winds.standardised:X45_degree_winds.standardised+
+             Estuary_Type * Drought_Months + (1|Estuary), data = bream)
+r.squaredGLMM(m1) # 0.266
+AIC(m1) # 43.17
+```
+
+Check assumptions
+```{r}
+simulationOutput <- simulateResiduals(fittedModel = m1, n = 250)
+plot(simulationOutput)
+
+# histograms
+hist(simulationOutput$fittedResiduals)
+```
+
+Check significance
+```{r}
+anova(m1)
+```
+
+
+```{r}
+plot(allEffects(m1))
+```
+
+Effect size plot
+```{r}
+fastdisp(m1)
+
+feEx <- FEsim(m1, 1000)
+cbind(feEx[,1] , round(feEx[, 2:4], 3))
+
+
+plotFEsim(feEx) + 
+  theme_bw() + labs(title = "Coefficient Plot of InstEval Model", 
+                    x = "Median Effect Estimate", y = "Evaluation Rating")
+```
+
+
+##Now Mullet##
+Prepare Data
+```{r}
+mullet <- subset(my.df, Species == "Mullet")
+
+p2 <- ggplot(mullet, aes(x = X135_degree_winds.standardised,y = X45_degree_winds.standardised, size = log10(CPUE))) + geom_point(alpha = 0.1) +
+  theme_classic() + labs(title = "CPUE by lagged Winds")
+p2
+```
+
+Model
+```{r}
+m2 <- lmer(log10(CPUE) ~ poly(X135_degree_winds.standardised, degree = 2) + 
+             poly(X45_degree_winds.standardised, degree = 2) +
+             X135_degree_winds.standardised:X45_degree_winds.standardised+
+             Estuary_Type * Drought_Months + (1|Estuary), data = mullet)
+r.squaredGLMM(m2) # 0.147
+AIC(m2) # -22.726
+```
+
+Check assumptions
+```{r}
+simulationOutput <- simulateResiduals(fittedModel = m2, n = 250)
+plot(simulationOutput)
+
+# histograms
+hist(simulationOutput$fittedResiduals)
+```
+
+Check significance
+```{r}
+anova(m2)
+```
+Therefore wind is not important for mullet?
+
+```{r}
+plot(allEffects(m2))
+```
+
+Effect size plot
+```{r}
+fastdisp(m2)
+
+feEx <- FEsim(m2, 1000)
+cbind(feEx[,1] , round(feEx[, 2:4], 3))
+
+
+plotFEsim(feEx) + 
+  theme_bw() + labs(title = "Coefficient Plot of InstEval Model", 
+                    x = "Median Effect Estimate", y = "Evaluation Rating")
+```
+
+##Now Whiting##
+Prepare Data
+```{r}
+whiting <- subset(my.df, Species == "Whiting")
+
+#m1 <- lmer(CPUE.standardised ~ X135_degree_winds.standardised * X45_degree_winds.standardised + 
+#           Estuary_Type + Drought_Months + (1|Estuary), data = bream)
+#AIC(m1) #215.42
+
+p3 <- ggplot(whiting, aes(x = X135_degree_winds.standardised,y = X45_degree_winds.standardised, size = log10(CPUE))) + geom_point(alpha = 0.1) +
+  theme_classic() + labs(title = "CPUE by lagged Winds")
+p3
+```
+
+Model
+```{r}
+m3 <- lmer(log10(CPUE) ~ poly(X135_degree_winds.standardised, degree = 2) + 
+             poly(X45_degree_winds.standardised, degree = 2) +
+             X135_degree_winds.standardised:X45_degree_winds.standardised+
+             Estuary_Type * Drought_Months + (1|Estuary), data = whiting)
+r.squaredGLMM(m3) # 0.127
+AIC(m3) # 64.26
+```
+
+Check assumptions
+```{r}
+simulationOutput <- simulateResiduals(fittedModel = m3, n = 250)
+plot(simulationOutput)
+
+# histograms
+hist(simulationOutput$fittedResiduals)
+```
+
+Check significance
+```{r}
+anova(m3)
+```
+Therefore wind is not important for whiting?
+
+```{r}
+plot(allEffects(m3))
+```
+
+Effect size plot
+```{r}
+fastdisp(m3)
+
+feEx <- FEsim(m3, 1000)
+cbind(feEx[,1] , round(feEx[, 2:4], 3))
+
+
+plotFEsim(feEx) + 
+  theme_bw() + labs(title = "Coefficient Plot of InstEval Model", 
+                    x = "Median Effect Estimate", y = "Evaluation Rating")
+```
+
+##Now Luderick##
+Prepare Data
+```{r}
+luderick <- subset(my.df, Species == "Luderick")
+
+#m1 <- lmer(CPUE.standardised ~ X135_degree_winds.standardised * X45_degree_winds.standardised + 
+#           Estuary_Type + Drought_Months + (1|Estuary), data = bream)
+#AIC(m1) #215.42
+
+p4 <- ggplot(luderick, aes(x = X135_degree_winds.standardised,y = X45_degree_winds.standardised, size = log10(CPUE))) + geom_point(alpha = 0.1) +
+  theme_classic() + labs(title = "CPUE by lagged Winds")
+p4
+```
+
+Model
+```{r}
+m4 <- lmer(log10(CPUE) ~ poly(X135_degree_winds.standardised, degree = 2) + 
+             poly(X45_degree_winds.standardised, degree = 2) +
+             X135_degree_winds.standardised:X45_degree_winds.standardised+
+             Estuary_Type * Drought_Months + (1|Estuary), data = luderick)
+r.squaredGLMM(m4) # 0.127
+AIC(m4) # 64.26
+```
+
+Check assumptions
+```{r}
+simulationOutput <- simulateResiduals(fittedModel = m4, n = 250)
+plot(simulationOutput)
+
+# histograms
+hist(simulationOutput$fittedResiduals)
+```
+
+Check significance
+```{r}
+anova(m4)
+```
+Therefore wind is not important for luderick?
+
+```{r}
+plot(allEffects(m4))
+```
+
+Effect size plot
+```{r}
+fastdisp(m4)
+
+feEx <- FEsim(m4, 1000)
+cbind(feEx[,1] , round(feEx[, 2:4], 3))
+
+
+plotFEsim(feEx) + 
+  theme_bw() + labs(title = "Coefficient Plot of InstEval Model", 
+                    x = "Median Effect Estimate", y = "Evaluation Rating")
+```
+
+##Now Flathead##
+Prepare Data
+```{r}
+flathead <- subset(my.df, Species == "Flathead")
+
+#m1 <- lmer(CPUE.standardised ~ X135_degree_winds.standardised * X45_degree_winds.standardised + 
+#           Estuary_Type + Drought_Months + (1|Estuary), data = bream)
+#AIC(m1) #215.42
+
+p5 <- ggplot(flathead, aes(x = X135_degree_winds.standardised,y = X45_degree_winds.standardised, size = log10(CPUE))) + geom_point(alpha = 0.1) +
+  theme_classic() + labs(title = "CPUE by lagged Winds")
+p5
+```
+
+Model
+```{r}
+m5 <- lmer(log10(CPUE) ~ poly(X135_degree_winds.standardised, degree = 2) + 
+             poly(X45_degree_winds.standardised, degree = 2) +
+             X135_degree_winds.standardised:X45_degree_winds.standardised+
+             Estuary_Type * Drought_Months + (1|Estuary), data = flathead)
+r.squaredGLMM(m4) # 0.127
+AIC(m5) # 64.26
+```
+
+Check assumptions
+```{r}
+simulationOutput <- simulateResiduals(fittedModel = m5, n = 250)
+plot(simulationOutput)
+
+# histograms
+hist(simulationOutput$fittedResiduals)
+```
+
+Check significance
+```{r}
+anova(m5)
+```
+Therefore wind is not important for luderick?
+
+```{r}
+plot(allEffects(m5))
+```
+
+Effect size plot
+```{r}
+fastdisp(m5)
+
+feEx <- FEsim(m5, 1000)
+cbind(feEx[,1] , round(feEx[, 2:4], 3))
+
+
+plotFEsim(feEx) + 
+  theme_bw() + labs(title = "Coefficient Plot of InstEval Model", 
+                    x = "Median Effect Estimate", y = "Evaluation Rating")
+```
+
+CONCLUSION - There is weak evidence of effects of wind (mostly for bream) but there is lots more variance which is masking these effects.
+
+

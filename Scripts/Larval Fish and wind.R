@@ -25,10 +25,10 @@ summary(fish_data$Bathym_m)
 hist(fish_data$Bathym_m)
 
 # Load Wind Data
-wind_data <- read.csv("../Wind Data/45 degree/Sydney_Daily Modelled Wind Data Final 45 degree.csv", header = T)
+wind_data <- read.csv("../BOM Data/BARRA Model/BARRA Larval Daily 45 deg Wind Data Final.csv", header = T)
 str(wind_data)
 
-wind_data_SE <- read.csv("../Wind Data/135 degree/Sydney_Daily Modelled Wind Data Final 135 degree.csv", header = T)
+wind_data_SE <- read.csv("../BOM Data/BARRA Model/BARRA Larval Daily 135 deg Wind Data Final.csv", header = T)
 str(wind_data_SE)
 
 # Recognise Dates
@@ -56,10 +56,12 @@ head(fish_data)
 
 # For each sample, find the wind two weeks prior, sum displacement and assign to wind column
 for (i in 1:nrow(fish_data)){
-  dat2 <- filter(wind_data, Date <= fish_data$Date[i] & Date >= (fish_data$Date[i])-3)
+  dat2 <- filter(wind_data, Date <= fish_data$Date[i] & Date >= (fish_data$Date[i])-14 & 
+                   Latitude == fish_data$Latitude[i] & Longitude == fish_data$Longitude[i])
   wind_tot <- sum(dat2$displacement)
   fish_data$NE_Winds[i] <- wind_tot
-  dat3 <- filter(wind_data_SE, Date <= fish_data$Date[i] & Date >= (fish_data$Date[i])-3)
+  dat3 <- filter(wind_data_SE, Date <= fish_data$Date[i] & Date >= (fish_data$Date[i])-14& 
+                   Latitude == fish_data$Latitude[i] & Longitude == fish_data$Longitude[i])
   wind_tot_SE <- sum(dat3$displacement)
   fish_data$SE_Winds[i] <- wind_tot_SE
 }
@@ -301,6 +303,9 @@ fit3 <- glmmTMB(Coastal_Normalised_Abund ~
 simulationOutput <- simulateResiduals(fittedModel = fit3, n = 250)
 plot(simulationOutput)
 
+summary(fit3)
+
+
 # equivalent code but allows marginal effects to be calculated
 fit4 <- glmmTMB(Coastal_Normalised_Abund ~
                   poly(NE_Winds.standardised, degree = 2)*dists_km+
@@ -308,42 +313,37 @@ fit4 <- glmmTMB(Coastal_Normalised_Abund ~
                   SE_Winds.standardised:NE_Winds.standardised*
                   dists_km + (1|Project_ID), family=tweedie(), data = fish_data)
 
-fit4 <- glmmTMB(Coastal_Normalised_Abund ~
-                  poly(NE_Winds.standardised, degree = 2)*dists_km*
-                  poly(SE_Winds.standardised, degree = 2) +
-                  (1|Project_ID), family=tweedie(), data = fish_data)
-
 simulationOutput <- simulateResiduals(fittedModel = fit4, n = 250)
 plot(simulationOutput)
 
-ggpredict(fit4, terms = "NE_Winds.standardised [all]")
+summary(fit4)
+
+plot(ggpredict(fit4, terms = "NE_Winds.standardised [all]"))
+plot(ggpredict(fit4, terms = "dists_km [all]"))
+
 
 # marginal effects plot for distance from coast
-library(ggplot2)
-mydf <- ggpredict(fit4, terms = "SE_Winds.standardised [all]")
-ggplot(mydf, aes(x, predicted)) +
-  geom_line() +
-  geom_ribbon(aes(ymin = conf.low, ymax = conf.high), alpha = .1)
-
-### larval plot
-
-pI <- ggplot(fish_data, aes(x = SE_Winds.standardised,y = NE_Winds.standardised, size = Coastal_Normalised_Abund)) + geom_point(alpha = 0.5) +
-  theme_classic() + labs(title = "Winds 3 days prior")
-pI
-
-#ggsave("Plots/Winds Larval dot size 3 days.png", width = 21, height = 14.8, units = "cm", dpi = 600)
 
 
-pI2 <- ggplot(fish_data, aes(x = SE_Winds.standardised,y = Coastal_Normalised_Abund)) + geom_point(alpha = 0.5) + geom_smooth()+
-  theme_classic() + labs(title = "Winds 3 days prior")
-pI2
-ggsave("Plots/SE Winds Larval Abund 3 days.png", width = 21, height = 14.8, units = "cm", dpi = 600)
-
-pI3 <- ggplot(fish_data, aes(x = NE_Winds.standardised,y = Coastal_Normalised_Abund)) + geom_point(alpha = 0.5) + geom_smooth() +
-  theme_classic() + labs(title = "Winds 3 days prior")
-pI3
-ggsave("Plots/NE Winds Larval Abund 3 days.png", width = 21, height = 14.8, units = "cm", dpi = 600)
-
+# ### larval plot
+# 
+# pI <- ggplot(fish_data, aes(x = SE_Winds.standardised,y = NE_Winds.standardised, size = Coastal_Normalised_Abund)) + geom_point(alpha = 0.5) +
+#   theme_classic() + labs(title = "Winds 3 days prior")
+# pI
+# 
+# ggsave("../Plots/Winds Larval dot size 3 days.png", width = 21, height = 14.8, units = "cm", dpi = 600)
+# 
+# 
+# pI2 <- ggplot(fish_data, aes(x = SE_Winds.standardised,y = Coastal_Normalised_Abund)) + geom_point(alpha = 0.5) + geom_smooth()+
+#   theme_classic() + labs(title = "Winds 3 days prior")
+# pI2
+# ggsave("Plots/SE Winds Larval Abund 3 days.png", width = 21, height = 14.8, units = "cm", dpi = 600)
+# 
+# pI3 <- ggplot(fish_data, aes(x = NE_Winds.standardised,y = Coastal_Normalised_Abund)) + geom_point(alpha = 0.5) + geom_smooth() +
+#   theme_classic() + labs(title = "Winds 3 days prior")
+# pI3
+# ggsave("Plots/NE Winds Larval Abund 3 days.png", width = 21, height = 14.8, units = "cm", dpi = 600)
+# 
 
 # Test Jon Gillson comments about residuals (still to do autocorrelation?)
 hist(simulationOutput$scaledResiduals)
@@ -364,56 +364,17 @@ acf_p
 ### Continue on
 plotResiduals(fish_data$Project_ID, simulationOutput$scaledResiduals)
 
-Anova(fit3,type="II",test="Chisq")
+Anova(fit4,type="II",test="Chisq")
 summary(fit3)
 
 hist(fish_data$Coastal_Normalised_Abund)
 
 plot(allEffects(fit3))
-plot(Effect(c("SE_Winds.standardised","dists_km"), fit3)) 
+plot(Effect(c("SE_Winds.standardised"), fit3)) 
 plot(Effect(c("NE_Winds.standardised","dists_km"), fit3)) 
 plot(Effect(c("SE_Winds.standardised","NE_Winds.standardised"), fit3))
 
 cor.test(fish_data$NE_Winds.standardised, fish_data$SE_Winds.standardised)
-
-### Try caterpillar plots
-library(ggplot2)
-summary(fit3)
-
-broom::tidy(fit3)
-
-coefficients(fit3)
-
-dat <- summary(fit3)
-
-cos <- dat$coefficients$cond
-#write.csv(cos, "Larval fish model coefs 14 day.csv", row.names = T)
-
-cos
-
-p <- ggplot(df,aes(lev.names,Intercepts,shape=lev.names))
-
-#Added horizontal line at y=0, error bars to points and points with size two
-p <- p + geom_hline(yintercept=0) +geom_errorbar(aes(ymin=Intercepts-sd.interc, ymax=Intercepts+sd.interc), width=0,color="black") + geom_point(aes(size=2)) 
-
-#Removed legends and with scale_shape_manual point shapes set to 1 and 16
-p <- p + guides(size=FALSE,shape=FALSE) + scale_shape_manual(values=c(1,1,1,16,16,16))
-
-#Changed appearance of plot (black and white theme) and x and y axis labels
-p <- p + theme_bw() + xlab("Levels") + ylab("")
-
-#Final adjustments of plot
-p <- p + theme(axis.text.x=element_text(size=rel(1.2)),
-               axis.title.x=element_text(size=rel(1.3)),
-               axis.text.y=element_text(size=rel(1.2)),
-               panel.grid.minor=element_blank(),
-               panel.grid.major.x=element_blank())
-
-#To put levels on y axis you just need to use coord_flip()
-p <- p+ coord_flip()
-print(p)
-
-
 
 
 
@@ -788,12 +749,14 @@ for (i in 1:length(nums)){
   }
 }
 
-#write.csv(heat_data, "heatmap data larval 28 day lag.csv", row.names = F)
+write.csv(heat_data, "../heatmap data larval 3 day lag BARRA.csv", row.names = F)
+#write.csv(heat_data, "../heatmap data larval 14 day lag BARRA.csv", row.names = F)
+
 
 library(ggplot2)
 library(viridis)
 
-p <- ggplot(heat_data, aes(x = Southeast.Winds,y = Northeast.Winds)) + geom_tile(aes(fill = Abundance)) +
+p <- ggplot(heat14, aes(x = Southeast.Winds,y = Northeast.Winds)) + geom_tile(aes(fill = Abundance)) +
   #scale_fill_gradient(low = "blue", high = "red") + 
   theme_classic() + scale_fill_viridis(option = "magma") + # or geom_raster()
   xlab("Standardised Southeast Winds") + ylab("Standardised Northeast Winds") +
@@ -805,8 +768,8 @@ p <- ggplot(heat_data, aes(x = Southeast.Winds,y = Northeast.Winds)) + geom_tile
   
 p
 
-ggsave("../plots/Larvae heatmap 14 day tester.pdf", width = 21, height = 14.8, units = "cm")
-ggsave("../plots/Larvae heatmap 14 day tester.png", width = 21, height = 14.8, units = "cm", dpi = 600)
+ggsave("../plots/Larvae heatmap 3 day tester.pdf", width = 21, height = 14.8, units = "cm")
+ggsave("../plots/Larvae heatmap 3 day tester.png", width = 21, height = 14.8, units = "cm", dpi = 600)
 
 heat3 <- read.csv("../heatmap data with error larval 3 day lag.csv", header = T)
 heat14 <- read.csv("../heatmap data with error larval 14 day lag.csv", header = T)
@@ -868,23 +831,23 @@ heat_data <- read.csv("heatmap data with error larval 3 day lag.csv", header = T
 library(ggplot2)
 library(viridis)
 
-p <- ggplot(heat_data, aes(x = Southeast.Winds,y = Northeast.Winds)) + geom_tile(aes(fill = Error)) +
-  #scale_fill_gradient(low = "blue", high = "red") + 
-  theme_classic() + scale_fill_viridis() + # or geom_raster()
-  xlab("Standardised Southeast Winds") + ylab("Standardised Northeast Winds") +
-  theme(axis.title.x = element_text(face="bold", colour="black", size = 18),
-        axis.text.x  = element_text(colour="black", size = 14), 
-        axis.title.y = element_text(face="bold", colour="black", size = 18),
-        axis.text.y  = element_text(colour="black", size = 14),
-        axis.ticks = element_line(colour="black"))
+# p <- ggplot(heat_data, aes(x = Southeast.Winds,y = Northeast.Winds)) + geom_tile(aes(fill = Error)) +
+#   #scale_fill_gradient(low = "blue", high = "red") + 
+#   theme_classic() + scale_fill_viridis() + # or geom_raster()
+#   xlab("Standardised Southeast Winds") + ylab("Standardised Northeast Winds") +
+#   theme(axis.title.x = element_text(face="bold", colour="black", size = 18),
+#         axis.text.x  = element_text(colour="black", size = 14), 
+#         axis.title.y = element_text(face="bold", colour="black", size = 18),
+#         axis.text.y  = element_text(colour="black", size = 14),
+#         axis.ticks = element_line(colour="black"))
+# 
+# p
+# 
+# ggsave("plots/Larvae heatmap 3 day error.pdf", width = 21, height = 14.8, units = "cm")
+# ggsave("plots/Larvae heatmap 3 day error.png", width = 21, height = 14.8, units = "cm", dpi = 600)
 
-p
-
-ggsave("plots/Larvae heatmap 3 day error.pdf", width = 21, height = 14.8, units = "cm")
-ggsave("plots/Larvae heatmap 3 day error.png", width = 21, height = 14.8, units = "cm", dpi = 600)
-
-#heat3 <- read.csv("heatmap dataV3 with error larval 3 day lag.csv", header = T)
-#heat14 <- read.csv("heatmap dataV3 with error larval 14 day lag.csv", header = T)
+heat3 <- read.csv("../heatmap data with error larval 3 day lag.csv", header = T)
+heat14 <- read.csv("../heatmap data with error larval 14 day lag.csv", header = T)
 
 heat3$Lag <- "3"
 heat14$Lag <- "14"
@@ -930,8 +893,8 @@ p <- ggplot(heat_full, aes(x = Southeast.Winds,y = Northeast.Winds)) + geom_tile
   )
 p
 
-ggsave("plots/Larvae combined heatmap error.pdf", width = 21, height = 14.8, units = "cm")
-ggsave("plots/Larvae combined heatmap error.png", width = 21, height = 14.8, units = "cm", dpi = 600)
+ggsave("../plots/Larvae combined heatmap error.pdf", width = 21, height = 14.8, units = "cm")
+ggsave("../plots/Larvae combined heatmap error.png", width = 21, height = 14.8, units = "cm", dpi = 600)
 
 
 ### Test Myctophids???? Not really what I wanted.
@@ -1003,37 +966,61 @@ for (i in 1:length(nums)){
   }
 }
 
+
+################################# Final Plots
+
 library(ggplot2)
 library(viridis)
 
-p <- ggplot(heat_dataM, aes(x = Southeast.Winds,y = Northeast.Winds)) + geom_tile(aes(fill = Abundance)) +
+mydf <- ggpredict(fit4, terms = "dists_km [all]")
+
+pD <- ggplot(mydf, aes(x, predicted)) + #facet_wrap(~Term, scales = "free_x", switch = "x") +
+  geom_line() +
+  geom_ribbon(aes(ymin = conf.low, ymax = conf.high), alpha = .1) +
+  theme_classic() + theme(axis.title.x = element_text(colour="black", face = "bold", size = 15),
+                          axis.text.x  = element_text(colour="black", size = 14), 
+                          axis.title.y = element_text(face="bold", colour="black", size = 15),
+                          axis.text.y  = element_text(colour="black", size = 14),
+                          axis.ticks = element_line(colour="black"),
+                          strip.text = element_text(colour="black", face = "bold", size = 13),
+                          strip.background = element_blank(),
+                          strip.placement = "outside",
+                          #legend.justification=c(1,0), legend.position="right",
+                          panel.border = element_rect(colour = "black", fill=NA, size = 1))+
+  ylab("Predicted Normalised \nCoastal Species Abundance") +
+  xlab("Distance to \nCoast (km)")
+
+pD
+
+
+
+heat14 <- read.csv("../heatmap data with error larval 14 day lag.csv", header = T)
+
+pH <- ggplot(heat14, aes(x = Southeast.Winds,y = Northeast.Winds)) + geom_tile(aes(fill = Abundance)) +
+  geom_contour(col="white", aes(z = Abundance), binwidth = 0.002) +
+  scale_x_continuous(expand = c(0,0)) + 
+  scale_y_continuous(expand = c(0,0)) +
   #scale_fill_gradient(low = "blue", high = "red") + 
-  theme_classic() + scale_fill_viridis() + # or geom_raster()
-  xlab("Standardised Southeast Winds") + ylab("Standardised Northeast Winds") +
-  theme(axis.title.x = element_text(face="bold", colour="black", size = 18),
+  theme_classic() + 
+  scale_fill_viridis(option = "magma", name="Predicted\nNormalised\nCoastal\nSpecies\nAbundance") + # or geom_raster()
+  xlab("Downwelling \nFavourable Winds") + ylab("Upwelling \nFavourable Winds") +
+  theme(axis.title.x = element_text(face="bold", colour="black", size = 15),
         axis.text.x  = element_text(colour="black", size = 14), 
-        axis.title.y = element_text(face="bold", colour="black", size = 18),
+        axis.title.y = element_text(face="bold", colour="black", size = 15),
         axis.text.y  = element_text(colour="black", size = 14),
-        axis.ticks = element_line(colour="black"))
+        axis.ticks = element_line(colour="black"),
+        legend.title = element_text(colour="black", size=12, face="bold"),
+        legend.text = element_text(colour="black", size=10)) 
 
-p
+pH
 
-ggsave("plots/Larvae Macroramphosidae 3 day.pdf", width = 21, height = 14.8, units = "cm")
-ggsave("plots/Larvae Macroramphosidae 3 day.png", width = 21, height = 14.8, units = "cm", dpi = 600)
+ggsave("../plots/Larvae heatmap 14 day.pdf", width = 21, height = 14.8, units = "cm")
+ggsave("../plots/Larvae heatmap 14 day.png", width = 21, height = 14.8, units = "cm", dpi = 600)
 
 
-plot(fish_data$NE_Winds.standardised, sqrt(fish_data$Myctophidae_37122000)/fish_data$Volume_m3)
-fitM <- lm(sqrt(Myctophidae_37122000)/Volume_m3 ~ NE_Winds.standardised, data = fish_data)
-summary(fitM)
-abline(fitM)
+# Combine pD and pH
 
-fitM <- glmmTMB(Myctophidae_37122000 ~
-                  SE_Winds.standardised * NE_Winds.standardised *
-                  dists_km + (1|Project_ID), offset = log(Volume_m3),
-                family=genpois(link = "log"), data = fish_data) #genpois(link = "log")
-
-simulationOutput <- simulateResiduals(fittedModel = fitM, n = 250)
-plot(simulationOutput)
-plot(allEffects(fitM))
-
-summary(fitM)
+library(cowplot)
+plot_grid(pD, pH, labels = c("A", "B"), label_size = 12, rel_widths = c(1,2))
+ggsave("../plots/Larvae 14 day plots.png", width = 21, height = 14.8, units = "cm", dpi = 600)
+ggsave("../plots/Larvae 14 day plots.pdf", width = 21, height = 14.8, units = "cm", dpi = 600)

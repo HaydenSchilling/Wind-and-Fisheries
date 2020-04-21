@@ -11,6 +11,9 @@ library(dplyr)
 
 mydata <- read.csv("../Wind Data/135 degree/Sydney_Daily Modelled Wind Data Final 135 degree.csv", header = T)
 #soi_data <- read.csv("SOI data long.csv", header = T)
+B_dat <- read.csv("../BOM Data/BARRA Model/135 winds/BARRA_Sydney_Monthly Modelled Wind Data Final 135 degree.csv")
+B_dat2 <- B_dat %>% group_by(Year) %>% summarise(Annual_displacement = sum(displacement))
+
 
 head(mydata)
 
@@ -26,10 +29,15 @@ str(mydata)
 dat <- mydata %>% group_by(Year) %>% summarise(Annual_displacement = sum(displacement))
 head(dat)
 
+datX <- left_join(B_dat2, dat, by = "Year")
+cor.test(datX$Annual_displacement.x, datX$Annual_displacement.y)
+datX
+## Therefore BARRA Model and NOAA v3 Model are significantly correlated. p = 0.00001, r = 0.696
+
 #write.csv(dat, "Iain Annual 135 degree Sydney.csv", row.names = F)
 
 plot(dat$Year, dat$Annual_displacement)
-
+points(B_dat2$Year, B_dat2$Annual_displacement, col = "red")
 dat2 <- dat
 str(dat2)
 fit1 <- lm(Annual_displacement ~ Year, data = dat2)
@@ -103,6 +111,12 @@ str(NEdata)
 dat_NE <- NEdata %>% group_by(Year) %>% summarise(Annual_displacement = sum(displacement))
 head(dat_NE)
 
+B_dat <- read.csv("../BOM Data/BARRA Model/45 winds/BARRA_Sydney_Monthly Modelled Wind Data Final 45 degree.csv")
+B_dat2 <- B_dat %>% group_by(Year) %>% summarise(Annual_displacement = sum(displacement))
+
+datX <- left_join(B_dat2, dat_NE, by = "Year")
+cor.test(datX$Annual_displacement.x, datX$Annual_displacement.y)
+datX # BARRA is correlated to NOAA v3 r = 0.599, p = 0.00155
 #write.csv(dat_NE, "Iain Annual 45 degree winds Sydney.csv", row.names = F)
 
 plot(dat_NE$Year, dat_NE$Annual_displacement)

@@ -1,8 +1,8 @@
 # Coef plots larval fish 3 day
 library(ggplot2)
 
-dat3 <- read.csv("Larval fish model coefs 3 day.csv", header = T)
-dat14 <- read.csv("Larval fish model coefs 14 day.csv", header = T)
+dat3 <- read.csv("../Larval fish model coefs 3 day.csv", header = T)
+dat14 <- read.csv("../Larval fish model coefs 14 day.csv", header = T)
 
 larval_coef_dat <- bind_rows(dat3, dat14)
 
@@ -36,8 +36,8 @@ p1 <- ggplot(larval_coef_dat, aes(Parameter, Estimate)) +
 p1
 
 # slight edit in adobe - moved one axis tick label
-#ggsave("plots/Larval Model Coefs.pdf", width = 21, height = 14.8, units = "cm")
-#ggsave("plots/Larval Model Coefs.png", width = 21, height = 14.8, units = "cm", dpi = 600)
+ggsave("../plots/Larval Model Coefs.pdf", width = 21, height = 14.8, units = "cm")
+ggsave("../plots/Larval Model Coefs.png", width = 21, height = 14.8, units = "cm", dpi = 600)
 
 # 
 # # Faceted coefficient plot
