@@ -6,7 +6,6 @@
 *.nc
 *.rds
 /BOM Data/*
-/plots/*
 /Fisheries Data/*
 *.pptx
 *.docx
