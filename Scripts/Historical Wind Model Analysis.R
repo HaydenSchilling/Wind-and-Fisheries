@@ -1,17 +1,14 @@
-# Analysis of modelled wind data
-
-#install.packages(c("effects", "lubridate", "ggplot2", "splines", "dplyr"))
+# Analysis of modelled wind data changing over time
 
 library(lubridate)
 library(ggplot2)
-library(effects)
-library(splines)
 library(dplyr)
 
+# First load NOAA data and BARRA data and compare
 
-mydata <- read.csv("../Wind Data/135 degree/Sydney_Daily Modelled Wind Data Final 135 degree.csv", header = T)
+mydata <- read.csv("../Data/NOAA Winds V2c/Sydney_Daily Modelled Wind Data Final 135 degree.csv", header = T)
 #soi_data <- read.csv("SOI data long.csv", header = T)
-B_dat <- read.csv("../BOM Data/BARRA Model/135 winds/BARRA_Sydney_Monthly Modelled Wind Data Final 135 degree.csv")
+B_dat <- read.csv("../Data/BARRA Data/BARRA_Sydney_Monthly Modelled Wind Data Final 135 degree.csv")
 B_dat2 <- B_dat %>% group_by(Year) %>% summarise(Annual_displacement = sum(displacement))
 
 
@@ -31,7 +28,7 @@ head(dat)
 
 datX <- left_join(B_dat2, dat, by = "Year")
 cor.test(datX$Annual_displacement.x, datX$Annual_displacement.y)
-datX
+
 ## Therefore BARRA Model and NOAA v3 Model are significantly correlated. p = 0.00001, r = 0.696
 
 #write.csv(dat, "Iain Annual 135 degree Sydney.csv", row.names = F)
@@ -45,22 +42,6 @@ plot(fit1)
 
 hist(fit1$residuals)
 
-# try cooks distance
-# #install.packages("olsrr")
-# library(olsrr)
-# 
-# ols_plot_cooksd_bar(fit1)
-# ols_plot_cooksd_chart(fit1)
-# ols_plot_dfbetas(fit1)
-# ols_plot_dffits(fit1)
-# ols_plot_resid_stud(fit1) # lots of outliers
-# ols_plot_resid_stand(fit1)
-# ols_plot_resid_lev(fit1) # but none have particularly large leverage
-# ols_plot_resid_stud_fit(fit1)
-# ols_plot_hadi(fit1)
-# ols_plot_resid_pot(fit1)
-# 
-
 summary(fit1) # -17.94 decline per year (p = 0.094)
 # 164 * -17 = -2942
 anova(fit1)
@@ -69,14 +50,7 @@ abline(fit1)
 
 
 res <- residuals(fit1)
-acf(res, plot = T) # slight autocorelation at 1 year lag
-head(res, type = "pearson")
-
-library(ggfortify)
-acf_p <- autoplot(acf(res)) + #simulationOutput$fittedResiduals
-  geom_hline(yintercept = 0) +
-  ylab('Autocorrelation function')
-acf_p
+acf(res, plot = T) # no autocorelation
 
 p1 <- ggplot(dat2, aes(x = Year, y = Annual_displacement)) + geom_point() + geom_smooth(method = "lm") +
   theme_classic() + ylab("Annual Displacement") + xlab("Year") +
@@ -100,7 +74,7 @@ p1
 
 
 ### Now do NE Winds
-NEdata <- read.csv("../Wind Data/45 degree/Sydney_Daily Modelled Wind Data Final 45 degree.csv", header = T)
+NEdata <- read.csv("../Data/NOAA Winds V2c/Sydney_Daily Modelled Wind Data Final 45 degree.csv", header = T)
 
 
 NEdata$Date <- paste0(NEdata$Year,"-",NEdata$Month,"-",NEdata$Day)
@@ -111,13 +85,12 @@ str(NEdata)
 dat_NE <- NEdata %>% group_by(Year) %>% summarise(Annual_displacement = sum(displacement))
 head(dat_NE)
 
-B_dat <- read.csv("../BOM Data/BARRA Model/45 winds/BARRA_Sydney_Monthly Modelled Wind Data Final 45 degree.csv")
+B_dat <- read.csv("../Data/BARRA Data/BARRA_Sydney_Monthly Modelled Wind Data Final 45 degree.csv")
 B_dat2 <- B_dat %>% group_by(Year) %>% summarise(Annual_displacement = sum(displacement))
 
 datX <- left_join(B_dat2, dat_NE, by = "Year")
 cor.test(datX$Annual_displacement.x, datX$Annual_displacement.y)
 datX # BARRA is correlated to NOAA v3 r = 0.599, p = 0.00155
-#write.csv(dat_NE, "Iain Annual 45 degree winds Sydney.csv", row.names = F)
 
 plot(dat_NE$Year, dat_NE$Annual_displacement)
 
@@ -127,19 +100,9 @@ fit2 <- lm(Annual_displacement ~ Year, data = dat2_NE)
 plot(fit2)
 
 hist(fit2$residuals)
-# ols_plot_cooksd_bar(fit2)
-# ols_plot_cooksd_chart(fit2)
-# ols_plot_dfbetas(fit2)
-# ols_plot_dffits(fit2)
-# ols_plot_resid_stud(fit2)
-# ols_plot_resid_stand(fit2)
-# ols_plot_resid_lev(fit2) # All have low leverage
-# ols_plot_resid_stud_fit(fit2)
-# ols_plot_hadi(fit2)
-# ols_plot_resid_pot(fit2)
 
 summary(fit2) # increase by 48.307 per year (p < 0.001)
-# 48 * 164 = 
+# 48 * 164 = 7872
 anova(fit2)
 plot(dat2_NE$Year, dat2_NE$Annual_displacement)
 abline(fit2)
@@ -149,34 +112,8 @@ res <- residuals(fit2)
 acf(res, plot = T) #  autocorrelation at up to 3 year lag
 head(res, type = "pearson")
 
-library(ggfortify)
-acf_p <- autoplot(acf(res)) + #simulationOutput$fittedResiduals
-  geom_hline(yintercept = 0) +
-  ylab('Autocorrelation function')
-acf_p
-
-
-p2 <- ggplot(dat2_NE, aes(x = Year, y = Annual_displacement)) + geom_point() + geom_smooth(method = "lm") +
-  theme_classic() + ylab("Annual Displacement") + xlab("Year") +
-  theme(axis.title.x = element_text(face="bold", colour="black", size = 18),
-        axis.text.x  = element_text(colour="black", size = 12), 
-        axis.title.y = element_text(face="bold", colour="black", size = 18),
-        axis.text.y  = element_text(colour="black", size = 14),
-        axis.ticks = element_line(colour="black"),
-        #strip.text = element_text(colour="black", face = "bold", size = 14),
-        #strip.background = element_rect(colour = "white"),
-        #legend.justification=c(1,0), legend.position="right",
-        panel.border = element_rect(colour = "black", fill=NA, size = 1)
-        #legend.key.size = unit(1, "cm"),
-        #legend.title = element_text(face = "bold", size = 14),
-        #legend.text = element_text(size = 12, face = "bold"))
-  )
-p2
-
-
 ## Try to remove autocorrelation
-
-NEdata <- read.csv("../Wind Data/45 degree/Sydney_Daily Modelled Wind Data Final 45 degree.csv", header = T)
+NEdata <- read.csv("../Data/NOAA Winds V2c/Sydney_Daily Modelled Wind Data Final 45 degree.csv", header = T)
 
 
 NEdata$Date <- paste0(NEdata$Year,"-",NEdata$Month,"-",NEdata$Day)
@@ -191,41 +128,26 @@ head(dat_NE)
 
 plot(dat_NE$Year, dat_NE$Annual_displacement)
 
-dat2_NE <- dat_NE
+# Select every 3rd year
+dat_NE2 <- dat_NE %>%
+  slice(which(row_number() %% 3 == 1))
 
-fit2 <- lm(Annual_displacement ~ Year, data = dat2_NE)
+fit2 <- lm(Annual_displacement ~ Year, data = dat_NE2)
 plot(fit2)
 
 hist(fit2$residuals)
-# ols_plot_cooksd_bar(fit2)
-# ols_plot_cooksd_chart(fit2)
-# ols_plot_dfbetas(fit2)
-# ols_plot_dffits(fit2)
-# ols_plot_resid_stud(fit2)
-# ols_plot_resid_stand(fit2)
-# ols_plot_resid_lev(fit2) # All have low leverage
-# ols_plot_resid_stud_fit(fit2)
-# ols_plot_hadi(fit2)
-# ols_plot_resid_pot(fit2)
 
-summary(fit2) # increase by 48.307 per year (p < 0.001)
-# 48 * 164 = 
+summary(fit2) # increase by 52.64 per year (p = 0.002)
+# 52.64 * 164 = 8632
 anova(fit2)
 plot(dat2_NE$Year, dat2_NE$Annual_displacement)
 abline(fit2)
 
 
 res <- residuals(fit2)
-acf(res, plot = T)
-head(res, type = "pearson")
+acf(res, plot = T) # No more autocorrelation
 
-dat_NE2 <- dat_NE %>%
-  slice(which(row_number() %% 3 == 1))
-
-
-fit2 <- lm(Annual_displacement ~ Year, data = dat_NE2)
-plot(fit2)
-
+# Make model assumption checking plots which were combined into single figures in Inkscape manually
 png("../plots/Model checks/NE time1.png", width = 21, height = 14.8, units = "cm", res = 600)
 par(mfrow=c(2,2))
 plot(fit2)
@@ -239,36 +161,6 @@ png("../plots/Model checks/NE time3.png", width = 21, height = 14.8, units = "cm
 res <- residuals(fit2)
 acf(res, plot = T)
 dev.off()
-
-
-hist(fit2$residuals)
-# ols_plot_cooksd_bar(fit2)
-# ols_plot_cooksd_chart(fit2)
-# ols_plot_dfbetas(fit2)
-# ols_plot_dffits(fit2)
-# ols_plot_resid_stud(fit2)
-# ols_plot_resid_stand(fit2)
-# ols_plot_resid_lev(fit2) # All have low leverage
-# ols_plot_resid_stud_fit(fit2)
-# ols_plot_hadi(fit2)
-# ols_plot_resid_pot(fit2)
-
-summary(fit2) # increase by 52.64 per year (p = 0.002)
-# 48 * 164 = 
-anova(fit2)
-plot(dat_NE2$Year, dat_NE2$Annual_displacement)
-abline(fit2)
-
-
-res <- residuals(fit2)
-acf(res, plot = T)
-
-library(ggfortify)
-acf_p <- autoplot(acf(res)) + #simulationOutput$fittedResiduals
-  geom_hline(yintercept = 0) +
-  ylab('Autocorrelation function')
-acf_p
-
 
 p2 <- ggplot(dat_NE2, aes(x = Year, y = Annual_displacement)) + geom_point() + geom_smooth(method = "lm") +
   theme_classic() + ylab("Annual Displacement") + xlab("Year") +
@@ -287,14 +179,7 @@ p2 <- ggplot(dat_NE2, aes(x = Year, y = Annual_displacement)) + geom_point() + g
   )
 p2
 
-
-#install.packages("ggpubr")
-library(ggpubr)
-
-ggarrange(p1, p2, labels = c("a) SE Winds", "b) NE Winds"), ncol=1)
-
-
-## Try facet designed plot
+## Now use every 3rd from from SE winds too
 dat2_2 <- dat2 %>%
   slice(which(row_number() %% 3 == 1))
 
@@ -304,23 +189,7 @@ plot(fit1)
 
 hist(fit1$residuals)
 
-
-# try cooks distance
-# #install.packages("olsrr")
-# library(olsrr)
-# 
-# ols_plot_cooksd_bar(fit1)
-# ols_plot_cooksd_chart(fit1)
-# ols_plot_dfbetas(fit1)
-# ols_plot_dffits(fit1)
-# ols_plot_resid_stud(fit1) # lots of outliers
-# ols_plot_resid_stand(fit1)
-# ols_plot_resid_lev(fit1) # but none have particularly large leverage
-# ols_plot_resid_stud_fit(fit1)
-# ols_plot_hadi(fit1)
-# ols_plot_resid_pot(fit1)
-# 
-
+# Save model assumption plots
 png("../plots/Model checks/SE time1.png", width = 21, height = 14.8, units = "cm", res = 600)
 par(mfrow=c(2,2))
 plot(fit1)
@@ -336,19 +205,15 @@ acf(res, plot = T)
 dev.off()
 
 
-
-summary(fit1) # -0.161 decline per year (p = 0.02)
-# 164 * -0.161 = -26
+summary(fit1) # -40.54 decline per year (p = 0.03)
+# 164 * -40.54 = -6648.56
 anova(fit1)
 plot(dat2_2$Year, dat2_2$Annual_displacement)
 abline(fit1)
 
 
 res <- residuals(fit1)
-acf(res, plot = T)
-head(res, type = "pearson")
-
-
+acf(res, plot = T) # no autocorrelation
 
 SE <- dat2_2
 NE <- dat_NE2
@@ -376,230 +241,3 @@ p3
 
 ggsave("../plots/Historical Wind Change.pdf", height = 14.8, width = 21, units = "cm")
 ggsave("../plots/Historical Wind Change.png", height = 14.8, width = 21, units = "cm", dpi = 600)
-
-
-#mydata$Time <- ymd_hms(mydata$Time, tz="GMT")
-
-#p <- ggplot(mydata, aes(Time, Wind.speed.adjusted)) + geom_point() + geom_smooth()
-#p
-# 
-# # Harmonic is to fit Hour and DOY
-# Harm <- function (theta, k = 4) {
-#   X <- matrix(0, length(theta), 2 * k)
-#   nam <- as.vector(outer(c("c", "s"), 1:k, paste, sep = ""))
-#   dimnames(X) <- list(names(theta), nam)
-#   m <- 0
-#   for (j in 1:k) {
-#     X[, (m <- m + 1)] <- cos(j * theta)
-#     X[, (m <- m + 1)] <- sin(j * theta)
-#   }
-#   X
-# }
-# 
-# # Make cyclic month and hour and day of year
-# mydata$Harm_Month <- (mydata$Month/12) * 2 * pi
-# #mydata$Harm_Hour <- (mydata$Hour/24) * 2 * pi
-# mydata$DayofYear <- yday(mydata$Date)
-# mydata$Harm_DayofYear <- (mydata$DayofYear/366) * 2 * pi
-# 
-# head(mydata)
-# str(mydata)
-# 
-# p1 <- ggplot(mydata, aes(Date, displacement)) + geom_point(alpha = 0.2) + geom_smooth() +
-#   ylab("Monthly Onshore Displacement (km)") + theme_classic()
-# p1
-# 
-# 
-# # 
-# # Linear Modelling
-# # Tested log10 response doesn't work - very poor model assumptions
-# 
-# fit1 <- lm(displacement ~ Date, data = mydata)
-# plot(fit1)
-# summary(fit1)
-# plot(allEffects(fit1))
-# 
-# 
-# # Need to scale winds again
-# 
-# 
-# 
-# # fit2 <- lm(Wind.speed.adjusted ~ Year, data = mydata)
-# # summary(fit2)
-# # plot(allEffects(fit2))
-# # 
-# # 
-# # fit3 <- lm(Wind.speed.adjusted ~ Year + Harm(Harm_Month, k = 1), data = mydata)
-# # summary(fit3)
-# # plot(allEffects(fit3))
-# # 
-# # fit4 <- lm(Wind.speed.adjusted ~ Year + Harm(Harm_Month, k = 1) + Harm(Harm_Hour, k = 1), data = mydata)
-# # summary(fit4)
-# # plot(allEffects(fit4))
-# # plot(fit4)
-# # 
-# # fit5 <- lm(Wind.speed.adjusted ~ Year + Harm(Harm_DayofYear, k = 1) + Harm(Harm_Hour, k = 1) + SOI, data = mydata)
-# # summary(fit5)
-# # plot(allEffects(fit5))
-# # plot(fit5)
-# # 
-# # # Raw speed - No sign adjustment - Year pattern flips
-# # fit6 <- lm(Speed_km_hr ~ Year + Harm(Harm_DayofYear, k = 1) + Harm(Harm_Hour, k = 1), data = mydata)
-# # summary(fit6)
-# # plot(allEffects(fit6))
-# # plot(fit5)
-# 
-# 
-# ### Trying monthly bins like other analysis
-# 
-# dat <- mydata %>% group_by(Year, Month) %>%
-#   summarise(displacement = ((sum(Wind.speed.adjusted, na.rm = TRUE)*3)), SOI_mean = mean(SOI), count = n())
-# 
-# dat$Harm_Month <- (dat$Month/12) * 2 * pi
-# head(dat)
-# 
-# write.csv(dat, "Wind Data/Sydney Modelled Wind Data Final monthly binned.csv", row.names = FALSE)
-# 
-# ### Now try analysis again
-# 
-# fit1 <- lm(displacement ~ Year, data = dat)
-# plot(fit1)
-# summary(fit1)
-# plot(allEffects(fit1))
-# 
-# fit2 <- lm(displacement ~ Year + Harm(Harm_Month, k = 2), data = dat)
-# plot(fit2)
-# summary(fit2)
-# plot(allEffects(fit2))
-# 
-# fit3 <- lm(displacement ~ Harm(Harm_Month, k = 2), data = dat)
-# plot(fit3)
-# summary(fit3)
-# plot(allEffects(fit3))
-# AIC(fit3)
-# 
-# k <- length(coef(fit2))
-# k
-# 
-# n <- nrow(dat)
-# n
-# 
-# fit2_AIC <- AIC(fit2, k = k)
-# fit2_AICc <- (fit2_AIC + ((2 * (k + 1))/(n - k - 1)))
-# fit2_AICc
-# 
-# fit5 <- lm(displacement ~ Year + Harm(Harm_Month, k = 2) + SOI_mean, data = dat)
-# plot(fit5)
-# summary(fit5)
-# plot(allEffects(fit5))
-# AIC(fit5)
-# 
-# k <- length(coef(fit5))
-# k
-# 
-# n <- nrow(dat)
-# n
-# 
-# fit5_AIC <- AIC(fit5, k = k)
-# fit5_AICc <- (fit5_AIC + ((2 * (k + 1))/(n - k - 1)))
-# fit5_AICc
-# 
-# p1 <- ggplot(dat, aes(Year, displacement)) + geom_point(alpha = 0.2) + geom_smooth(method = "lm") +
-#   ylab("Monthly Onshore Displacement (km)") + theme_classic()
-# p1
-# 
-# p2 <- ggplot(dat, aes(Year, displacement)) + geom_point(alpha = 0.2) + geom_smooth(method = "lm") +
-#   ylab("Monthly Onshore Displacement (km)") + theme_classic() + facet_wrap(~Month)
-# p2
-# 
-# p3 <- ggplot(dat, aes(Year, displacement)) + geom_point(alpha = 0.2) + geom_smooth() +
-#   ylab("Monthly Onshore Displacement (km)") + theme_classic()
-# p3
-# 
-# p3 <- ggplot(dat, aes(Month, displacement)) + geom_point(alpha = 0.2) + geom_smooth() +
-#   ylab("Monthly Onshore Displacement (km)") + theme_classic()
-# p3
-# 
-# p3 <- ggplot(dat, aes(Month, displacement)) + geom_point(alpha = 0.2) + geom_smooth() +
-#   ylab("Monthly Onshore Displacement (km)") + theme_classic() + facet_wrap(~Year)
-# p3
-# 
-# 
-# #### Testing on specific months
-# # January - July
-# 
-# dat2 <- subset(dat, Month <= 7)
-# 
-# fit1_sm <- lm(displacement ~ Year , data = dat2) #+ SOI_mean
-# plot(fit1_sm)
-# summary(fit1_sm)
-# plot(allEffects(fit1_sm))
-# 
-# p_Jan_July <- ggplot(dat2, aes(Year, displacement)) + geom_point(alpha = 0.2) + geom_smooth(method = "lm") +
-#   ylab("Monthly Onshore Displacement (km)") + theme_classic()
-# p_Jan_July
-# 
-# # April - September
-# dat3 <- subset(dat, Month <= 9 & Month >= 4)
-# 
-# fit2_sm <- lm(displacement ~ Year , data = dat3) # + SOI_mean
-# plot(fit2_sm)
-# summary(fit2_sm)
-# plot(allEffects(fit2_sm))
-# 
-# p_April_Sept <- ggplot(dat3, aes(Year, displacement)) + geom_point(alpha = 0.2) + geom_smooth(method = "lm") +
-#   ylab("Monthly Onshore Displacement (km)") + theme_classic()
-# p_April_Sept
-# 
-# # April - July
-# dat4 <- subset(dat, Month >= 4 & Month <= 7)
-# 
-# fit4_sm <- lm(displacement ~ Year , data = dat4)
-# plot(fit4_sm)
-# summary(fit4_sm)
-# plot(allEffects(fit4_sm))
-# 
-# p_April_July <- ggplot(dat4, aes(Year, displacement)) + geom_point(alpha = 0.2) + geom_smooth(method = "lm") +
-#   ylab("Monthly Onshore Displacement (km)") + theme_classic()
-# p_April_July
-# 
-# # July - August
-# dat5 <- subset(dat, Month >= 7 & Month <= 8)
-# 
-# fit5_sm <- lm(displacement ~ Year , data = dat5)
-# plot(fit5_sm)
-# summary(fit5_sm)
-# plot(allEffects(fit5_sm))
-# 
-# p_July_August <- ggplot(dat5, aes(Year, displacement)) + geom_point(alpha = 0.2) + geom_smooth(method = "lm") +
-#   ylab("Monthly Onshore Displacement (km)") + theme_classic()
-# p_July_August
-# 
-# 
-# # November - April
-# dat6 <- subset(dat, Month >= 11 | Month <= 4)
-# 
-# fit6_sm <- lm(displacement ~ Year , data = dat6)
-# plot(fit6_sm)
-# summary(fit6_sm)
-# plot(allEffects(fit6_sm))
-# 
-# p_November_April <- ggplot(dat6, aes(Year, displacement)) + geom_point(alpha = 0.2) + geom_smooth(method = "lm") +
-#   ylab("Monthly Onshore Displacement (km)") + theme_classic()
-# p_November_April
-# 
-
-# ### Sydney Adjusted coastline
-# ### Now do NE Winds
-# NEdata <- read.csv("Wind Data/Daily Modelled Sydney 114 deg Wind Data Final.csv", header = T)
-# 
-# 
-# NEdata$Date <- paste0(NEdata$Year,"-",NEdata$Month,"-",NEdata$Day)
-# NEdata$Date <- as.Date(NEdata$Date)
-# 
-# str(NEdata)
-# 
-# dat_NE <- NEdata %>% group_by(Year) %>% summarise(Annual_displacement = sum(displacement))
-# head(dat_NE)
-# 
-# write.csv(dat_NE, "Iain Annual coastline degree winds Sydney.csv", row.names = F)

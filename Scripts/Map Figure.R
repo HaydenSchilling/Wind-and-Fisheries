@@ -3,15 +3,8 @@ library(rgdal)
 library(sp)
 library(raster)
 
-#load("../MapData.RData")
-#str(cont500.points)
-
-#plot(cont1000.points$long, cont1000.points$lat, type = "l")
-#write.csv(cont1000.points, "../Hayden_1000m_contour.csv")
-
-
 # Load Fish Data
-fish_data <- read.csv("../allNIMO_dist.csv", header = T)
+fish_data <- read.csv("../Data/allNIMO_dist.csv", header = T)
 str(fish_data)
 
 # Restrict to NSW and on the continental shelf
@@ -43,24 +36,19 @@ coordinates(Sites.grid) <- ~ lon_bound + lat_bound
 
 Aus_crop <- crop(Aus_coast, extent(Sites.grid)) #rgeos must be installed to run
 
-#shelf <- read.csv("../Hayden_200m_contour.csv", header = T)
-shelf <- read.csv("../Hayden_1000m_contour.csv", header = T)
-shelf <- subset(shelf, lat >= -37)
-shelf <- subset(shelf, lat <= -28)
-shelf <- subset(shelf, long > 145)
-shelf <- subset(shelf, long < 155)
-
-plot(shelf$long, shelf$lat, type = "l")
-
-dots <- read.csv("../Estuary Lat Longs2.csv", header = T)
-
-cols = "red"
-shapes = "1"
-
 lon.min <- 147
 lon.max <- 155
 lat.min <- -37
 lat.max <- -28
+
+shelf <- read.csv("../Shape files/Hayden_1000m_contour.csv", header = T)
+
+dots <- read.csv("../Data/Estuary Lat Longs2.csv", header = T)
+
+cols = "red"
+shapes = "1"
+
+
 
 p1 <- ggplot(fish_data, aes(x = Longitude, y = Latitude)) + theme_classic() + 
   labs(x=expression(paste("Longitude (",degree, ")", sep="")), y=expression(paste("Latitude (", degree, ")"))) +
@@ -69,7 +57,7 @@ p1 <- ggplot(fish_data, aes(x = Longitude, y = Latitude)) + theme_classic() +
   coord_quickmap(xlim = c(lon.min, lon.max), ylim=c(lat.min, lat.max)) + #coord_map() + #  # this line could be very slow
   geom_polygon(data = Aus_crop, aes(x=long, y = lat, group = group), fill = "gray60", colour = "gray60")+
   geom_polygon(data=shelf, aes(long,lat, group = group),colour="black", fill=NA, size=0.3)+
-  #geom_path(data=shelf, aes(x=lat, y = long)) + 
+  #geom_path(data=shelf, aes(x=long, y = lat)) + 
   geom_point(alpha = 0.4, aes(shape = shapes), size = 2)+
   theme(axis.title.x = element_text(face="bold", colour="black", size = 18),
         axis.text.x  = element_text(colour="black", size = 12), 
@@ -93,8 +81,8 @@ p1 <- ggplot(fish_data, aes(x = Longitude, y = Latitude)) + theme_classic() +
 
 p1
 
-ggsave("../plots/Figure 1.pdf")
-ggsave("../plots/Figure 1.png", dpi = 600)
+#ggsave("../plots/Figure 1.pdf")
+#ggsave("../plots/Figure 1.png", dpi = 600)
 
 
 ### Online code for inset
@@ -140,6 +128,7 @@ p2
 
 #ggsave("test.pdf")
 
+# Put inset on top of other figure
 png(file="../plots/Figure 1.png",w=3600,h=3600, res=600)
 grid.newpage()
 v1<-viewport(width = 1, height = 1, x = 0.5, y = 0.5) #plot area for the main map
@@ -148,3 +137,11 @@ print(p1,vp=v1)
 print(p2,vp=v2)
 dev.off()
 
+# and make .pdf
+pdf(file="../plots/Figure 1.pdf",w=7,h=7)
+grid.newpage()
+v1<-viewport(width = 1, height = 1, x = 0.5, y = 0.5) #plot area for the main map
+v2<-viewport(width = 0.3, height = 0.35, x = 0.361, y = 0.86, clip = "off") #plot area for the inset map
+print(p1,vp=v1) 
+print(p2,vp=v2)
+dev.off()
