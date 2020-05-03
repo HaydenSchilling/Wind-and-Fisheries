@@ -1,2 +1,7 @@
 Historical wind model analyis
 Map Figure
+coef plots
+larval 3 day
+larval 14 day
+katana 14 day predictions
+CPUE Model Predictions

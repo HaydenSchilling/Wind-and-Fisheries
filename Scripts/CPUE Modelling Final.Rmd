@@ -3,7 +3,7 @@ title: "CPUE Data Analysis"
 output: html_notebook
 ---
 
-Based upon conversations with Pravin, use log10 CPUE rather than standardise by estuary/species
+Based upon conversations with Pravin from Stats, use log10 CPUE rather than standardise by estuary/species
 
 Load data and clean up and standardise the winds
 ```{r}
@@ -19,7 +19,7 @@ library(ggeffects)
 
 
 # Load Data
-mydata <- read.csv("../Full_Data_Modelling_BARRA_by_estuary.csv", header = T) # Full_Data_ModellingV3_by_estuary.csv
+mydata <- read.csv("../Data/Full_Data_Modelling_BARRA_by_estuary.csv", header = T) # Full_Data_ModellingV3_by_estuary.csv
 # mydata2 <-  read.csv("Full_Data_Modelling.csv", header = T)
 # 
 # cor.test(mydata$X45_degree_winds, mydata2$X135_degree_winds)
@@ -55,7 +55,7 @@ hist(resid(m7))
 lattice::qqmath(m7)
 ```
 
-Save model checking plots
+Save model checking plots - These were combined manually in Inkscape later
 ```{r}
 png("../plots/Model checks/Mulitspecies model 1.png", width = 21, height = 14.8, units = "cm", res = 600)
 plot(m7)
@@ -94,7 +94,7 @@ plot(ggpredict(m7, terms = "Drought_Months [all]"))
 
 
 
-Now for some species specific examples
+Now for some species specific Models
 Bream First
 Prepare Data
 ```{r}
@@ -121,6 +121,7 @@ plot(simulationOutput)
 hist(simulationOutput$fittedResiduals)
 ```
 
+Model checking plots - note these were combined in Inkscape manually later
 ```{r}
 png("../plots/Model checks/Bream model 1.png", width = 21, height = 14.8, units = "cm", res = 600)
 plot(m1)
@@ -143,10 +144,6 @@ anova(m1)
 summary(m1)
 ```
 
-
-```{r}
-plot(allEffects(m1))
-```
 
 Effect size plot
 ```{r}
@@ -386,14 +383,6 @@ plotFEsim(feEx) +
 Prepare Data
 ```{r}
 flathead <- subset(my.df, Species == "Flathead")
-
-#m1 <- lmer(CPUE.standardised ~ X135_degree_winds.standardised * X45_degree_winds.standardised + 
-#           Estuary_Type + Drought_Months + (1|Estuary), data = bream)
-#AIC(m1) #215.42
-
-p5 <- ggplot(flathead, aes(x = X135_degree_winds.standardised,y = X45_degree_winds.standardised, size = log10(CPUE))) + geom_point(alpha = 0.1) +
-  theme_classic() + labs(title = "CPUE by lagged Winds")
-p5
 ```
 
 Model
@@ -453,7 +442,4 @@ plotFEsim(feEx) +
   theme_bw() + labs(title = "Coefficient Plot of InstEval Model", 
                     x = "Median Effect Estimate", y = "Evaluation Rating")
 ```
-
-CONCLUSION - There is weak evidence of effects of wind (mostly for bream) but there is lots more variance which is masking these effects.
-
 

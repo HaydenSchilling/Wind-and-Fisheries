@@ -2,7 +2,8 @@
 
 # NIMO Larval Fish and wind
 
-# This currently does winds on day of capture but not previous 14 days (STILL TO DO
+# This script extracts u and v for the 14 days prior to each larval fish sample at the location of each sample
+
 # Step 1 generate date string 14 days prior for each date in list - see complete function
 # https://blog.exploratory.io/populating-missing-dates-with-complete-and-fill-functions-in-r-and-exploratory-79f2a321e6b5 )
 

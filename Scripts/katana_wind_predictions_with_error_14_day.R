@@ -1,14 +1,9 @@
-# Katana script to generate heatmap data with SE
-
-# Not winds only good until 2014, therefore remove after 2014
-
+# Katana script to generate heatmap data with SE, used to visualise the interaction between north-east and south-east winds for 14 days prior larval analysis
 
 library(tidyverse)
-library(lme4)
 library(glmmTMB)
 library(DHARMa)
 library(car)
-library(effects)
 library(vegetarian)
 
 # Load Fish Data
