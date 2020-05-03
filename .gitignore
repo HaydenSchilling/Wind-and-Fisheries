@@ -6,15 +6,11 @@
 *.nc
 *.rds
 /BOM Data/*
-/Upwelling/*
-/Feedback/*
-/Literature/*
-/Iain/*
 /plots/*
 /Fisheries Data/*
-/Wind Data/*
-/Wind DataV3/*
 *.pptx
 *.docx
 Wind Library*
 MapData.RData
+/Not for Github/*
+/Scripts/Scripts not in final analysis/*

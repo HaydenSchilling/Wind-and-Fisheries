@@ -1,4 +1,5 @@
-#Rename some BARRA FILES
+#Rename some BARRA FILES in order to stop other scripts crashing when they encounter the wrong file name.
+
 library(stringr)
 
 # February 2016
