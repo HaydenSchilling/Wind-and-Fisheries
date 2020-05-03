@@ -289,22 +289,7 @@ norm_abund <- rowSums(norm_el)
 norm_abund
 fish_data$Coastal_Normalised_Abund <- norm_abund
 
-# fit3 <- glmmTMB(Normalised_Abund ~ SE_Winds.standardised * NE_Winds.standardised*dists_km + (1|Project_ID), 
-#                 family=nbinom1, data = fish_data)
-
 ## Tweedie Family for positive continuous response variable
-#fit3 <- glmmTMB(Coastal_Normalised_Abund ~ SE_Winds.standardised * NE_Winds.standardised*dists_km + (1|Project_ID), 
-#                family=tweedie(), data = fish_data)
-fit3 <- glmmTMB(Coastal_Normalised_Abund ~
-                  poly(cbind(SE_Winds.standardised, NE_Winds.standardised), degree = 2)*
-                  dists_km + (1|Project_ID), 
-                family=tweedie(), data = fish_data)
-
-simulationOutput <- simulateResiduals(fittedModel = fit3, n = 250)
-plot(simulationOutput)
-
-summary(fit3)
-
 
 # equivalent code but allows marginal effects to be calculated
 fit4 <- glmmTMB(Coastal_Normalised_Abund ~
@@ -314,7 +299,16 @@ fit4 <- glmmTMB(Coastal_Normalised_Abund ~
                   dists_km + (1|Project_ID), family=tweedie(), data = fish_data)
 
 simulationOutput <- simulateResiduals(fittedModel = fit4, n = 250)
+
+png("../plots/Model checks/Larval14 day1.png", width = 21, height = 14.8, units = "cm", res = 600)
 plot(simulationOutput)
+dev.off()
+
+png("../plots/Model checks/Larval14 day2.png", width = 21, height = 14.8, units = "cm", res = 600)
+hist(residuals(fit4))
+dev.off()
+
+
 
 summary(fit4)
 
@@ -347,11 +341,11 @@ plot(ggpredict(fit4, terms = "dists_km [all]"))
 
 # Test Jon Gillson comments about residuals (still to do autocorrelation?)
 hist(simulationOutput$scaledResiduals)
-hist(residuals(fit3))
+
 
 hist(simulationOutput$fittedResiduals)
 
-res <- residuals(fit3)
+res <- residuals(fit4)
 acf(res, plot = T)
 head(res, type = "pearson")
 

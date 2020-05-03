@@ -146,7 +146,7 @@ abline(fit2)
 
 
 res <- residuals(fit2)
-acf(res, plot = T) # slight autocorrelation at 1 year lag
+acf(res, plot = T) #  autocorrelation at up to 3 year lag
 head(res, type = "pearson")
 
 library(ggfortify)
@@ -226,6 +226,21 @@ dat_NE2 <- dat_NE %>%
 fit2 <- lm(Annual_displacement ~ Year, data = dat_NE2)
 plot(fit2)
 
+png("../plots/Model checks/NE time1.png", width = 21, height = 14.8, units = "cm", res = 600)
+par(mfrow=c(2,2))
+plot(fit2)
+dev.off()
+
+png("../plots/Model checks/NE time2.png", width = 21, height = 14.8, units = "cm", res = 600)
+hist(fit2$residuals)
+dev.off()
+
+png("../plots/Model checks/NE time3.png", width = 21, height = 14.8, units = "cm", res = 600)
+res <- residuals(fit2)
+acf(res, plot = T)
+dev.off()
+
+
 hist(fit2$residuals)
 # ols_plot_cooksd_bar(fit2)
 # ols_plot_cooksd_chart(fit2)
@@ -289,6 +304,7 @@ plot(fit1)
 
 hist(fit1$residuals)
 
+
 # try cooks distance
 # #install.packages("olsrr")
 # library(olsrr)
@@ -304,6 +320,22 @@ hist(fit1$residuals)
 # ols_plot_hadi(fit1)
 # ols_plot_resid_pot(fit1)
 # 
+
+png("../plots/Model checks/SE time1.png", width = 21, height = 14.8, units = "cm", res = 600)
+par(mfrow=c(2,2))
+plot(fit1)
+dev.off()
+
+png("../plots/Model checks/SE time2.png", width = 21, height = 14.8, units = "cm", res = 600)
+hist(fit1$residuals)
+dev.off()
+
+png("../plots/Model checks/SE time3.png", width = 21, height = 14.8, units = "cm", res = 600)
+res <- residuals(fit1)
+acf(res, plot = T)
+dev.off()
+
+
 
 summary(fit1) # -0.161 decline per year (p = 0.02)
 # 164 * -0.161 = -26

@@ -1,67 +1,67 @@
 Model Term,coef.est,coef.se,Species
-(Intercept),-0.45,0.26,b) Bream
-SE Winds,0.72,1.11,b) Bream
-SE Winds Quadratic,0.82,2.2,b) Bream
-NE Winds,-0.14,1.12,b) Bream
-SE Winds * NE Winds ,-6.33,22.73,b) Bream
-NE Winds Quadratic,3.24,0.97,b) Bream
-Estuary_Type (Barrier River),0.11,0.26,b) Bream
-Estuary_Type (Drowned River Valley),0.12,0.29,b) Bream
-Drought (Months),0.12,0.05,b) Bream
-Estuary_Type (Barrier) * Drought (Months),-0.03,0.06,b) Bream
-Estuary_Type (Drowned River Valley) * Drought (Months),-0.03,0.06,b) Bream
-(Intercept),-0.22,0.24,e) Mullet
-SE Winds,1.5,0.94,e) Mullet
-SE Winds Quadratic,-0.83,0.94,e) Mullet
-NE Winds,-2.31,0.94,e) Mullet
-SE Winds * NE Winds ,-16.58,10.19,e) Mullet
-NE Winds Quadratic,0.03,1.06,e) Mullet
-Estuary_Type (Barrier River),0.76,0.31,e) Mullet
-Estuary_Type (Drowned River Valley),0.56,0.35,e) Mullet
-Drought (Months),0.08,0.05,e) Mullet
-Estuary_Type (Barrier) * Drought (Months),-0.23,0.07,e) Mullet
-Estuary_Type (Drowned River Valley) * Drought (Months),-0.18,0.08,e) Mullet
-(Intercept),-0.17,0.29,c) Flathead
-SE Winds,2.12,1.23,c) Flathead
-SE Winds Quadratic,-1,1.85,c) Flathead
-NE Winds,-1.82,1.1,c) Flathead
-SE Winds * NE Winds ,-1.82,13.4,c) Flathead
-NE Winds Quadratic,2.49,1.5,c) Flathead
-Estuary_Type (Barrier River),0.62,0.31,c) Flathead
-Estuary_Type (Drowned River Valley),-0.08,0.35,c) Flathead
-Drought (Months),0.05,0.07,c) Flathead
-Estuary_Type (Barrier) * Drought (Months),-0.19,0.07,c) Flathead
-Estuary_Type (Drowned River Valley) * Drought (Months),0.03,0.08,c) Flathead
-(Intercept),-0.78,0.28,d) Luderick
-SE Winds,-2.19,2.27,d) Luderick
-SE Winds Quadratic,-1.22,1.77,d) Luderick
-NE Winds,-5.05,2.03,d) Luderick
-SE Winds * NE Winds ,-42.01,26.77,d) Luderick
-NE Winds Quadratic,-1.56,1.91,d) Luderick
-Estuary_Type (Barrier River),0.67,0.33,d) Luderick
-Estuary_Type (Drowned River Valley),0.53,0.37,d) Luderick
-Drought (Months),0.16,0.06,d) Luderick
-Estuary_Type (Barrier) * Drought (Months),-0.2,0.07,d) Luderick
-Estuary_Type (Drowned River Valley) * Drought (Months),-0.16,0.08,d) Luderick
-(Intercept),-0.4,0.27,f) Whiting
-SE Winds,2.31,1.74,f) Whiting
-SE Winds Quadratic,1.85,1.78,f) Whiting
-NE Winds,1.46,1.8,f) Whiting
-SE Winds * NE Winds ,16.91,25.89,f) Whiting
-NE Winds Quadratic,3.04,1.45,f) Whiting
-Estuary_Type (Barrier River),0.09,0.3,f) Whiting
-Estuary_Type (Drowned River Valley),-0.16,0.34,f) Whiting
-Drought (Months),0.15,0.05,f) Whiting
-Estuary_Type (Barrier) * Drought (Months),-0.02,0.06,f) Whiting
-Estuary_Type (Drowned River Valley) * Drought (Months),0.06,0.07,f) Whiting
-(Intercept),-0.43,0.11,a) All Species
-SE Winds,2.58,1.04,a) All Species
-SE Winds Quadratic,-0.11,1.14,a) All Species
-NE Winds,-3.24,0.98,a) All Species
-SE Winds * NE Winds ,-69.23,23.03,a) All Species
-NE Winds Quadratic,3.17,0.99,a) All Species
-Estuary_Type (Barrier River),0.45,0.14,a) All Species
-Estuary_Type (Drowned River Valley),0.19,0.16,a) All Species
-Drought (Months),0.11,0.02,a) All Species
-Estuary_Type (Barrier) * Drought (Months),-0.14,0.03,a) All Species
-Estuary_Type (Drowned River Valley) * Drought (Months),-0.05,0.03,a) All Species
+(Intercept),1.6,0.31,b) Bream
+Down Winds,1.13,0.44,b) Bream
+Down Winds Quadratic,-0.17,0.24,b) Bream
+Up Winds,0.17,0.32,b) Bream
+Up Winds Quadratic,0.52,0.22,b) Bream
+Down Winds * Up Winds ,-0.22,0.09,b) Bream
+Estuary_Type (Barrier River),-0.6,0.44,b) Bream
+Estuary_Type (Drowned River Valley),-0.19,0.49,b) Bream
+Drought (Months),0.04,0.01,b) Bream
+Estuary_Type (Barrier) * Drought (Months),-0.02,0.01,b) Bream
+Estuary_Type (Drowned River Valley) * Drought (Months),-0.03,0.02,b) Bream
+(Intercept),2.09,0.37,e) Mullet
+Down Winds,1.47,1.11,e) Mullet
+Down Winds Quadratic,0.1,0.18,e) Mullet
+Up Winds,0.21,0.42,e) Mullet
+Up Winds Quadratic,0.24,0.15,e) Mullet
+Down Winds * Up Winds ,0.11,0.07,e) Mullet
+Estuary_Type (Barrier River),-0.13,0.44,e) Mullet
+Estuary_Type (Drowned River Valley),-0.43,0.49,e) Mullet
+Drought (Months),0.02,0.01,e) Mullet
+Estuary_Type (Barrier) * Drought (Months),-0.03,0.01,e) Mullet
+Estuary_Type (Drowned River Valley) * Drought (Months),-0.03,0.01,e) Mullet
+(Intercept),1.85,0.43,c) Flathead
+Down Winds,0.11,0.43,c) Flathead
+Down Winds Quadratic,0.07,0.14,c) Flathead
+Up Winds,-0.24,0.25,c) Flathead
+Up Winds Quadratic,-0.23,0.12,c) Flathead
+Down Winds * Up Winds ,-0.09,0.08,c) Flathead
+Estuary_Type (Barrier River),-0.61,0.61,c) Flathead
+Estuary_Type (Drowned River Valley),-1.04,0.68,c) Flathead
+Drought (Months),0.01,0.01,c) Flathead
+Estuary_Type (Barrier) * Drought (Months),-0.03,0.01,c) Flathead
+Estuary_Type (Drowned River Valley) * Drought (Months),0,0.01,c) Flathead
+(Intercept),1.85,0.45,d) Luderick
+Down Winds,0.23,0.46,d) Luderick
+Down Winds Quadratic,0.01,0.25,d) Luderick
+Up Winds,-0.12,0.25,d) Luderick
+Up Winds Quadratic,0.12,0.19,d) Luderick
+Down Winds * Up Winds ,-0.08,0.19,d) Luderick
+Estuary_Type (Barrier River),-0.61,0.63,d) Luderick
+Estuary_Type (Drowned River Valley),-0.51,0.7,d) Luderick
+Drought (Months),0.02,0.01,d) Luderick
+Estuary_Type (Barrier) * Drought (Months),-0.03,0.01,d) Luderick
+Estuary_Type (Drowned River Valley) * Drought (Months),-0.02,0.01,d) Luderick
+(Intercept),0.79,0.33,f) Whiting
+Down Winds,-0.64,0.67,f) Whiting
+Down Winds Quadratic,0.29,0.36,f) Whiting
+Up Winds,-0.16,0.38,f) Whiting
+Up Winds Quadratic,0.55,0.3,f) Whiting
+Down Winds * Up Winds ,0.26,0.28,f) Whiting
+Estuary_Type (Barrier River),-0.05,0.47,f) Whiting
+Estuary_Type (Drowned River Valley),-0.51,0.52,f) Whiting
+Drought (Months),0.03,0.01,f) Whiting
+Estuary_Type (Barrier) * Drought (Months),-0.02,0.02,f) Whiting
+Estuary_Type (Drowned River Valley) * Drought (Months),0,0.02,f) Whiting
+(Intercept),0.71,0.19,a) All Species
+Down Winds,-0.72,0.53,a) All Species
+Down Winds Quadratic,0.54,0.32,a) All Species
+Up Winds,-3.23,0.59,a) All Species
+Up Winds Quadratic,0.8,0.3,a) All Species
+Down Winds * Up Winds ,-0.03,0.02,a) All Species
+Estuary_Type (Barrier River),0.88,0.18,a) All Species
+Estuary_Type (Drowned River Valley),1.13,0.21,a) All Species
+Drought (Months),0.03,0,a) All Species
+Estuary_Type (Barrier) * Drought (Months),-0.03,0.01,a) All Species
+Estuary_Type (Drowned River Valley) * Drought (Months),-0.02,0.01,a) All Species

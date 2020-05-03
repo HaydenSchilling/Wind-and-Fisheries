@@ -14,7 +14,7 @@ library(merTools)
 library(effects)
 library(MuMIn)
 library(dplyr)
-library(brms)
+library(ggeffects)
 # Use Log10(CPUE) rather than standardise
 
 
@@ -35,66 +35,48 @@ mydata <- subset(mydata, Species != "Total")
 my.df <-  mydata %>% mutate(X45_degree_winds.standardised = as.numeric(scale(X45_degree_winds)),
                            X135_degree_winds.standardised = as.numeric(scale(X135_degree_winds)))
 
-p1 <- ggplot(my.df, aes(x = X135_degree_winds.standardised, y = log10(CPUE))) + geom_point() +
-  facet_wrap(~Species, scales = "free") + geom_smooth()
-p1
 ```
 
 
 Do full model for all species
 
 ```{r}
-m7 <- glmer(CPUE ~ poly(X135_degree_winds.standardised, degree = 2) + 
+m7 <- lmer(log10(CPUE) ~ poly(X135_degree_winds.standardised, degree = 2) + 
        poly(X45_degree_winds.standardised, degree = 2) +
        X135_degree_winds.standardised:X45_degree_winds.standardised+
-        Estuary_Type *Drought_Months + (Species|Estuary), data = my.df, poisson(link = "log"))
+        Estuary_Type *Drought_Months + (Species|Estuary), data = my.df)
 AIC(m7) # -38.18
 r.squaredGLMM(m7) # 0.08
 
 anova(m7)
-#summary(m7)
+summary(m7)
+plot(m7)
+hist(resid(m7))
+lattice::qqmath(m7)
 ```
 
+Save model checking plots
 ```{r}
-fit3 <- glmmTMB((CPUE) ~poly(X135_degree_winds.standardised, degree = 2) + 
-       poly(X45_degree_winds.standardised, degree = 2) +
-       X135_degree_winds.standardised:X45_degree_winds.standardised+
-        Estuary_Type *Drought_Months + (Species|Estuary), data = my.df, family=tweedie(link = "log"))
+png("../plots/Model checks/Mulitspecies model 1.png", width = 21, height = 14.8, units = "cm", res = 600)
+plot(m7)
+dev.off()
 
-simulationOutput <- simulateResiduals(fittedModel = fit3, n = 250)
-plot(simulationOutput)
+png("../plots/Model checks/Mulitspecies model 2.png", width = 21, height = 14.8, units = "cm", res = 600)
+hist(resid(m7))
+dev.off()
+
+png("../plots/Model checks/Mulitspecies model 3.png", width = 21, height = 14.8, units = "cm", res = 600)
+lattice::qqmath(m7)
+dev.off()
 ```
 
 
-```{r}
-B1 <- brm(log10(CPUE) ~poly(X135_degree_winds.standardised, degree = 2) + 
-       poly(X45_degree_winds.standardised, degree = 2) +
-       X135_degree_winds.standardised:X45_degree_winds.standardised+
-        Estuary_Type *Drought_Months + (Species|Estuary), data = my.df, family='skew_normal')
-```
-
-```{r}
-plot(B1)
-summary(B1)
-```
-
-
-Check assumptions - THESE ARE NOT GOOD - WHAT TO DO??? Perhaps do not report this model in the paper?
-
-```{r}
-simulationOutput <- simulateResiduals(fittedModel = m7, n = 250)
-plot(simulationOutput)
-
-hist(simulationOutput$fittedResiduals)
-```
-
-Proceeding despite bad assumptions....
 
 Effect size plot
 ```{r}
 fastdisp(m7)
 
-feEx <- FEsim(m2, 1000)
+feEx <- FEsim(m7, 1000)
 cbind(feEx[,1] , round(feEx[, 2:4], 3))
 
 
@@ -104,19 +86,20 @@ plotFEsim(feEx) +
 ```
 
 
+```{r}
+plot(ggpredict(m7, terms = "X45_degree_winds.standardised [all]"))
+plot(ggpredict(m7, terms = "X135_degree_winds.standardised [all]"))
+plot(ggpredict(m7, terms = "Drought_Months [all]"))
+```
+
+
+
 Now for some species specific examples
 Bream First
 Prepare Data
 ```{r}
 bream <- subset(my.df, Species == "Bream")
 
-#m1 <- lmer(CPUE.standardised ~ X135_degree_winds.standardised * X45_degree_winds.standardised + 
-#           Estuary_Type + Drought_Months + (1|Estuary), data = bream)
-#AIC(m1) #215.42
-
-pI <- ggplot(bream, aes(x = X135_degree_winds.standardised,y = X45_degree_winds.standardised, size = log10(CPUE))) + geom_point(alpha = 0.1) +
-  theme_classic() + labs(title = "CPUE by lagged Winds")
-pI
 ```
 
 Model
@@ -138,9 +121,26 @@ plot(simulationOutput)
 hist(simulationOutput$fittedResiduals)
 ```
 
+```{r}
+png("../plots/Model checks/Bream model 1.png", width = 21, height = 14.8, units = "cm", res = 600)
+plot(m1)
+dev.off()
+
+png("../plots/Model checks/Bream model 2.png", width = 21, height = 14.8, units = "cm", res = 600)
+hist(resid(m1))
+dev.off()
+
+png("../plots/Model checks/Bream model 3.png", width = 21, height = 14.8, units = "cm", res = 600)
+lattice::qqmath(m1)
+dev.off()
+```
+
+
 Check significance
 ```{r}
 anova(m1)
+
+summary(m1)
 ```
 
 
@@ -160,6 +160,13 @@ plotFEsim(feEx) +
   theme_bw() + labs(title = "Coefficient Plot of InstEval Model", 
                     x = "Median Effect Estimate", y = "Evaluation Rating")
 ```
+
+```{r}
+plot(ggpredict(m1, terms = "X45_degree_winds.standardised [all]"))
+plot(ggpredict(m1, terms = "X135_degree_winds.standardised [all]"))
+plot(ggpredict(m1, terms = "Drought_Months [all]"))
+```
+
 
 
 ##Now Mullet##
@@ -191,9 +198,26 @@ plot(simulationOutput)
 hist(simulationOutput$fittedResiduals)
 ```
 
+```{r}
+png("../plots/Model checks/Mullet model 1.png", width = 21, height = 14.8, units = "cm", res = 600)
+plot(m2)
+dev.off()
+
+png("../plots/Model checks/Mullet model 2.png", width = 21, height = 14.8, units = "cm", res = 600)
+hist(resid(m2))
+dev.off()
+
+png("../plots/Model checks/Mullet model 3.png", width = 21, height = 14.8, units = "cm", res = 600)
+lattice::qqmath(m2)
+dev.off()
+```
+
+
 Check significance
 ```{r}
 anova(m2)
+
+summary(m2)
 ```
 Therefore wind is not important for mullet?
 
@@ -247,9 +271,25 @@ plot(simulationOutput)
 hist(simulationOutput$fittedResiduals)
 ```
 
+```{r}
+png("../plots/Model checks/Whiting model 1.png", width = 21, height = 14.8, units = "cm", res = 600)
+plot(m3)
+dev.off()
+
+png("../plots/Model checks/Whiting model 2.png", width = 21, height = 14.8, units = "cm", res = 600)
+hist(resid(m3))
+dev.off()
+
+png("../plots/Model checks/Whiting model 3.png", width = 21, height = 14.8, units = "cm", res = 600)
+lattice::qqmath(m3)
+dev.off()
+```
+
+
 Check significance
 ```{r}
 anova(m3)
+summary(m3)
 ```
 Therefore wind is not important for whiting?
 
@@ -303,9 +343,25 @@ plot(simulationOutput)
 hist(simulationOutput$fittedResiduals)
 ```
 
+```{r}
+png("../plots/Model checks/Luderick model 1.png", width = 21, height = 14.8, units = "cm", res = 600)
+plot(m4)
+dev.off()
+
+png("../plots/Model checks/Luderick model 2.png", width = 21, height = 14.8, units = "cm", res = 600)
+hist(resid(m4))
+dev.off()
+
+png("../plots/Model checks/Luderick model 3.png", width = 21, height = 14.8, units = "cm", res = 600)
+lattice::qqmath(m4)
+dev.off()
+```
+
+
 Check significance
 ```{r}
 anova(m4)
+summary(m4)
 ```
 Therefore wind is not important for luderick?
 
@@ -359,9 +415,25 @@ plot(simulationOutput)
 hist(simulationOutput$fittedResiduals)
 ```
 
+```{r}
+png("../plots/Model checks/Flathead model 1.png", width = 21, height = 14.8, units = "cm", res = 600)
+plot(m5)
+dev.off()
+
+png("../plots/Model checks/Flathead model 2.png", width = 21, height = 14.8, units = "cm", res = 600)
+hist(resid(m5))
+dev.off()
+
+png("../plots/Model checks/Flathead model 3.png", width = 21, height = 14.8, units = "cm", res = 600)
+lattice::qqmath(m5)
+dev.off()
+```
+
+
 Check significance
 ```{r}
 anova(m5)
+summary(m5)
 ```
 Therefore wind is not important for luderick?
 
