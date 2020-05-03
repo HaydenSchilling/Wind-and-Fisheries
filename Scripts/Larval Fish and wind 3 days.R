@@ -19,10 +19,10 @@ summary(fish_data$Bathym_m)
 hist(fish_data$Bathym_m)
 
 # Load Wind Data
-wind_data <- read.csv("../Data/BARRA Larval Daily 45 deg Wind Data Final.csv", header = T)
+wind_data <- read.csv("../Data/BARRA Data/BARRA Larval Daily 45 deg Wind Data Final.csv", header = T)
 str(wind_data)
 
-wind_data_SE <- read.csv("../Data/BARRA Larval Daily 135 deg Wind Data Final.csv", header = T)
+wind_data_SE <- read.csv("../Data/BARRA Data/BARRA Larval Daily 135 deg Wind Data Final.csv", header = T)
 str(wind_data_SE)
 
 # Recognise Dates
