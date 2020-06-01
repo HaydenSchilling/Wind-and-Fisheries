@@ -37,7 +37,7 @@ for (i in 1:length(file_list)) {
 
 full_data_V <- bind_rows(dat_list)
 
-fwrite(full_data_U, "../../srv/scratch/z3374139/BARRA Model/Estuaries_v.csv")
+fwrite(full_data_V, "../../srv/scratch/z3374139/BARRA Model/Estuaries_v.csv")
 
 remove(list = ls())
 
