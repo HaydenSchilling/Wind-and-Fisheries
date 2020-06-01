@@ -11,7 +11,7 @@ library(ggeffects)
 library(vegetarian)
 library(viridis)
 library(cowplot)
-
+library(performance)
 
 # Load Fish Data
 fish_data <- read.csv("../Data/allNIMO_dist.csv", header = T)
@@ -142,6 +142,7 @@ fit4 <- glmmTMB(Coastal_Normalised_Abund ~
                   SE_Winds.standardised:NE_Winds.standardised*
                   dists_km + (1|Project_ID), family=tweedie(), data = fish_data)
 
+r2(fit4)
 simulationOutput <- simulateResiduals(fittedModel = fit4, n = 250)
 plot(simulationOutput)
 hist(residuals(fit4))

@@ -7,6 +7,7 @@ library(car)
 library(viridis)
 library(ggeffects)
 library(vegetarian)
+library(performance)
 
 # Load Fish Data
 fish_data <- read.csv("../Data/allNIMO_dist.csv", header = T)
@@ -142,7 +143,7 @@ fit4 <- glmmTMB(Coastal_Normalised_Abund ~
 simulationOutput <- simulateResiduals(fittedModel = fit4, n = 250)
 plot(simulationOutput)
 hist(residuals(fit4))
-
+r2(fit4)
 
 ## Use to save model diagnostics, final plots were combined in Inkscape
 # png("../plots/Model checks/Larval3 day1.png", width = 21, height = 14.8, units = "cm", res = 600)
@@ -187,4 +188,4 @@ panel.border = element_rect(colour = "black", fill=NA, size = 1))+
   ylab("Predicted Normalised \nCoastal Species Abundance")
 
 ### To save plot
-#ggsave("../plots/larval model 3 day.png", height = 14.8, width = 21, units = "cm", dpi = 600)
+#ggsave("../plots/larval model 3 day.png", height = 14.8, width = 
