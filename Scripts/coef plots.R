@@ -100,7 +100,7 @@ p2 <- ggplot(mydata, aes(Model.Term, coef.est)) +
         axis.title.y = element_text(face="bold", colour="black", size = 16),
         axis.text.y  = element_text(colour="black", size = 10),
         axis.ticks = element_line(colour="black"),
-        strip.text = element_text(colour="black", face = "bold", size = 14, hjust=0),
+        strip.text = element_text(colour="black", face = "bold", size = 10, hjust=0.5),
         strip.background = element_rect(colour = "white"),
         #legend.justification=c(1,0), legend.position="right",
         panel.border = element_rect(colour = "black", fill=NA, size = 1),
@@ -111,6 +111,6 @@ p2 <- ggplot(mydata, aes(Model.Term, coef.est)) +
 p2
 
 ## Save plots
-#ggsave("../plots/Faceted Species CPUE Model Coefs.pdf", width = 18, height = 14.8, units = "cm")
-#ggsave("../plots/Faceted Species CPUE Model Coefs.png", width = 18, height = 14.8, units = "cm", dpi = 600)
+ggsave("../plots/Faceted Species CPUE Model Coefs.pdf", width = 18, height = 14.8, units = "cm")
+ggsave("../plots/Faceted Species CPUE Model Coefs.png", width = 18, height = 14.8, units = "cm", dpi = 600)
 

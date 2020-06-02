@@ -47,11 +47,11 @@ ggplot(plot_dat, aes(x, predicted)) + facet_wrap(~Term, scales = "free_x", switc
                           strip.placement = "outside",
                           #legend.justification=c(1,0), legend.position="right",
                           panel.border = element_rect(colour = "black", fill=NA, size = 1))+
-  ylab(expression("Predicted"~"log"[10]~"(CPUE;"~"Estimate"~"&"~"95%"~"CI)"))
+  ylab(expression("Predicted"~"log"[10]~"(CPUE)"))
 
 ## Save plots
-#ggsave("../plots/Multispecies CPUE Prediction.png", height = 14.8, width = 21, units = "cm", dpi = 600)
-#ggsave("../plots/Multispecies CPUE Prediction.pdf", height = 14.8, width = 21, units = "cm", dpi = 600)
+ggsave("../plots/Multispecies CPUE Prediction.png", height = 14.8, width = 21, units = "cm", dpi = 600)
+ggsave("../plots/Multispecies CPUE Prediction.pdf", height = 14.8, width = 21, units = "cm", dpi = 600)
 
 # Predictions for Drought
 plot(ggpredict(m9, terms = c("Drought_Months [all]", "Estuary_Type")))+
@@ -69,8 +69,8 @@ plot(ggpredict(m9, terms = c("Drought_Months [all]", "Estuary_Type")))+
                           #strip.placement = "outside",
                           #legend.justification=c(1,0), legend.position="right",
                           panel.border = element_rect(colour = "black", fill=NA, size = 1))+
-  ylab("Predicted CPUE (Estimate & 95% CI)") + xlab("Dought Months in Previous Year")
+  ylab(expression("Predicted"~"log"[10]~"(CPUE)")) + xlab("Drought Months in Previous Year")
 
 ## Save plots
-#ggsave("../plots/Multispecies drought and estuary type effects.png", height = 14.8, width = 21, units = "cm", dpi = 600)
-#ggsave("../plots/Multispecies drought and estuary type effects.pdf", height = 14.8, width = 21, units = "cm", dpi = 600)
+ggsave("../plots/Multispecies drought and estuary type effects.png", height = 14.8, width = 21, units = "cm", dpi = 600)
+ggsave("../plots/Multispecies drought and estuary type effects.pdf", height = 14.8, width = 21, units = "cm", dpi = 600)

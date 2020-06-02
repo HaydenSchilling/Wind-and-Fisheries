@@ -2,6 +2,7 @@
 library(rgdal) 
 library(sp)
 library(raster)
+library(tidyverse)
 
 # Load Fish Data
 fish_data <- read.csv("../Data/allNIMO_dist.csv", header = T)
@@ -66,7 +67,7 @@ p1 <- ggplot(fish_data, aes(x = Longitude, y = Latitude)) + theme_classic() +
         axis.ticks = element_line(colour="black"),
         strip.text = element_text(colour="black", face = "bold", size = 14),
         strip.background = element_rect(colour = NULL),
-        legend.justification=c(1,0), legend.position=c(0.92,0.05), legend.direction = "horizontal",
+        legend.justification=c(1,0), legend.position="none", legend.direction = "horizontal",
         panel.border = element_rect(colour = "black", fill=NA, size = 1),
         legend.key.size = unit(1, "cm"),
         legend.text = element_text(size = 12, face = "bold"),
