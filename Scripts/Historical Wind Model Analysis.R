@@ -218,7 +218,7 @@ acf(res, plot = T) # no autocorrelation
 SE <- dat2_2
 NE <- dat_NE2
 
-full_data <- bind_rows(list("b) SE Winds" = SE,"a) NE Winds" = NE), .id ="Direction")
+full_data <- bind_rows(list("b) Downwelling Favourable Winds" = SE,"a) Upwelling Favourable Winds" = NE), .id ="Direction")
 
 p3 <- ggplot(full_data, aes(x = Year, y = Annual_displacement)) + geom_point() + geom_smooth(method = "lm") +
   theme_classic() + ylab("Annual Displacement") + xlab("Year") + 
