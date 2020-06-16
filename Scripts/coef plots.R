@@ -1,13 +1,13 @@
 # Coef plots larval fish 3 day
 
 # The model coefs were extracted from the GLMMs for larval fish and LMM for the CPUE models into csv files which are loaded here
-
+library(tidyverse)
 library(ggplot2)
 
 dat3 <- read.csv("../Data/Larval fish model coefs 3 day.csv", header = T)
-dat3$Model <- "B) 3 Day"
+dat3$Model <- "A) 3 Day"
 dat14 <- read.csv("../Data/Larval fish model coefs 14 day.csv", header = T)
-dat14$Model <- "A) 14 Day"
+dat14$Model <- "B) 14 Day"
 
 larval_coef_dat <- bind_rows(dat3, dat14)
 larval_coef_dat$Parameter <- as.character(larval_coef_dat$Parameter)
@@ -24,9 +24,9 @@ p1 <- ggplot(larval_coef_dat, aes(Parameter, Estimate)) +
   labs(x="Parameter", y="Estimate (± SE)") +
   theme_classic() +
   theme(axis.title.x = element_text(face="bold", colour="black", size = 16),
-        axis.text.x  = element_text(colour="black", size = 10), 
+        axis.text.x  = element_text(colour="black", size = 11), 
         axis.title.y = element_text(face="bold", colour="black", size = 16),
-        axis.text.y  = element_text(colour="black", size = 10),
+        axis.text.y  = element_text(colour="black", size = 11),
         axis.ticks = element_line(colour="black"),
         strip.text = element_text(colour="black", face = "bold", size = 14, hjust=0),
         strip.background = element_rect(colour = "white"),
@@ -41,8 +41,8 @@ p1 <- ggplot(larval_coef_dat, aes(Parameter, Estimate)) +
 p1
 
 ## save plots
-#ggsave("../plots/Larval Model Coefs.pdf", width = 21, height = 14.8, units = "cm")
-#ggsave("../plots/Larval Model Coefs.png", width = 21, height = 14.8, units = "cm", dpi = 600)
+ggsave("../plots/Larval Model Coefs.pdf", width = 21, height = 14.8, units = "cm")
+ggsave("../plots/Larval Model Coefs.png", width = 21, height = 14.8, units = "cm", dpi = 600)
 
 
 ### Now CPUE MODEL PLOT

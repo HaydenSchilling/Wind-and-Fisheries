@@ -5,9 +5,9 @@ Down winds (quadratic),-1.14734,6.4995,-0.177,8.60E-01,14 Day
 Up winds,-7.57493,6.12746,-1.236,2.16E-01,14 Day
 Down winds * Up winds,0.308,0.238,1.291,1.97E-01,14 Day
 Up winds (quadratic),-28.86505,6.25145,-4.617,1.00E-06,14 Day
-Distance to coast,-0.02584,0.01892,-1.366,0.172061,14 Day
-Down winds * Distance to coast,-0.27543,0.59632,-0.462,0.644164,14 Day
-Down winds (quadratic) * Distance to coast,-0.93506,0.66459,-1.407,0.159437,14 Day
-Up winds * Distance to coast,0.22597,0.52678,0.429,0.667944,14 Day
-Down winds * Up winds * Distance to coast,0.0095,0.239,0.413,0.679973,14 Day
-Up winds (quadratic) * Distance to coast,1.22635,0.54998,2.23,0.02576,14 Day
+Dist. to coast,-0.02584,0.01892,-1.366,0.172061,14 Day
+Down winds * Dist. to coast,-0.27543,0.59632,-0.462,0.644164,14 Day
+Down winds (quadratic) * Dist. to coast,-0.93506,0.66459,-1.407,0.159437,14 Day
+Up winds * Dist. to coast,0.22597,0.52678,0.429,0.667944,14 Day
+Down winds * Up winds * Dist. to coast,0.0095,0.239,0.413,0.679973,14 Day
+Up winds (quadratic) * Dist. to coast,1.22635,0.54998,2.23,0.02576,14 Day
