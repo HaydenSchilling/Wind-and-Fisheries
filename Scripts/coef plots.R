@@ -3,6 +3,8 @@
 # The model coefs were extracted from the GLMMs for larval fish and LMM for the CPUE models into csv files which are loaded here
 library(tidyverse)
 library(ggplot2)
+library(scales)
+library(ggallin)
 
 dat3 <- read.csv("../Data/Larval fish model coefs 3 day.csv", header = T)
 dat3$Model <- "A) 3 Day"
@@ -23,10 +25,11 @@ p1 <- ggplot(larval_coef_dat, aes(Parameter, Estimate)) +
   guides(colour=FALSE) +
   labs(x="Parameter", y="Estimate (± SE)") +
   theme_classic() +
+  scale_y_continuous(trans = ssqrt_trans, breaks = c(-40, -20, -10, -1,1,10,20)) +
   theme(axis.title.x = element_text(face="bold", colour="black", size = 16),
-        axis.text.x  = element_text(colour="black", size = 11), 
+        axis.text.x  = element_text(colour="black", size = 13), 
         axis.title.y = element_text(face="bold", colour="black", size = 16),
-        axis.text.y  = element_text(colour="black", size = 11),
+        axis.text.y  = element_text(colour="black", size = 13),
         axis.ticks = element_line(colour="black"),
         strip.text = element_text(colour="black", face = "bold", size = 14, hjust=0),
         strip.background = element_rect(colour = "white"),
@@ -61,10 +64,11 @@ pALL <- ggplot(all_sp_dat, aes(Model.Term, coef.est)) +
   guides(colour=FALSE) +
   labs(x="Parameter", y="Estimate (± SE)") +
   theme_classic() +
+  scale_y_continuous(trans = ssqrt_trans, breaks=seq(-4,1,1)) +
   theme(axis.title.x = element_text(face="bold", colour="black", size = 16),
-        axis.text.x  = element_text(colour="black", size = 10), 
+        axis.text.x  = element_text(colour="black", size = 13), 
         axis.title.y = element_text(face="bold", colour="black", size = 16),
-        axis.text.y  = element_text(colour="black", size = 10),
+        axis.text.y  = element_text(colour="black", size = 13),
         axis.ticks = element_line(colour="black"),
         strip.text = element_text(colour="black", face = "bold", size = 14, hjust=0),
         strip.background = element_rect(colour = "white"),
@@ -79,8 +83,8 @@ pALL <- ggplot(all_sp_dat, aes(Model.Term, coef.est)) +
 pALL
 
 ## Save plots
-#ggsave("../plots/All species CPUE Model Coefs.pdf", width = 18, height = 14.8, units = "cm")
-#ggsave("../plots/All species CPUE Model Coefs.png", width = 18, height = 14.8, units = "cm", dpi = 600)
+ggsave("../plots/All species CPUE Model Coefs.pdf", width = 21, height = 14.8, units = "cm")
+ggsave("../plots/All species CPUE Model Coefs.png", width = 21, height = 14.8, units = "cm", dpi = 600)
 
 
 
@@ -95,12 +99,13 @@ p2 <- ggplot(mydata, aes(Model.Term, coef.est)) +
   guides(colour=FALSE) +
   labs(x="Parameter", y="Estimate (± SE)") +
   theme_classic() +
-  theme(axis.title.x = element_text(face="bold", colour="black", size = 16),
+  scale_y_continuous(trans = ssqrt_trans, breaks=seq(-4,2,1)) +
+    theme(axis.title.x = element_text(face="bold", colour="black", size = 16),
         axis.text.x  = element_text(colour="black", size = 10), 
         axis.title.y = element_text(face="bold", colour="black", size = 16),
         axis.text.y  = element_text(colour="black", size = 10),
         axis.ticks = element_line(colour="black"),
-        strip.text = element_text(colour="black", face = "bold", size = 10, hjust=0.5),
+        strip.text = element_text(colour="black", face = "bold", size = 11, hjust=0.5),
         strip.background = element_rect(colour = "white"),
         #legend.justification=c(1,0), legend.position="right",
         panel.border = element_rect(colour = "black", fill=NA, size = 1),
@@ -111,6 +116,6 @@ p2 <- ggplot(mydata, aes(Model.Term, coef.est)) +
 p2
 
 ## Save plots
-ggsave("../plots/Faceted Species CPUE Model Coefs.pdf", width = 18, height = 14.8, units = "cm")
-ggsave("../plots/Faceted Species CPUE Model Coefs.png", width = 18, height = 14.8, units = "cm", dpi = 600)
+ggsave("../plots/Faceted Species CPUE Model Coefs.pdf", width = 21, height = 14.8, units = "cm")
+ggsave("../plots/Faceted Species CPUE Model Coefs.png", width = 21, height = 14.8, units = "cm", dpi = 600)
 

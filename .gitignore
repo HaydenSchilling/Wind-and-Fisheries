@@ -11,5 +11,5 @@
 *.docx
 Wind Library*
 MapData.RData
-/Not for Github/*
+/Not on Github/*
 /Scripts/Scripts not in final analysis/*
