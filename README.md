@@ -1,7 +1,8 @@
 # Wind-and-Fisheries
 Data and Code for Wind and Fisheries Analysis
 
-This repository goes with Schilling et al. (In Review) and provides all the data and code to replicate this study
+This repository goes with Schilling et al. (In Review) and provides all the data and code to replicate this study.
+Preprint is available here: https://biorxiv.org/cgi/content/short/2020.06.24.170068v1
 
 All analysis was conducted in R v3.6.1 with some initial data processing done using a HPC. The scripts are all writen to be run with the "Scripts" folder as the working directory.
 
