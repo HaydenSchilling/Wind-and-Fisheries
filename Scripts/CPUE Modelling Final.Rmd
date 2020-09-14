@@ -15,6 +15,8 @@ library(effects)
 library(MuMIn)
 library(dplyr)
 library(ggeffects)
+library(glmmTMB)
+library(tweedie)
 # Use Log10(CPUE) rather than standardise
 
 
@@ -32,23 +34,43 @@ mydata <- read.csv("../Data/Full_Data_Modelling_BARRA_by_estuary.csv", header = 
 mydata <- subset(mydata, Species != "Total")
 
 ### Standardise Winds
-my.df <-  mydata %>% mutate(X45_degree_winds.standardised = as.numeric(scale(X45_degree_winds)),
+my.df <-  mydata %>% group_by(Species) %>% mutate(X45_degree_winds.standardised = as.numeric(scale(X45_degree_winds)),
                            X135_degree_winds.standardised = as.numeric(scale(X135_degree_winds)))
 
 ```
+
+Investigate the environmental variation over time and the stability of the CPUE over time
+```{r}
+head(my.df)
+
+ggplot(my.df, aes(x=Year, y = Drought_Months)) + geom_point() + facet_wrap(~Species)
+ggplot(my.df, aes(x=Year, y = CPUE, col= Estuary)) + geom_line() + facet_wrap(~Species, scales = "free_y")
+
+# the next two suggest my scaling of the winds was not good enough.
+ggplot(my.df, aes(x=Year, y = X45_degree_winds.standardised, col= Estuary)) + geom_line() + facet_wrap(~Species)#, scales = "free_y")
+ggplot(my.df, aes(x=Year, y = X135_degree_winds.standardised, col= Estuary)) + geom_line() + facet_wrap(~Species)#, scales = "free_y")
+
+
+```
+
 
 
 Do full model for all species
 
 ```{r}
-m7 <- lmer(log10(CPUE) ~ poly(X135_degree_winds.standardised, degree = 2) + 
+m7 <- glmmTMB(Catch ~ poly(X135_degree_winds.standardised, degree = 2) + 
        poly(X45_degree_winds.standardised, degree = 2) +
        X135_degree_winds.standardised:X45_degree_winds.standardised+
-        Estuary_Type *Drought_Months + (Species|Estuary), data = my.df)
+        Estuary_Type *Drought_Months + (1|Estuary) + (1|Species), family = tweedie(),
+       data = my.df, offset = log10(Effort_days))
 AIC(m7) # -38.18
-r.squaredGLMM(m7) # 0.08
+performance::r2(m7) # 0.08
 
-anova(m7)
+simulationOutput <- simulateResiduals(fittedModel = m7, n = 250)
+plot(simulationOutput)
+hist(residuals(m7))
+
+car::Anova(m7)
 summary(m7)
 plot(m7)
 hist(resid(m7))

@@ -85,11 +85,13 @@ norm_el <- t(norm_el) #transpose matrix so columns are sites and rows are specie
 row.names(norm_el)
 
 # Subset to interested species
-include_list <- c("Girellidae_Girella.tricuspidata_37361007", "Girellidae_Girella.spp_37361902", "Labridae_37384000",
-                  "Monacanthidae_37465903", "Mugilidae_Liza.argentea_37381004", "Mugilidae_other_37381000",
+include_list <- c("Girellidae_Girella.tricuspidata_37361007",# "Girellidae_Girella.spp_37361902", "Labridae_37384000",
+                   "Mugilidae_other_37381000", # "Monacanthidae_37465903", "Mugilidae_Liza.argentea_37381004",
                   "Sparidae_Acanthopagrus.australis_37353004",
-                  "Sparidae_Chrysophrys.auratus_37353001", "Sparidae_Rhabdosargus.sarba_37353013", "Sparidae_other_37353000",
-                  "Terapontidae_Pelates.spp_37321908", "Terapontidae_other_37321000")
+                  "Sillaginidae_Sillago.ciliata_37330010",
+                  #"Sparidae_Chrysophrys.auratus_37353001", "Sparidae_Rhabdosargus.sarba_37353013", "Sparidae_other_37353000",
+                  #"Terapontidae_Pelates.spp_37321908", "Terapontidae_other_37321000"
+                  "Platycephalidae_Platycephalus.fuscus_37296004")
 norm_el <- norm_el[include_list, ]
 
 norm_el <- t(norm_el)  ##re-transpose so columns are species and rows are sites
@@ -97,25 +99,25 @@ norm_el <- t(norm_el)  ##re-transpose so columns are species and rows are sites
 # sum to make family level abundances
 head(norm_el)
 norm_el <- as.data.frame(norm_el)
-str(norm_el)
-norm_el$Girellidae <- norm_el$Girellidae_Girella.tricuspidata_37361007 + norm_el$Girellidae_Girella.spp_37361902
-norm_el$Girellidae_Girella.spp_37361902 <- NULL
-norm_el$Girellidae_Girella.tricuspidata_37361007 <- NULL
-str(norm_el)
-norm_el$Mugilidae <- norm_el$Mugilidae_Liza.argentea_37381004 + norm_el$Mugilidae_other_37381000
-norm_el$Mugilidae_Liza.argentea_37381004 <- NULL
-norm_el$Mugilidae_other_37381000 <- NULL
-str(norm_el)
-norm_el$Sparidae <- norm_el$Sparidae_Acanthopagrus.australis_37353004 + norm_el$Sparidae_Chrysophrys.auratus_37353001 +
-  norm_el$Sparidae_other_37353000 + norm_el$Sparidae_Rhabdosargus.sarba_37353013
-norm_el$Sparidae_Acanthopagrus.australis_37353004 <- NULL
-norm_el$Sparidae_Chrysophrys.auratus_37353001 <- NULL
-norm_el$Sparidae_other_37353000 <- NULL
-norm_el$Sparidae_Rhabdosargus.sarba_37353013 <- NULL
-str(norm_el)
-norm_el$Terapontidae <- norm_el$Terapontidae_other_37321000 + norm_el$Terapontidae_Pelates.spp_37321908
-norm_el$Terapontidae_Pelates.spp_37321908 <- NULL
-norm_el$Terapontidae_other_37321000 <- NULL
+# str(norm_el)
+# norm_el$Girellidae <- norm_el$Girellidae_Girella.tricuspidata_37361007 + norm_el$Girellidae_Girella.spp_37361902
+# norm_el$Girellidae_Girella.spp_37361902 <- NULL
+# norm_el$Girellidae_Girella.tricuspidata_37361007 <- NULL
+# str(norm_el)
+# norm_el$Mugilidae <- norm_el$Mugilidae_Liza.argentea_37381004 + norm_el$Mugilidae_other_37381000
+# norm_el$Mugilidae_Liza.argentea_37381004 <- NULL
+# norm_el$Mugilidae_other_37381000 <- NULL
+# str(norm_el)
+# norm_el$Sparidae <- norm_el$Sparidae_Acanthopagrus.australis_37353004 + norm_el$Sparidae_Chrysophrys.auratus_37353001 +
+#   norm_el$Sparidae_other_37353000 + norm_el$Sparidae_Rhabdosargus.sarba_37353013
+# norm_el$Sparidae_Acanthopagrus.australis_37353004 <- NULL
+# norm_el$Sparidae_Chrysophrys.auratus_37353001 <- NULL
+# norm_el$Sparidae_other_37353000 <- NULL
+# norm_el$Sparidae_Rhabdosargus.sarba_37353013 <- NULL
+# str(norm_el)
+# norm_el$Terapontidae <- norm_el$Terapontidae_other_37321000 + norm_el$Terapontidae_Pelates.spp_37321908
+# norm_el$Terapontidae_Pelates.spp_37321908 <- NULL
+# norm_el$Terapontidae_other_37321000 <- NULL
 str(norm_el)
 
 norm_el <- t(norm_el) #transpose matrix so columns are sites and rows are species
@@ -155,7 +157,7 @@ r2(fit4)
 # dev.off()
 
 summary(fit4)
-Anova(fit4,type="II",test="Chisq") # No interaction
+Anova(fit4,type="II",test="Chisq") # Possible interaction p = 0.051
 
 plot(ggpredict(fit4, terms = "NE_Winds.standardised [all]"))
 plot(ggpredict(fit4, terms = "SE_Winds.standardised [all]"))
@@ -167,12 +169,13 @@ d_dat <- ggpredict(fit4, terms = "dists_km [all]")
 
 N_dat$Term <- "Upwelling \nFavourable Winds"
 s_dat$Term <- "Downwelling \nFavourable Winds"
-d_dat $Term <- "Distance from Coast (km)"
+d_dat$Term <- "Distance from Coast (km)"
 
 plot_dat <- bind_rows(N_dat, s_dat, d_dat)
 
+
 # marginal effects plot for distance from coast
-ggplot(plot_dat, aes(x, predicted)) + facet_wrap(~Term, scales = "free_x", switch = "x") +
+ggplot(plot_dat, aes(x, predicted)) + facet_wrap(~Term, scales = "free_x", strip.position = "bottom") +
   geom_line() +
   geom_ribbon(aes(ymin = conf.low, ymax = conf.high), alpha = .1) +
   theme_classic() + theme(axis.title.x = element_blank(),
@@ -188,4 +191,49 @@ panel.border = element_rect(colour = "black", fill=NA, size = 1))+
   ylab("Predicted Normalised \nCoastal Species Abundance")
 
 ### To save plot
-#ggsave("../plots/larval model 3 day.png", height = 14.8, width = 
+ggsave("../plots/larval model 3 day_NEW.png", width = 21, height = 14.8, units = "cm", dpi = 600)
+         
+
+
+# Heatmap plot to check interaction
+
+# Heatmap making for interaction plot (Run from here) - Very slow if standard error included (was run on HPC to get SE)
+nums <- seq(-2,2, by = 0.05)
+heat_dataM <- data.frame("Southeast Winds" = rep(0,81*81), # makes empty dataframe ready for values
+                         "Northeast Winds" =  rep(0,81*81), 
+                         "Abundance" =  rep(0,81*81))
+Nn <- 1
+# loop for NE
+for (i in 1:length(nums)){
+  for (j in 1:length(nums)){
+    pred_map <- data.frame("NE_Winds.standardised" = nums[i],
+                           "SE_Winds.standardised" = nums[j],
+                           "dists_km" = 5,
+                           "Project_ID" = "P1",
+                           "Volume_m3" = 1000)
+    PredX <- predict(fit4, newdata = pred_map, type = "response", se.fit = F)
+    heat_dataM$Southeast.Winds[Nn] <- pred_map$SE_Winds.standardised[1]
+    heat_dataM$Northeast.Winds[Nn] <- pred_map$NE_Winds.standardised[1]
+    heat_dataM$Abundance[Nn] <- PredX#$fit
+    print(paste("This is line ", Nn, " out of 6561"))
+    Nn <- Nn + 1
+  }
+}
+
+pH <- ggplot(heat_dataM, aes(x = Southeast.Winds,y = Northeast.Winds)) + geom_tile(aes(fill = Abundance)) +
+  geom_contour(col="white", aes(z = Abundance), binwidth = 0.002) +
+  scale_x_continuous(expand = c(0,0)) + 
+  scale_y_continuous(expand = c(0,0)) +
+  #scale_fill_gradient(low = "blue", high = "red") + 
+  theme_classic() + 
+  scale_fill_viridis(option = "magma", name="Predicted\nNormalised\nCoastal\nSpecies\nAbundance") + # or geom_raster()
+  xlab("Downwelling \nFavourable Winds") + ylab("Upwelling \nFavourable Winds") +
+  theme(axis.title.x = element_text(face="bold", colour="black", size = 15),
+        axis.text.x  = element_text(colour="black", size = 14), 
+        axis.title.y = element_text(face="bold", colour="black", size = 15),
+        axis.text.y  = element_text(colour="black", size = 14),
+        axis.ticks = element_line(colour="black"),
+        legend.title = element_text(colour="black", size=12, face="bold"),
+        legend.text = element_text(colour="black", size=10)) 
+
+pH

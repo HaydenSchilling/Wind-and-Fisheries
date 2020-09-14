@@ -89,11 +89,13 @@ norm_el <- t(norm_el) #transpose matrix so columns are sites and rows are specie
 row.names(norm_el)
 
 # Subset to interested species Based upon Ford et al.
-include_list <- c("Girellidae_Girella.tricuspidata_37361007", "Girellidae_Girella.spp_37361902", "Labridae_37384000",
-                  "Monacanthidae_37465903", "Mugilidae_Liza.argentea_37381004", "Mugilidae_other_37381000",
+include_list <- c("Girellidae_Girella.tricuspidata_37361007",# "Girellidae_Girella.spp_37361902", "Labridae_37384000",
+                  "Mugilidae_other_37381000", # "Monacanthidae_37465903", "Mugilidae_Liza.argentea_37381004",
                   "Sparidae_Acanthopagrus.australis_37353004",
-                  "Sparidae_Chrysophrys.auratus_37353001", "Sparidae_Rhabdosargus.sarba_37353013", "Sparidae_other_37353000",
-                  "Terapontidae_Pelates.spp_37321908", "Terapontidae_other_37321000")
+                  "Sillaginidae_Sillago.ciliata_37330010",
+                  #"Sparidae_Chrysophrys.auratus_37353001", "Sparidae_Rhabdosargus.sarba_37353013", "Sparidae_other_37353000",
+                  #"Terapontidae_Pelates.spp_37321908", "Terapontidae_other_37321000"
+                  "Platycephalidae_Platycephalus.fuscus_37296004")
 norm_el <- norm_el[include_list, ]
 
 norm_el <- t(norm_el)  ##re-transpose so columns are species and rows are sites
@@ -101,25 +103,25 @@ norm_el <- t(norm_el)  ##re-transpose so columns are species and rows are sites
 # sum to make family level abundances
 head(norm_el)
 norm_el <- as.data.frame(norm_el)
-str(norm_el)
-norm_el$Girellidae <- norm_el$Girellidae_Girella.tricuspidata_37361007 + norm_el$Girellidae_Girella.spp_37361902
-norm_el$Girellidae_Girella.spp_37361902 <- NULL
-norm_el$Girellidae_Girella.tricuspidata_37361007 <- NULL
-str(norm_el)
-norm_el$Mugilidae <- norm_el$Mugilidae_Liza.argentea_37381004 + norm_el$Mugilidae_other_37381000
-norm_el$Mugilidae_Liza.argentea_37381004 <- NULL
-norm_el$Mugilidae_other_37381000 <- NULL
-str(norm_el)
-norm_el$Sparidae <- norm_el$Sparidae_Acanthopagrus.australis_37353004 + norm_el$Sparidae_Chrysophrys.auratus_37353001 +
-  norm_el$Sparidae_other_37353000 + norm_el$Sparidae_Rhabdosargus.sarba_37353013
-norm_el$Sparidae_Acanthopagrus.australis_37353004 <- NULL
-norm_el$Sparidae_Chrysophrys.auratus_37353001 <- NULL
-norm_el$Sparidae_other_37353000 <- NULL
-norm_el$Sparidae_Rhabdosargus.sarba_37353013 <- NULL
-str(norm_el)
-norm_el$Terapontidae <- norm_el$Terapontidae_other_37321000 + norm_el$Terapontidae_Pelates.spp_37321908
-norm_el$Terapontidae_Pelates.spp_37321908 <- NULL
-norm_el$Terapontidae_other_37321000 <- NULL
+# str(norm_el)
+# norm_el$Girellidae <- norm_el$Girellidae_Girella.tricuspidata_37361007 + norm_el$Girellidae_Girella.spp_37361902
+# norm_el$Girellidae_Girella.spp_37361902 <- NULL
+# norm_el$Girellidae_Girella.tricuspidata_37361007 <- NULL
+# str(norm_el)
+# norm_el$Mugilidae <- norm_el$Mugilidae_Liza.argentea_37381004 + norm_el$Mugilidae_other_37381000
+# norm_el$Mugilidae_Liza.argentea_37381004 <- NULL
+# norm_el$Mugilidae_other_37381000 <- NULL
+# str(norm_el)
+# norm_el$Sparidae <- norm_el$Sparidae_Acanthopagrus.australis_37353004 + norm_el$Sparidae_Chrysophrys.auratus_37353001 +
+#   norm_el$Sparidae_other_37353000 + norm_el$Sparidae_Rhabdosargus.sarba_37353013
+# norm_el$Sparidae_Acanthopagrus.australis_37353004 <- NULL
+# norm_el$Sparidae_Chrysophrys.auratus_37353001 <- NULL
+# norm_el$Sparidae_other_37353000 <- NULL
+# norm_el$Sparidae_Rhabdosargus.sarba_37353013 <- NULL
+# str(norm_el)
+# norm_el$Terapontidae <- norm_el$Terapontidae_other_37321000 + norm_el$Terapontidae_Pelates.spp_37321908
+# norm_el$Terapontidae_Pelates.spp_37321908 <- NULL
+# norm_el$Terapontidae_other_37321000 <- NULL
 str(norm_el)
 
 norm_el <- t(norm_el) #transpose matrix so columns are sites and rows are species
@@ -160,6 +162,7 @@ Anova(fit4,type="II",test="Chisq") # significant interaction between NE and SE w
 summary(fit4)
 
 plot(ggpredict(fit4, terms = "NE_Winds.standardised [all]"))
+plot(ggpredict(fit4, terms = "SE_Winds.standardised [all]"))
 plot(ggpredict(fit4, terms = "dists_km [all]"))
 
 
@@ -179,7 +182,7 @@ for (i in 1:length(nums)){
                            "dists_km" = 5,
                            "Project_ID" = "P1",
                            "Volume_m3" = 1000)
-    PredX <- predict(fitM, newdata = pred_map, type = "response", se.fit = F)
+    PredX <- predict(fit4, newdata = pred_map, type = "response", se.fit = F)
     heat_dataM$Southeast.Winds[Nn] <- pred_map$SE_Winds.standardised[1]
     heat_dataM$Northeast.Winds[Nn] <- pred_map$NE_Winds.standardised[1]
     heat_dataM$Abundance[Nn] <- PredX#$fit
@@ -215,7 +218,8 @@ pD
 
 heat14 <- read.csv("../Data/heatmap data with error larval 14 day lag.csv", header = T)
 
-pH <- ggplot(heat14, aes(x = Southeast.Winds,y = Northeast.Winds)) + geom_tile(aes(fill = Abundance)) +
+# check which dataset is being called (new or saved one)
+pH <- ggplot(heat_dataM, aes(x = Southeast.Winds,y = Northeast.Winds)) + geom_tile(aes(fill = Abundance)) +
   geom_contour(col="white", aes(z = Abundance), binwidth = 0.002) +
   scale_x_continuous(expand = c(0,0)) + 
   scale_y_continuous(expand = c(0,0)) +
