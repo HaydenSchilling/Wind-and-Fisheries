@@ -1,67 +1,67 @@
 Model Term,coef.est,coef.se,Species
-Intercept,1.6,0.31,b) Bream
-Down,1.13,0.44,b) Bream
-Down (quadratic),-0.17,0.24,b) Bream
-Up,0.17,0.32,b) Bream
-Up (quadratic),0.52,0.22,b) Bream
-Down * Up ,-0.22,0.09,b) Bream
-Est Type (Barrier River),-0.6,0.44,b) Bream
-Est Type (Drowned River Valley),-0.19,0.49,b) Bream
-Drought,0.04,0.01,b) Bream
-Est Type (Barrier) * Drought,-0.02,0.01,b) Bream
-Est Type (Drowned River Valley) * Drought,-0.03,0.02,b) Bream
-Intercept,2.09,0.37,e) Mullet
-Down,1.47,1.11,e) Mullet
-Down (quadratic),0.1,0.18,e) Mullet
-Up,0.21,0.42,e) Mullet
-Up (quadratic),0.24,0.15,e) Mullet
-Down * Up ,0.11,0.07,e) Mullet
-Est Type (Barrier River),-0.13,0.44,e) Mullet
-Est Type (Drowned River Valley),-0.43,0.49,e) Mullet
-Drought,0.02,0.01,e) Mullet
-Est Type (Barrier) * Drought,-0.03,0.01,e) Mullet
-Est Type (Drowned River Valley) * Drought,-0.03,0.01,e) Mullet
-Intercept,1.85,0.43,c) Flathead
-Down,0.11,0.43,c) Flathead
-Down (quadratic),0.07,0.14,c) Flathead
-Up,-0.24,0.25,c) Flathead
-Up (quadratic),-0.23,0.12,c) Flathead
-Down * Up ,-0.09,0.08,c) Flathead
-Est Type (Barrier River),-0.61,0.61,c) Flathead
-Est Type (Drowned River Valley),-1.04,0.68,c) Flathead
-Drought,0.01,0.01,c) Flathead
-Est Type (Barrier) * Drought,-0.03,0.01,c) Flathead
-Est Type (Drowned River Valley) * Drought,0,0.01,c) Flathead
-Intercept,1.85,0.45,d) Luderick
-Down,0.23,0.46,d) Luderick
-Down (quadratic),0.01,0.25,d) Luderick
-Up,-0.12,0.25,d) Luderick
-Up (quadratic),0.12,0.19,d) Luderick
-Down * Up ,-0.08,0.19,d) Luderick
-Est Type (Barrier River),-0.61,0.63,d) Luderick
-Est Type (Drowned River Valley),-0.51,0.7,d) Luderick
-Drought,0.02,0.01,d) Luderick
-Est Type (Barrier) * Drought,-0.03,0.01,d) Luderick
-Est Type (Drowned River Valley) * Drought,-0.02,0.01,d) Luderick
-Intercept,0.79,0.33,f) Whiting
-Down,-0.64,0.67,f) Whiting
-Down (quadratic),0.29,0.36,f) Whiting
-Up,-0.16,0.38,f) Whiting
-Up (quadratic),0.55,0.3,f) Whiting
-Down * Up ,0.26,0.28,f) Whiting
-Est Type (Barrier River),-0.05,0.47,f) Whiting
-Est Type (Drowned River Valley),-0.51,0.52,f) Whiting
-Drought,0.03,0.01,f) Whiting
-Est Type (Barrier) * Drought,-0.02,0.02,f) Whiting
-Est Type (Drowned River Valley) * Drought,0,0.02,f) Whiting
-Intercept,0.71,0.19,a) All Species
-Down,-0.72,0.53,a) All Species
-Down (quadratic),0.54,0.32,a) All Species
-Up,-3.23,0.59,a) All Species
-Up (quadratic),0.8,0.3,a) All Species
-Down * Up ,-0.03,0.02,a) All Species
-Est Type (Barrier River),0.88,0.18,a) All Species
-Est Type (Drowned River Valley),1.13,0.21,a) All Species
-Drought,0.03,0,a) All Species
-Est Type (Barrier) * Drought,-0.03,0.01,a) All Species
-Est Type (Drowned River Valley) * Drought,-0.02,0.01,a) All Species
+Intercept,6.882238547,0.357892822,b) Bream
+Down,0.957670321,0.646350485,b) Bream
+Down (quadratic),-0.3492247,0.525697423,b) Bream
+Up,-0.391871227,0.613230129,b) Bream
+Up (quadratic),1.040671298,0.470624232,b) Bream
+Down * Up ,-0.132031332,0.06386378,b) Bream
+Est Type (Barrier River),-1.124517369,0.504066026,b) Bream
+Est Type (Drowned River Valley),0.02652241,0.563514643,b) Bream
+Drought,0.097873814,0.02684294,b) Bream
+Est Type (Barrier) * Drought,-0.045702445,0.033851796,b) Bream
+Est Type (Drowned River Valley) * Drought,-0.072537239,0.038603174,b) Bream
+Intercept,8.771215575,0.331873437,e) Mullet
+Down,-0.146601166,0.596582984,e) Mullet
+Down (quadratic),0.437353746,0.397488644,e) Mullet
+Up,-0.907603039,0.428536316,e) Mullet
+Up (quadratic),0.465680011,0.353725628,e) Mullet
+Down * Up ,0.07162642,0.049529321,e) Mullet
+Est Type (Barrier River),0.068372832,0.468844397,e) Mullet
+Est Type (Drowned River Valley),-0.370662232,0.523895884,e) Mullet
+Drought,0.038010393,0.015894053,e) Mullet
+Est Type (Barrier) * Drought,-0.063081453,0.020033926,e) Mullet
+Est Type (Drowned River Valley) * Drought,-0.070338787,0.023296632,e) Mullet
+Intercept,7.544713417,0.508655863,c) Flathead
+Down,0.129278339,0.501754426,c) Flathead
+Down (quadratic),0.071217875,0.339204924,c) Flathead
+Up,-1.038883139,0.363252745,c) Flathead
+Up (quadratic),-0.542591181,0.275238774,c) Flathead
+Down * Up ,-0.064512167,0.040370953,c) Flathead
+Est Type (Barrier River),-1.139237871,0.718587878,c) Flathead
+Est Type (Drowned River Valley),-1.931176577,0.803421497,c) Flathead
+Drought,-0.002221994,0.014107291,c) Flathead
+Est Type (Barrier) * Drought,-0.048009351,0.017297947,c) Flathead
+Est Type (Drowned River Valley) * Drought,0.019349718,0.020604465,c) Flathead
+Intercept,7.538276035,0.549398043,d) Luderick
+Down,0.00222291,0.614101978,d) Luderick
+Down (quadratic),0.276034678,0.484881467,d) Luderick
+Up,-0.32242725,0.485034567,d) Luderick
+Up (quadratic),0.203055386,0.386234192,d) Luderick
+Down * Up ,-0.019801822,0.067387843,d) Luderick
+Est Type (Barrier River),-1.058771239,0.775696432,d) Luderick
+Est Type (Drowned River Valley),-0.594906635,0.86795496,d) Luderick
+Drought,0.030032067,0.017208726,d) Luderick
+Est Type (Barrier) * Drought,-0.066986108,0.02260741,d) Luderick
+Est Type (Drowned River Valley) * Drought,-0.046294434,0.02703797,d) Luderick
+Intercept,5.22236479,0.294541769,f) Whiting
+Down,-0.116781213,0.815575394,f) Whiting
+Down (quadratic),0.152734044,0.666279122,f) Whiting
+Up,0.354618816,0.759769282,f) Whiting
+Up (quadratic),1.077007639,0.56134838,f) Whiting
+Down * Up ,0.05982542,0.098441726,f) Whiting
+Est Type (Barrier River),0.092873371,0.413434517,f) Whiting
+Est Type (Drowned River Valley),-0.710430225,0.464087212,f) Whiting
+Drought,0.058282033,0.026059157,f) Whiting
+Est Type (Barrier) * Drought,-0.028139783,0.033746431,f) Whiting
+Est Type (Drowned River Valley) * Drought,0.001747668,0.039632447,f) Whiting
+Intercept,6.171572974,0.38821191,a) All Species
+Down,0.525996474,0.629413148,a) All Species
+Down (quadratic),-0.184351142,0.550277982,a) All Species
+Up,-1.432457006,0.536984372,a) All Species
+Up (quadratic),0.989609132,0.437118639,a) All Species
+Down * Up ,-0.045155045,0.029117394,a) All Species
+Est Type (Barrier River),0.333474434,0.355716301,a) All Species
+Est Type (Drowned River Valley),1.355769535,0.460330799,a) All Species
+Drought,0.047694255,0.009575646,a) All Species
+Est Type (Barrier) * Drought,-0.052883604,0.012622974,a) All Species
+Est Type (Drowned River Valley) * Drought,-0.034162826,0.014856724,a) All Species

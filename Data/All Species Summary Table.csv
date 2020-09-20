@@ -1,0 +1,31 @@
+"effect","component","group","term","estimate","std.error","statistic","p.value"
+"fixed","cond",NA,"(Intercept)",6.17157297358579,0.388211909749107,15.8974333826449,6.601446404658e-57
+"fixed","cond",NA,"poly(X135_degree_winds.standardised, degree = 2)1",0.52599647401092,0.629413147504723,0.835693496547071,0.403327354855631
+"fixed","cond",NA,"poly(X135_degree_winds.standardised, degree = 2)2",-0.184351141895955,0.550277981547474,-0.335014570958351,0.737614094697197
+"fixed","cond",NA,"poly(X45_degree_winds.standardised, degree = 2)1",-1.43245700624374,0.536984371992254,-2.66759533602293,0.00763962111912805
+"fixed","cond",NA,"poly(X45_degree_winds.standardised, degree = 2)2",0.989609132178928,0.437118639374556,2.26393716267715,0.0235779798525292
+"fixed","cond",NA,"Estuary_TypeBarrier River",0.333474433630272,0.355716301403112,0.937473015194672,0.34851529811527
+"fixed","cond",NA,"Estuary_TypeDrowned River Valley",1.35576953535238,0.4603307992085,2.94520709386275,0.00322738564542024
+"fixed","cond",NA,"Drought_Months",0.0476942549751617,0.00957564586090216,4.98078726677849,6.33261230520846e-07
+"fixed","cond",NA,"SpeciesFlathead",-0.0946580264703454,0.395901450640225,-0.239094922024839,0.811031979241806
+"fixed","cond",NA,"SpeciesLuderick",0.271855123743692,0.339983813982873,0.799611959636959,0.423935656091688
+"fixed","cond",NA,"SpeciesMullet",1.96010894935121,0.2614924645947,7.4958525186922,6.58688211563394e-14
+"fixed","cond",NA,"SpeciesWhiting",-1.4923395428574,0.354669448218483,-4.20769127522394,2.57993002599494e-05
+"fixed","cond",NA,"X135_degree_winds.standardised:X45_degree_winds.standardised",-0.0451550449038953,0.0291173937205418,-1.55079281261493,0.120951343596253
+"fixed","cond",NA,"Estuary_TypeBarrier River:Drought_Months",-0.0528836041884072,0.0126229743821463,-4.18947251158211,2.79603648264807e-05
+"fixed","cond",NA,"Estuary_TypeDrowned River Valley:Drought_Months",-0.0341628260197805,0.0148567237096359,-2.29948585485391,0.021477365689444
+"ran_pars","cond","Estuary","sd__(Intercept)",0.903620494999314,NA,NA,NA
+"ran_pars","cond","Estuary","sd__SpeciesFlathead",1.10717949472505,NA,NA,NA
+"ran_pars","cond","Estuary","sd__SpeciesLuderick",0.946890862808803,NA,NA,NA
+"ran_pars","cond","Estuary","sd__SpeciesMullet",0.720292358232994,NA,NA,NA
+"ran_pars","cond","Estuary","sd__SpeciesWhiting",0.989127847863602,NA,NA,NA
+"ran_pars","cond","Estuary","cor__(Intercept).SpeciesFlathead",0.158057098506147,NA,NA,NA
+"ran_pars","cond","Estuary","cor__(Intercept).SpeciesLuderick",-0.0172325293029227,NA,NA,NA
+"ran_pars","cond","Estuary","cor__(Intercept).SpeciesMullet",-0.314660120229275,NA,NA,NA
+"ran_pars","cond","Estuary","cor__(Intercept).SpeciesWhiting",-0.437398225085117,NA,NA,NA
+"ran_pars","cond","Estuary","cor__SpeciesFlathead.SpeciesLuderick",0.856209678944941,NA,NA,NA
+"ran_pars","cond","Estuary","cor__SpeciesFlathead.SpeciesMullet",0.809451077925789,NA,NA,NA
+"ran_pars","cond","Estuary","cor__SpeciesFlathead.SpeciesWhiting",0.763077256475245,NA,NA,NA
+"ran_pars","cond","Estuary","cor__SpeciesLuderick.SpeciesMullet",0.710063461009223,NA,NA,NA
+"ran_pars","cond","Estuary","cor__SpeciesLuderick.SpeciesWhiting",0.595631403934775,NA,NA,NA
+"ran_pars","cond","Estuary","cor__SpeciesMullet.SpeciesWhiting",0.941735495973191,NA,NA,NA

@@ -99,7 +99,7 @@ p2 <- ggplot(mydata, aes(Model.Term, coef.est)) +
   guides(colour=FALSE) +
   labs(x="Parameter", y="Estimate (± SE)") +
   theme_classic() +
-  scale_y_continuous(trans = ssqrt_trans, breaks=seq(-4,2,1)) +
+  scale_y_continuous(trans = ssqrt_trans, breaks=c(-3, -2, -1, 0,1,2,4,6,8)) +
     theme(axis.title.x = element_text(face="bold", colour="black", size = 16),
         axis.text.x  = element_text(colour="black", size = 10), 
         axis.title.y = element_text(face="bold", colour="black", size = 16),
