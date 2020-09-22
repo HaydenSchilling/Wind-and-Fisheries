@@ -122,50 +122,50 @@ plot(ggeffect(m7, terms = "Drought_Months [all]"))
 ```
 Heatmap making for interaction plot (Run from here) - Very slow if standard error included (was run on HPC to get SE)
 ```{r message=FALSE}
-# nums <- seq(-2,2, by = 0.05)
-# heat_dataM <- data.frame("X135_degree_winds.standardised" = rep(0,81*81), # makes empty dataframe ready for values
-#                          "X45_degree_winds.standardised" =  rep(0,81*81), 
-#                          "Catch" =  rep(0,81*81))
-# Nn <- 1
-# # loop for NE
-# for (i in 1:length(nums)){
-#   for (j in 1:length(nums)){
-#     pred_map <- data.frame("X45_degree_winds.standardised" = nums[i],
-#                            "X135_degree_winds.standardised" = nums[j],
-#                            "Drought_Months" = mean(my.df$Drought_Months),
-#                            "Estuary_Type" = "Drowned River Valley",
-#                            "Estuary" = "Hawkesbury River",
-#                            "Species" = "Bream",
-#                            "Effort_days" = mean(my.df$Effort_days))
-#     PredX <- predict(m7, newdata = pred_map, type = "response", se.fit = F)
-#     heat_dataM$Southeast.Winds[Nn] <- pred_map$X135_degree_winds.standardised[1]
-#     heat_dataM$Northeast.Winds[Nn] <- pred_map$X45_degree_winds.standardised[1]
-#     heat_dataM$Abundance[Nn] <- PredX#$fit
-#     #print(paste("This is line ", Nn, " out of 6561"))
-#     Nn <- Nn + 1
-#   }
-# }
-# 
-# pH <- ggplot(heat_dataM, aes(x = Southeast.Winds,y = Northeast.Winds)) + geom_tile(aes(fill = Abundance)) +
-#   geom_contour(col="white", aes(z = Abundance)) +#, binwidth = 0.002
-#   scale_x_continuous(expand = c(0,0)) + 
-#   scale_y_continuous(expand = c(0,0)) +
-#   #scale_fill_gradient(low = "blue", high = "red") + 
-#   theme_classic() + 
-#   viridis::scale_fill_viridis(option = "magma", name="Predicted Catch") + # or geom_raster()
-#   xlab("Downwelling \nFavourable Winds") + ylab("Upwelling \nFavourable Winds") +
-#   theme(axis.title.x = element_text(face="bold", colour="black", size = 15),
-#         axis.text.x  = element_text(colour="black", size = 14), 
-#         axis.title.y = element_text(face="bold", colour="black", size = 15),
-#         axis.text.y  = element_text(colour="black", size = 14),
-#         axis.ticks = element_line(colour="black"),
-#         legend.title = element_text(colour="black", size=12, face="bold"),
-#         legend.text = element_text(colour="black", size=10),
-#         legend.position = "bottom") 
-# 
-# pH
-# 
-# write.csv(heat_dataM, "../Data/All Species heamap prediction data.csv", row.names = F)
+nums <- seq(-2,2, by = 0.05)
+heat_dataM <- data.frame("X135_degree_winds.standardised" = rep(0,81*81), # makes empty dataframe ready for values
+                         "X45_degree_winds.standardised" =  rep(0,81*81),
+                         "Catch" =  rep(0,81*81))
+Nn <- 1
+# loop for NE
+for (i in 1:length(nums)){
+  for (j in 1:length(nums)){
+    pred_map <- data.frame("X45_degree_winds.standardised" = nums[i],
+                           "X135_degree_winds.standardised" = nums[j],
+                           "Drought_Months" = mean(my.df$Drought_Months),
+                           "Estuary_Type" = "Drowned River Valley",
+                           "Estuary" = "Hawkesbury River",
+                           "Species" = "Bream",
+                           "Effort_days" = mean(my.df$Effort_days))
+    PredX <- predict(m7, newdata = pred_map, type = "response", se.fit = F)
+    heat_dataM$Southeast.Winds[Nn] <- pred_map$X135_degree_winds.standardised[1]
+    heat_dataM$Northeast.Winds[Nn] <- pred_map$X45_degree_winds.standardised[1]
+    heat_dataM$Abundance[Nn] <- PredX#$fit
+    #print(paste("This is line ", Nn, " out of 6561"))
+    Nn <- Nn + 1
+  }
+}
+
+pH <- ggplot(heat_dataM, aes(x = Southeast.Winds,y = Northeast.Winds)) + geom_tile(aes(fill = Abundance)) +
+  geom_contour(col="white", aes(z = Abundance)) +#, binwidth = 0.002
+  scale_x_continuous(expand = c(0,0)) +
+  scale_y_continuous(expand = c(0,0)) +
+  #scale_fill_gradient(low = "blue", high = "red") +
+  theme_classic() +
+  viridis::scale_fill_viridis(option = "magma", name="Predicted Catch") + # or geom_raster()
+  xlab("Downwelling \nFavourable Winds") + ylab("Upwelling \nFavourable Winds") +
+  theme(axis.title.x = element_text(face="bold", colour="black", size = 15),
+        axis.text.x  = element_text(colour="black", size = 14),
+        axis.title.y = element_text(face="bold", colour="black", size = 15),
+        axis.text.y  = element_text(colour="black", size = 14),
+        axis.ticks = element_line(colour="black"),
+        legend.title = element_text(colour="black", size=12, face="bold"),
+        legend.text = element_text(colour="black", size=10),
+        legend.position = "bottom")
+
+pH
+
+write.csv(heat_dataM, "../Data/All Species heamap prediction data.csv", row.names = F)
 
 ```
 
@@ -272,7 +272,7 @@ pB <- ggplot(heat_dataBream, aes(x = Southeast.Winds,y = Northeast.Winds)) + geo
 
 pB
 
-# write.csv(heat_dataBream, "../Data/Bream heamap prediction data.csv", row.names = F)
+ write.csv(heat_dataBream, "../Data/Bream heamap prediction data.csv", row.names = F)
 
 ```
 
@@ -342,49 +342,49 @@ plot(ggeffect(m2, terms = "Drought_Months [all]"))
 
 
 ```{r}
-# nums <- seq(-2,2, by = 0.05)
-# heat_dataMullet <- data.frame("X135_degree_winds.standardised" = rep(0,81*81), # makes empty dataframe ready for values
-#                          "X45_degree_winds.standardised" =  rep(0,81*81), 
-#                          "Catch" =  rep(0,81*81))
-# Nn <- 1
-# # loop for NE
-# for (i in 1:length(nums)){
-#   for (j in 1:length(nums)){
-#     pred_map <- data.frame("X45_degree_winds.standardised" = nums[i],
-#                            "X135_degree_winds.standardised" = nums[j],
-#                            "Drought_Months" = mean(my.df$Drought_Months),
-#                            "Estuary_Type" = "Drowned River Valley",
-#                            "Estuary" = "Hawkesbury River",
-#                            "Effort_days" = mean(my.df$Effort_days))
-#     PredX <- predict(m2, newdata = pred_map, type = "response", se.fit = F)
-#     heat_dataMullet$Southeast.Winds[Nn] <- pred_map$X135_degree_winds.standardised[1]
-#     heat_dataMullet$Northeast.Winds[Nn] <- pred_map$X45_degree_winds.standardised[1]
-#     heat_dataMullet$Abundance[Nn] <- PredX#$fit
-#     #print(paste("This is line ", Nn, " out of 6561"))
-#     Nn <- Nn + 1
-#   }
-# }
-# 
-# pM <- ggplot(heat_dataMullet, aes(x = Southeast.Winds,y = Northeast.Winds)) + geom_tile(aes(fill = Abundance)) +
-#   geom_contour(col="white", aes(z = Abundance)) +#, binwidth = 0.002
-#   scale_x_continuous(expand = c(0,0)) + 
-#   scale_y_continuous(expand = c(0,0)) +
-#   #scale_fill_gradient(low = "blue", high = "red") + 
-#   theme_classic() + 
-#   viridis::scale_fill_viridis(option = "magma", name="Predicted Catch") + # or geom_raster()
-#   xlab("Downwelling \nFavourable Winds") + ylab("Upwelling \nFavourable Winds") +
-#   theme(axis.title.x = element_text(face="bold", colour="black", size = 15),
-#         axis.text.x  = element_text(colour="black", size = 14), 
-#         axis.title.y = element_text(face="bold", colour="black", size = 15),
-#         axis.text.y  = element_text(colour="black", size = 14),
-#         axis.ticks = element_line(colour="black"),
-#         legend.title = element_blank(),
-#         legend.text = element_text(colour="black", size=10),
-#         legend.position = "bottom") 
-# 
-# pM
-# 
-# write.csv(heat_dataMullet, "../Data/Mullet heamap prediction data.csv", row.names = F)
+nums <- seq(-2,2, by = 0.05)
+heat_dataMullet <- data.frame("X135_degree_winds.standardised" = rep(0,81*81), # makes empty dataframe ready for values
+                         "X45_degree_winds.standardised" =  rep(0,81*81),
+                         "Catch" =  rep(0,81*81))
+Nn <- 1
+# loop for NE
+for (i in 1:length(nums)){
+  for (j in 1:length(nums)){
+    pred_map <- data.frame("X45_degree_winds.standardised" = nums[i],
+                           "X135_degree_winds.standardised" = nums[j],
+                           "Drought_Months" = mean(my.df$Drought_Months),
+                           "Estuary_Type" = "Drowned River Valley",
+                           "Estuary" = "Hawkesbury River",
+                           "Effort_days" = mean(my.df$Effort_days))
+    PredX <- predict(m2, newdata = pred_map, type = "response", se.fit = F)
+    heat_dataMullet$Southeast.Winds[Nn] <- pred_map$X135_degree_winds.standardised[1]
+    heat_dataMullet$Northeast.Winds[Nn] <- pred_map$X45_degree_winds.standardised[1]
+    heat_dataMullet$Abundance[Nn] <- PredX#$fit
+    #print(paste("This is line ", Nn, " out of 6561"))
+    Nn <- Nn + 1
+  }
+}
+
+pM <- ggplot(heat_dataMullet, aes(x = Southeast.Winds,y = Northeast.Winds)) + geom_tile(aes(fill = Abundance)) +
+  geom_contour(col="white", aes(z = Abundance)) +#, binwidth = 0.002
+  scale_x_continuous(expand = c(0,0)) +
+  scale_y_continuous(expand = c(0,0)) +
+  #scale_fill_gradient(low = "blue", high = "red") +
+  theme_classic() +
+  viridis::scale_fill_viridis(option = "magma", name="Predicted Catch") + # or geom_raster()
+  xlab("Downwelling \nFavourable Winds") + ylab("Upwelling \nFavourable Winds") +
+  theme(axis.title.x = element_text(face="bold", colour="black", size = 15),
+        axis.text.x  = element_text(colour="black", size = 14),
+        axis.title.y = element_text(face="bold", colour="black", size = 15),
+        axis.text.y  = element_text(colour="black", size = 14),
+        axis.ticks = element_line(colour="black"),
+        legend.title = element_blank(),
+        legend.text = element_text(colour="black", size=10),
+        legend.position = "bottom")
+
+pM
+
+write.csv(heat_dataMullet, "../Data/Mullet heamap prediction data.csv", row.names = F)
 
 ```
 
@@ -451,49 +451,49 @@ plot(ggeffect(m3, terms = "X135_degree_winds.standardised [all]"))
 #plot(ggeffect(m3, terms = "Estuary_Type:Drought_Months"))
 ```
 ```{r}
-# nums <- seq(-2,2, by = 0.05)
-# heat_dataWhiting <- data.frame("X135_degree_winds.standardised" = rep(0,81*81), # makes empty dataframe ready for values
-#                          "X45_degree_winds.standardised" =  rep(0,81*81), 
-#                          "Catch" =  rep(0,81*81))
-# Nn <- 1
-# # loop for NE
-# for (i in 1:length(nums)){
-#   for (j in 1:length(nums)){
-#     pred_map <- data.frame("X45_degree_winds.standardised" = nums[i],
-#                            "X135_degree_winds.standardised" = nums[j],
-#                            "Drought_Months" = mean(my.df$Drought_Months),
-#                            "Estuary_Type" = "Drowned River Valley",
-#                            "Estuary" = "Hawkesbury River",
-#                            "Effort_days" = mean(my.df$Effort_days))
-#     PredX <- predict(m3, newdata = pred_map, type = "response", se.fit = F)
-#     heat_dataWhiting$Southeast.Winds[Nn] <- pred_map$X135_degree_winds.standardised[1]
-#     heat_dataWhiting$Northeast.Winds[Nn] <- pred_map$X45_degree_winds.standardised[1]
-#     heat_dataWhiting$Abundance[Nn] <- PredX#$fit
-#     #print(paste("This is line ", Nn, " out of 6561"))
-#     Nn <- Nn + 1
-#   }
-# }
-# 
-# pW <- ggplot(heat_dataWhiting, aes(x = Southeast.Winds,y = Northeast.Winds)) + geom_tile(aes(fill = Abundance)) +
-#   geom_contour(col="white", aes(z = Abundance)) +#, binwidth = 0.002
-#   scale_x_continuous(expand = c(0,0)) + 
-#   scale_y_continuous(expand = c(0,0)) +
-#   #scale_fill_gradient(low = "blue", high = "red") + 
-#   theme_classic() + 
-#   viridis::scale_fill_viridis(option = "magma", name="Predicted Catch") + # or geom_raster()
-#   xlab("Downwelling \nFavourable Winds") + ylab("Upwelling \nFavourable Winds") +
-#   theme(axis.title.x = element_text(face="bold", colour="black", size = 15),
-#         axis.text.x  = element_text(colour="black", size = 14), 
-#         axis.title.y = element_text(face="bold", colour="black", size = 15),
-#         axis.text.y  = element_text(colour="black", size = 14),
-#         axis.ticks = element_line(colour="black"),
-#         legend.title = element_blank(),
-#         legend.text = element_text(colour="black", size=10),
-#         legend.position = "bottom") 
-# 
-# pW
-# 
-# write.csv(heat_dataWhiting, "../Data/Whiting heamap prediction data.csv", row.names = F)
+nums <- seq(-2,2, by = 0.05)
+heat_dataWhiting <- data.frame("X135_degree_winds.standardised" = rep(0,81*81), # makes empty dataframe ready for values
+                         "X45_degree_winds.standardised" =  rep(0,81*81),
+                         "Catch" =  rep(0,81*81))
+Nn <- 1
+# loop for NE
+for (i in 1:length(nums)){
+  for (j in 1:length(nums)){
+    pred_map <- data.frame("X45_degree_winds.standardised" = nums[i],
+                           "X135_degree_winds.standardised" = nums[j],
+                           "Drought_Months" = mean(my.df$Drought_Months),
+                           "Estuary_Type" = "Drowned River Valley",
+                           "Estuary" = "Hawkesbury River",
+                           "Effort_days" = mean(my.df$Effort_days))
+    PredX <- predict(m3, newdata = pred_map, type = "response", se.fit = F)
+    heat_dataWhiting$Southeast.Winds[Nn] <- pred_map$X135_degree_winds.standardised[1]
+    heat_dataWhiting$Northeast.Winds[Nn] <- pred_map$X45_degree_winds.standardised[1]
+    heat_dataWhiting$Abundance[Nn] <- PredX#$fit
+    #print(paste("This is line ", Nn, " out of 6561"))
+    Nn <- Nn + 1
+  }
+}
+
+pW <- ggplot(heat_dataWhiting, aes(x = Southeast.Winds,y = Northeast.Winds)) + geom_tile(aes(fill = Abundance)) +
+  geom_contour(col="white", aes(z = Abundance)) +#, binwidth = 0.002
+  scale_x_continuous(expand = c(0,0)) +
+  scale_y_continuous(expand = c(0,0)) +
+  #scale_fill_gradient(low = "blue", high = "red") +
+  theme_classic() +
+  viridis::scale_fill_viridis(option = "magma", name="Predicted Catch") + # or geom_raster()
+  xlab("Downwelling \nFavourable Winds") + ylab("Upwelling \nFavourable Winds") +
+  theme(axis.title.x = element_text(face="bold", colour="black", size = 15),
+        axis.text.x  = element_text(colour="black", size = 14),
+        axis.title.y = element_text(face="bold", colour="black", size = 15),
+        axis.text.y  = element_text(colour="black", size = 14),
+        axis.ticks = element_line(colour="black"),
+        legend.title = element_blank(),
+        legend.text = element_text(colour="black", size=10),
+        legend.position = "bottom")
+
+pW
+
+write.csv(heat_dataWhiting, "../Data/Whiting heamap prediction data.csv", row.names = F)
 
 ```
 
@@ -561,49 +561,49 @@ plot(ggeffect(m4, terms = "Drought_Months [all]"))
 ```
 
 ```{r}
-# nums <- seq(-2,2, by = 0.05)
-# heat_dataLuderick <- data.frame("X135_degree_winds.standardised" = rep(0,81*81), # makes empty dataframe ready for values
-#                          "X45_degree_winds.standardised" =  rep(0,81*81), 
-#                          "Catch" =  rep(0,81*81))
-# Nn <- 1
-# # loop for NE
-# for (i in 1:length(nums)){
-#   for (j in 1:length(nums)){
-#     pred_map <- data.frame("X45_degree_winds.standardised" = nums[i],
-#                            "X135_degree_winds.standardised" = nums[j],
-#                            "Drought_Months" = mean(my.df$Drought_Months),
-#                            "Estuary_Type" = "Drowned River Valley",
-#                            "Estuary" = "Hawkesbury River",
-#                            "Effort_days" = mean(my.df$Effort_days))
-#     PredX <- predict(m4, newdata = pred_map, type = "response", se.fit = F)
-#     heat_dataLuderick$Southeast.Winds[Nn] <- pred_map$X135_degree_winds.standardised[1]
-#     heat_dataLuderick$Northeast.Winds[Nn] <- pred_map$X45_degree_winds.standardised[1]
-#     heat_dataLuderick$Abundance[Nn] <- PredX#$fit
-#     #print(paste("This is line ", Nn, " out of 6561"))
-#     Nn <- Nn + 1
-#   }
-# }
-# 
-# pL <- ggplot(heat_dataLuderick, aes(x = Southeast.Winds,y = Northeast.Winds)) + geom_tile(aes(fill = Abundance)) +
-#   geom_contour(col="white", aes(z = Abundance)) +#, binwidth = 0.002
-#   scale_x_continuous(expand = c(0,0)) + 
-#   scale_y_continuous(expand = c(0,0)) +
-#   #scale_fill_gradient(low = "blue", high = "red") + 
-#   theme_classic() + 
-#   viridis::scale_fill_viridis(option = "magma", name="Predicted Catch") + # or geom_raster()
-#   xlab("Downwelling \nFavourable Winds") + ylab("Upwelling \nFavourable Winds") +
-#   theme(axis.title.x = element_text(face="bold", colour="black", size = 15),
-#         axis.text.x  = element_text(colour="black", size = 14), 
-#         axis.title.y = element_text(face="bold", colour="black", size = 15),
-#         axis.text.y  = element_text(colour="black", size = 14),
-#         axis.ticks = element_line(colour="black"),
-#         legend.title = element_blank(),
-#         legend.text = element_text(colour="black", size=10),
-#         legend.position = "bottom") 
-# 
-# pL
-# 
-# write.csv(heat_dataLuderick, "../Data/Luderick heamap prediction data.csv", row.names = F)
+nums <- seq(-2,2, by = 0.05)
+heat_dataLuderick <- data.frame("X135_degree_winds.standardised" = rep(0,81*81), # makes empty dataframe ready for values
+                         "X45_degree_winds.standardised" =  rep(0,81*81),
+                         "Catch" =  rep(0,81*81))
+Nn <- 1
+# loop for NE
+for (i in 1:length(nums)){
+  for (j in 1:length(nums)){
+    pred_map <- data.frame("X45_degree_winds.standardised" = nums[i],
+                           "X135_degree_winds.standardised" = nums[j],
+                           "Drought_Months" = mean(my.df$Drought_Months),
+                           "Estuary_Type" = "Drowned River Valley",
+                           "Estuary" = "Hawkesbury River",
+                           "Effort_days" = mean(my.df$Effort_days))
+    PredX <- predict(m4, newdata = pred_map, type = "response", se.fit = F)
+    heat_dataLuderick$Southeast.Winds[Nn] <- pred_map$X135_degree_winds.standardised[1]
+    heat_dataLuderick$Northeast.Winds[Nn] <- pred_map$X45_degree_winds.standardised[1]
+    heat_dataLuderick$Abundance[Nn] <- PredX#$fit
+    #print(paste("This is line ", Nn, " out of 6561"))
+    Nn <- Nn + 1
+  }
+}
+
+pL <- ggplot(heat_dataLuderick, aes(x = Southeast.Winds,y = Northeast.Winds)) + geom_tile(aes(fill = Abundance)) +
+  geom_contour(col="white", aes(z = Abundance)) +#, binwidth = 0.002
+  scale_x_continuous(expand = c(0,0)) +
+  scale_y_continuous(expand = c(0,0)) +
+  #scale_fill_gradient(low = "blue", high = "red") +
+  theme_classic() +
+  viridis::scale_fill_viridis(option = "magma", name="Predicted Catch") + # or geom_raster()
+  xlab("Downwelling \nFavourable Winds") + ylab("Upwelling \nFavourable Winds") +
+  theme(axis.title.x = element_text(face="bold", colour="black", size = 15),
+        axis.text.x  = element_text(colour="black", size = 14),
+        axis.title.y = element_text(face="bold", colour="black", size = 15),
+        axis.text.y  = element_text(colour="black", size = 14),
+        axis.ticks = element_line(colour="black"),
+        legend.title = element_blank(),
+        legend.text = element_text(colour="black", size=10),
+        legend.position = "bottom")
+
+pL
+
+write.csv(heat_dataLuderick, "../Data/Luderick heamap prediction data.csv", row.names = F)
 
 ```
 
@@ -663,49 +663,49 @@ plot(ggeffect(m5, terms = "Drought_Months [all]"))
 
 
 ```{r}
-# nums <- seq(-2,2, by = 0.05)
-# heat_dataFlathead <- data.frame("X135_degree_winds.standardised" = rep(0,81*81), # makes empty dataframe ready for values
-#                          "X45_degree_winds.standardised" =  rep(0,81*81), 
-#                          "Catch" =  rep(0,81*81))
-# Nn <- 1
-# # loop for NE
-# for (i in 1:length(nums)){
-#   for (j in 1:length(nums)){
-#     pred_map <- data.frame("X45_degree_winds.standardised" = nums[i],
-#                            "X135_degree_winds.standardised" = nums[j],
-#                            "Drought_Months" = mean(my.df$Drought_Months),
-#                            "Estuary_Type" = "Drowned River Valley",
-#                            "Estuary" = "Hawkesbury River",
-#                            "Effort_days" = mean(my.df$Effort_days))
-#     PredX <- predict(m5, newdata = pred_map, type = "response", se.fit = F)
-#     heat_dataFlathead$Southeast.Winds[Nn] <- pred_map$X135_degree_winds.standardised[1]
-#     heat_dataFlathead$Northeast.Winds[Nn] <- pred_map$X45_degree_winds.standardised[1]
-#     heat_dataFlathead$Abundance[Nn] <- PredX#$fit
-#     #print(paste("This is line ", Nn, " out of 6561"))
-#     Nn <- Nn + 1
-#   }
-# }
-# 
-# pF <- ggplot(heat_dataFlathead, aes(x = Southeast.Winds,y = Northeast.Winds)) + geom_tile(aes(fill = Abundance)) +
-#   geom_contour(col="white", aes(z = Abundance)) +#, binwidth = 0.002
-#   scale_x_continuous(expand = c(0,0)) + 
-#   scale_y_continuous(expand = c(0,0)) +
-#   #scale_fill_gradient(low = "blue", high = "red") + 
-#   theme_classic() + 
-#   viridis::scale_fill_viridis(option = "magma", name="Predicted Catch") + # or geom_raster()
-#   xlab("Downwelling \nFavourable Winds") + ylab("Upwelling \nFavourable Winds") +
-#   theme(axis.title.x = element_text(face="bold", colour="black", size = 15),
-#         axis.text.x  = element_text(colour="black", size = 14), 
-#         axis.title.y = element_text(face="bold", colour="black", size = 15),
-#         axis.text.y  = element_text(colour="black", size = 14),
-#         axis.ticks = element_line(colour="black"),
-#         legend.title = element_blank(),
-#         legend.text = element_text(colour="black", size=10),
-#         legend.position = "bottom") 
-# 
-# pF
-# 
-# write.csv(heat_dataFlathead, "../Data/Flathead heamap prediction data.csv", row.names = F)
+nums <- seq(-2,2, by = 0.05)
+heat_dataFlathead <- data.frame("X135_degree_winds.standardised" = rep(0,81*81), # makes empty dataframe ready for values
+                         "X45_degree_winds.standardised" =  rep(0,81*81),
+                         "Catch" =  rep(0,81*81))
+Nn <- 1
+# loop for NE
+for (i in 1:length(nums)){
+  for (j in 1:length(nums)){
+    pred_map <- data.frame("X45_degree_winds.standardised" = nums[i],
+                           "X135_degree_winds.standardised" = nums[j],
+                           "Drought_Months" = mean(my.df$Drought_Months),
+                           "Estuary_Type" = "Drowned River Valley",
+                           "Estuary" = "Hawkesbury River",
+                           "Effort_days" = mean(my.df$Effort_days))
+    PredX <- predict(m5, newdata = pred_map, type = "response", se.fit = F)
+    heat_dataFlathead$Southeast.Winds[Nn] <- pred_map$X135_degree_winds.standardised[1]
+    heat_dataFlathead$Northeast.Winds[Nn] <- pred_map$X45_degree_winds.standardised[1]
+    heat_dataFlathead$Abundance[Nn] <- PredX#$fit
+    #print(paste("This is line ", Nn, " out of 6561"))
+    Nn <- Nn + 1
+  }
+}
+
+pF <- ggplot(heat_dataFlathead, aes(x = Southeast.Winds,y = Northeast.Winds)) + geom_tile(aes(fill = Abundance)) +
+  geom_contour(col="white", aes(z = Abundance)) +#, binwidth = 0.002
+  scale_x_continuous(expand = c(0,0)) +
+  scale_y_continuous(expand = c(0,0)) +
+  #scale_fill_gradient(low = "blue", high = "red") +
+  theme_classic() +
+  viridis::scale_fill_viridis(option = "magma", name="Predicted Catch") + # or geom_raster()
+  xlab("Downwelling \nFavourable Winds") + ylab("Upwelling \nFavourable Winds") +
+  theme(axis.title.x = element_text(face="bold", colour="black", size = 15),
+        axis.text.x  = element_text(colour="black", size = 14),
+        axis.title.y = element_text(face="bold", colour="black", size = 15),
+        axis.text.y  = element_text(colour="black", size = 14),
+        axis.ticks = element_line(colour="black"),
+        legend.title = element_blank(),
+        legend.text = element_text(colour="black", size=10),
+        legend.position = "bottom")
+
+pF
+
+write.csv(heat_dataFlathead, "../Data/Flathead heamap prediction data.csv", row.names = F)
 
 ```
 
