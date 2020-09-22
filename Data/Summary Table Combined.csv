@@ -1,0 +1,61 @@
+effect,component,group,term,estimate,std.error,statistic,p.value,Species
+fixed,cond,NA,(Intercept),6.882238547,0.357892822,19.22988708,2.08E-82,Bream
+fixed,cond,NA,"poly(X135_degree_winds.standardised, degree = 2)1",0.957670321,0.646350485,1.481657928,0.138431337,Bream
+fixed,cond,NA,"poly(X135_degree_winds.standardised, degree = 2)2",-0.3492247,0.525697423,-0.664307421,0.506493572,Bream
+fixed,cond,NA,"poly(X45_degree_winds.standardised, degree = 2)1",-0.391871227,0.613230129,-0.639028007,0.522804712,Bream
+fixed,cond,NA,"poly(X45_degree_winds.standardised, degree = 2)2",1.040671298,0.470624232,2.211257361,0.02701802,Bream
+fixed,cond,NA,Estuary_TypeBarrier River,-1.124517369,0.504066026,-2.230892999,0.025688218,Bream
+fixed,cond,NA,Estuary_TypeDrowned River Valley,0.02652241,0.563514643,0.047066052,0.962460584,Bream
+fixed,cond,NA,Drought_Months,0.097873814,0.02684294,3.646165981,0.000266182,Bream
+fixed,cond,NA,X135_degree_winds.standardised:X45_degree_winds.standardised,-0.132031332,0.06386378,-2.067389892,0.03869743,Bream
+fixed,cond,NA,Estuary_TypeBarrier River:Drought_Months,-0.045702445,0.033851796,-1.350074458,0.1769921,Bream
+fixed,cond,NA,Estuary_TypeDrowned River Valley:Drought_Months,-0.072537239,0.038603174,-1.879048578,0.060237861,Bream
+ran_pars,cond,Estuary,sd__(Intercept),0.586328717,NA,NA,NA,Bream
+fixed,cond,NA,(Intercept),8.771215575,0.331873437,26.42939931,6.30E-154,Mullet
+fixed,cond,NA,"poly(X135_degree_winds.standardised, degree = 2)1",-0.146601166,0.596582984,-0.245734743,0.805887576,Mullet
+fixed,cond,NA,"poly(X135_degree_winds.standardised, degree = 2)2",0.437353746,0.397488644,1.10029243,0.27120473,Mullet
+fixed,cond,NA,"poly(X45_degree_winds.standardised, degree = 2)1",-0.907603039,0.428536316,-2.117913942,0.034182357,Mullet
+fixed,cond,NA,"poly(X45_degree_winds.standardised, degree = 2)2",0.465680011,0.353725628,1.316500626,0.188006068,Mullet
+fixed,cond,NA,Estuary_TypeBarrier River,0.068372832,0.468844397,0.145832674,0.884053481,Mullet
+fixed,cond,NA,Estuary_TypeDrowned River Valley,-0.370662232,0.523895884,-0.707511251,0.479248823,Mullet
+fixed,cond,NA,Drought_Months,0.038010393,0.015894053,2.391485194,0.016780361,Mullet
+fixed,cond,NA,X135_degree_winds.standardised:X45_degree_winds.standardised,0.07162642,0.049529321,1.446141774,0.148137441,Mullet
+fixed,cond,NA,Estuary_TypeBarrier River:Drought_Months,-0.063081453,0.020033926,-3.148731536,0.001639808,Mullet
+fixed,cond,NA,Estuary_TypeDrowned River Valley:Drought_Months,-0.070338787,0.023296632,-3.019268519,0.002533858,Mullet
+ran_pars,cond,Estuary,sd__(Intercept),0.559559241,NA,NA,NA,Mullet
+fixed,cond,NA,(Intercept),5.22236479,0.294541769,17.73047267,2.44E-70,Whiting
+fixed,cond,NA,"poly(X135_degree_winds.standardised, degree = 2)1",-0.116781213,0.815575394,-0.143188741,0.886141122,Whiting
+fixed,cond,NA,"poly(X135_degree_winds.standardised, degree = 2)2",0.152734044,0.666279122,0.229234325,0.818686796,Whiting
+fixed,cond,NA,"poly(X45_degree_winds.standardised, degree = 2)1",0.354618816,0.759769282,0.466745398,0.640682045,Whiting
+fixed,cond,NA,"poly(X45_degree_winds.standardised, degree = 2)2",1.077007639,0.56134838,1.918608261,0.055033929,Whiting
+fixed,cond,NA,Estuary_TypeBarrier River,0.092873371,0.413434517,0.224638648,0.822260396,Whiting
+fixed,cond,NA,Estuary_TypeDrowned River Valley,-0.710430225,0.464087212,-1.530811895,0.125815889,Whiting
+fixed,cond,NA,Drought_Months,0.058282033,0.026059157,2.236527969,0.025317207,Whiting
+fixed,cond,NA,X135_degree_winds.standardised:X45_degree_winds.standardised,0.05982542,0.098441726,0.607724206,0.543370406,Whiting
+fixed,cond,NA,Estuary_TypeBarrier River:Drought_Months,-0.028139783,0.033746431,-0.833859507,0.404360158,Whiting
+fixed,cond,NA,Estuary_TypeDrowned River Valley:Drought_Months,0.001747668,0.039632447,0.044096886,0.964827175,Whiting
+ran_pars,cond,Estuary,sd__(Intercept),0.467732528,NA,NA,NA,Whiting
+fixed,cond,NA,(Intercept),7.544713417,0.508655863,14.83264811,9.01E-50,Flathead
+fixed,cond,NA,"poly(X135_degree_winds.standardised, degree = 2)1",0.129278339,0.501754426,0.257652613,0.796675021,Flathead
+fixed,cond,NA,"poly(X135_degree_winds.standardised, degree = 2)2",0.071217875,0.339204924,0.209955311,0.833702553,Flathead
+fixed,cond,NA,"poly(X45_degree_winds.standardised, degree = 2)1",-1.038883139,0.363252745,-2.859945736,0.004237135,Flathead
+fixed,cond,NA,"poly(X45_degree_winds.standardised, degree = 2)2",-0.542591181,0.275238774,-1.971347183,0.048684178,Flathead
+fixed,cond,NA,Estuary_TypeBarrier River,-1.139237871,0.718587878,-1.585384206,0.112879067,Flathead
+fixed,cond,NA,Estuary_TypeDrowned River Valley,-1.931176577,0.803421497,-2.403690446,0.01623051,Flathead
+fixed,cond,NA,Drought_Months,-0.002221994,0.014107291,-0.157506744,0.874845493,Flathead
+fixed,cond,NA,X135_degree_winds.standardised:X45_degree_winds.standardised,-0.064512167,0.040370953,-1.597984728,0.110046376,Flathead
+fixed,cond,NA,Estuary_TypeBarrier River:Drought_Months,-0.048009351,0.017297947,-2.775436309,0.00551277,Flathead
+fixed,cond,NA,Estuary_TypeDrowned River Valley:Drought_Months,0.019349718,0.020604465,0.939103141,0.347677792,Flathead
+ran_pars,cond,Estuary,sd__(Intercept),0.873764089,NA,NA,NA,Flathead
+fixed,cond,NA,(Intercept),7.538276035,0.549398043,13.72097358,7.60E-43,Luderick
+fixed,cond,NA,"poly(X135_degree_winds.standardised, degree = 2)1",0.00222291,0.614101978,0.003619773,0.997111845,Luderick
+fixed,cond,NA,"poly(X135_degree_winds.standardised, degree = 2)2",0.276034678,0.484881467,0.569282797,0.569164239,Luderick
+fixed,cond,NA,"poly(X45_degree_winds.standardised, degree = 2)1",-0.32242725,0.485034567,-0.664751075,0.50620972,Luderick
+fixed,cond,NA,"poly(X45_degree_winds.standardised, degree = 2)2",0.203055386,0.386234192,0.525731253,0.599074946,Luderick
+fixed,cond,NA,Estuary_TypeBarrier River,-1.058771239,0.775696432,-1.36492988,0.17227509,Luderick
+fixed,cond,NA,Estuary_TypeDrowned River Valley,-0.594906635,0.86795496,-0.685411873,0.493084054,Luderick
+fixed,cond,NA,Drought_Months,0.030032067,0.017208726,1.745165021,0.080956148,Luderick
+fixed,cond,NA,X135_degree_winds.standardised:X45_degree_winds.standardised,-0.019801822,0.067387843,-0.293848585,0.768873608,Luderick
+fixed,cond,NA,Estuary_TypeBarrier River:Drought_Months,-0.066986108,0.02260741,-2.963015506,0.003046412,Luderick
+fixed,cond,NA,Estuary_TypeDrowned River Valley:Drought_Months,-0.046294434,0.02703797,-1.712200789,0.086859672,Luderick
+ran_pars,cond,Estuary,sd__(Intercept),0.940738255,NA,NA,NA,Luderick

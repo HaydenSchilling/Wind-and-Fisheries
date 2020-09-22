@@ -19,7 +19,7 @@ full_dat <- bind_rows(bream_dat, mullet_dat, flathead_dat, whiting_dat, luderick
 
 
 # Rescale values to between zero and one to assist plotting
-full_dat <- full_dat %>% group_by(Species) %>% mutate(Scaled_Catch = rescale(Abundance))
+full_dat <- full_dat %>% group_by(Species) %>% mutate(Scaled_Catch = Abundance/(min(Abundance))) # rescale(Abundance)
 
 # Make plot
 pF <- ggplot(full_dat, aes(x = Southeast.Winds,y = Northeast.Winds)) + geom_tile(aes(fill = Scaled_Catch)) +
@@ -29,7 +29,8 @@ pF <- ggplot(full_dat, aes(x = Southeast.Winds,y = Northeast.Winds)) + geom_tile
   scale_y_continuous(expand = c(0,0)) +
   #scale_fill_gradient(low = "blue", high = "red") + 
   theme_classic() + 
-  viridis::scale_fill_viridis(option = "magma", name="Predicted\nScaled\nCatch") + # or geom_raster()
+  viridis::scale_fill_viridis(option = "magma", name="Predicted\nScaled\nCatch",
+                              trans="log10", breaks=c(1,2,3,4,5)) + # or geom_raster()
   xlab("Downwelling \nFavourable Winds") + ylab("Upwelling \nFavourable Winds") +
   theme(axis.title.x = element_text(face="bold", colour="black", size = 14),
         axis.text.x  = element_text(colour="black", size = 12), 
