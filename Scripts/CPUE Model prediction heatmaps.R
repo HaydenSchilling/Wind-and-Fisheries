@@ -47,3 +47,75 @@ pF
 
 ggsave("../plots/CPUE Heatmap Predictions.png", width=21, height = 14.8, units ="cm", dpi = 600)
 ggsave("../plots/CPUE Heatmap Predictions.pdf", width=21, height = 14.8, units ="cm", dpi = 600)
+
+
+# Final Plots
+# Bream heatmap + Mullet and Flathead Upwelling Favourable Winds
+
+B_plot <-  ggplot(bream_dat, aes(x = Southeast.Winds,y = Northeast.Winds, fill = Abundance/1000)) + geom_tile() +
+   geom_contour(col="white", aes(z = Abundance/1000)) +#, binwidth = 0.002
+  scale_x_continuous(expand = c(0,0)) + 
+  scale_y_continuous(expand = c(0,0)) +
+  #scale_fill_gradient(low = "blue", high = "red") + 
+  theme_classic() + 
+  viridis::scale_fill_viridis(option = "magma", name="Predicted\nCatch\n(t / year)",
+                              trans="log10") + # or geom_raster()
+  xlab("Downwelling \nFavourable Winds") + ylab("Upwelling \nFavourable Winds") +
+  theme(axis.title.x = element_text(face="bold", colour="black", size = 14),
+        axis.text.x  = element_text(colour="black", size = 12), 
+        axis.title.y = element_text(face="bold", colour="black", size = 14),
+        axis.text.y  = element_text(colour="black", size = 12),
+        axis.ticks = element_line(colour="black"),
+        legend.title = element_text(colour="black", size = 12, face = "bold"),
+        legend.text = element_text(colour="black", size=10),
+        title = element_text(size=12, face = "bold"),
+        legend.position = "bottom",
+        legend.key.width = unit(0.5, "cm")) +
+  ggtitle("a) Bream")
+
+B_plot
+
+
+# Need to run models in CPUE Modelling Final.rmd first
+
+M_dat <- ggeffect(m2, terms = "X45_degree_winds.standardised [all]")
+M_dat$Term <- "Upwelling \nFavourable Winds"
+
+M_plot <- ggplot(M_dat, aes(x, predicted/1000))+
+  geom_line() + xlab("Upwellwing\nFavourable Winds")+
+  geom_ribbon(aes(ymin = conf.low/1000, ymax = conf.high/1000), alpha = .1) +
+  theme_classic() + theme(axis.text  = element_text(colour="black", size = 12), 
+                          axis.title = element_text(face="bold", colour="black", size = 14),
+                          axis.ticks = element_line(colour="black"),
+                          strip.text = element_text(colour="black", face = "bold", size = 13),
+                          strip.background = element_blank(),
+                          strip.placement = "outside",
+                          #legend.justification=c(1,0), legend.position="right",
+                          panel.border = element_rect(colour = "black", fill=NA, size = 1),
+                          title = element_text(size=12, face = "bold"))+
+  ylab("Predicted Catch (t / year)") +
+  ggtitle("c) Mullet")
+M_plot  
+
+F_dat <- ggeffect(m5, terms = "X45_degree_winds.standardised [all]")
+F_dat$Term <- "Upwelling \nFavourable Winds"
+
+F_plot <- ggplot(F_dat, aes(x, predicted/1000))+
+  geom_line() + xlab("Upwellwing\nFavourable Winds")+
+  geom_ribbon(aes(ymin = conf.low/1000, ymax = conf.high/1000), alpha = .1) +
+  theme_classic() + theme(axis.text  = element_text(colour="black", size = 12), 
+                          axis.title = element_text(face="bold", colour="black", size = 14),
+                          axis.ticks = element_line(colour="black"),
+                          strip.text = element_text(colour="black", face = "bold", size = 13),
+                          strip.background = element_blank(),
+                          strip.placement = "outside",
+                          #legend.justification=c(1,0), legend.position="right",
+                          panel.border = element_rect(colour = "black", fill=NA, size = 1),
+                          title = element_text(size=12, face = "bold"))+
+  ylab("Predicted Catch (t / year)") +
+  ggtitle("b) Flathead")
+F_plot  
+
+library(patchwork)
+B_plot  + F_plot+ M_plot
+ggsave("../plots/CPUE Prediction plots.png", width = 21, height = 11, units="cm", dpi = 600)

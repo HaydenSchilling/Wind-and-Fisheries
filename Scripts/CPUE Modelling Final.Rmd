@@ -32,6 +32,7 @@ mydata <- read.csv("../Data/Full_Data_Modelling_BARRA_by_estuary.csv", header = 
 
 # Remove Total CPUE
 mydata <- subset(mydata, Species != "Total")
+mydata <- subset(mydata, Species != "Luderick")
 
 ### Standardise Winds
 my.df <-  mydata %>% group_by(Species, Estuary) %>% mutate(X45_degree_winds.standardised = as.numeric(scale(X45_degree_winds)),
@@ -44,7 +45,31 @@ Investigate the environmental variation over time and the stability of the CPUE 
 head(my.df)
 
 ggplot(my.df, aes(x=Year, y = Drought_Months)) + geom_point() + facet_wrap(~Species)
-ggplot(my.df, aes(x=Year, y = CPUE, col= Estuary)) + geom_line() + facet_wrap(~Species, scales = "free_y")
+ggplot(my.df, aes(x=Year, y = Catch, col= Estuary)) + geom_line() + facet_wrap(~Species, scales = "free_y") +
+  theme_classic() + ylab("CPUE (kg)") +
+  theme(axis.title = element_text(face="bold", size=12),
+        axis.text.x = element_text(colour = "black", size = 10, angle=45, hjust = 1),
+        axis.text.y = element_text(colour = "black", size = 10),
+        strip.text = element_text(colour="black", face = "bold", size = 11, hjust=0.5),
+        strip.background = element_blank(),
+        panel.border = element_rect(colour = "black", fill=NA, size = 1),
+        legend.title = element_text(colour="black", size = 12, face = "bold"),
+        legend.text = element_text(colour="black", size=10))
+
+ggsave("../plots/Catch by species_time_estuary.png", height = 14.8, width=21, dpi =600, units="cm")
+
+ggplot(my.df, aes(x=Year, y = CPUE, col= Estuary)) + geom_line() + facet_wrap(~Species, scales = "free_y") +
+  theme_classic() + ylab("CPUE (kg per day)") +
+  theme(axis.title = element_text(face="bold", size=12),
+        axis.text.x = element_text(colour = "black", size = 10, angle=45, hjust = 1),
+        axis.text.y = element_text(colour = "black", size = 10),
+        strip.text = element_text(colour="black", face = "bold", size = 11, hjust=0.5),
+        strip.background = element_blank(),
+        panel.border = element_rect(colour = "black", fill=NA, size = 1),
+        legend.title = element_text(colour="black", size = 12, face = "bold"),
+        legend.text = element_text(colour="black", size=10))
+
+ggsave("../plots/CPUE by species_time_estuary.png", height = 14.8, width=21, dpi =600, units="cm")
 
 # the next two suggest my scaling of the winds was not good enough.
 ggplot(my.df, aes(x=Year, y = X45_degree_winds.standardised, col= Estuary)) + geom_line() + facet_wrap(~Species) +
@@ -58,7 +83,7 @@ ggplot(my.df, aes(x=Year, y = X45_degree_winds.standardised, col= Estuary)) + ge
         legend.title = element_text(colour="black", size = 12, face = "bold"),
         legend.text = element_text(colour="black", size=10))
 
-ggsave("../plots/Upwelling Winds by species_time_estuary.png", height = 14.8, width=21, dpi =600)
+ggsave("../plots/Upwelling Winds by species_time_estuary.png", height = 14.8, width=21, dpi =600, units="cm")
 
 ggplot(my.df, aes(x=Year, y = X135_degree_winds.standardised, col= Estuary)) + geom_line() + facet_wrap(~Species)+
   theme_classic() + ylab("Standardised Downwelling\nFavourable Winds") +
@@ -70,7 +95,7 @@ ggplot(my.df, aes(x=Year, y = X135_degree_winds.standardised, col= Estuary)) + g
         panel.border = element_rect(colour = "black", fill=NA, size = 1),
         legend.title = element_text(colour="black", size = 12, face = "bold"),
         legend.text = element_text(colour="black", size=10))#, scales = "free_y")
-ggsave("../plots/Downwelling Winds by species_time_estuary.png", height = 14.8, width=21, dpi =600)
+ggsave("../plots/Downwelling Winds by species_time_estuary.png", height = 14.8, width=21, dpi =600, units="cm")
 
 
 ```
@@ -499,113 +524,113 @@ write.csv(heat_dataWhiting, "../Data/Whiting heamap prediction data.csv", row.na
 
 
 
-##Now Luderick##
-Prepare Data
-```{r}
-luderick <- subset(my.df, Species == "Luderick")
+<!-- ##Now Luderick## --- REOMVED AS SPAWNING PERIOD IS UNCERTAIN -->
+<!-- Prepare Data -->
+<!-- ```{r} -->
+<!-- luderick <- subset(my.df, Species == "Luderick") -->
 
-#m1 <- lmer(CPUE.standardised ~ X135_degree_winds.standardised * X45_degree_winds.standardised + 
-#           Estuary_Type + Drought_Months + (1|Estuary), data = bream)
-#AIC(m1) #215.42
+<!-- #m1 <- lmer(CPUE.standardised ~ X135_degree_winds.standardised * X45_degree_winds.standardised +  -->
+<!-- #           Estuary_Type + Drought_Months + (1|Estuary), data = bream) -->
+<!-- #AIC(m1) #215.42 -->
 
-p4 <- ggplot(luderick, aes(x = X135_degree_winds.standardised,y = X45_degree_winds.standardised, size = log10(CPUE))) + geom_point(alpha = 0.1) +
-  theme_classic() + labs(title = "CPUE by lagged Winds")
-p4
-```
+<!-- p4 <- ggplot(luderick, aes(x = X135_degree_winds.standardised,y = X45_degree_winds.standardised, size = log10(CPUE))) + geom_point(alpha = 0.1) + -->
+<!--   theme_classic() + labs(title = "CPUE by lagged Winds") -->
+<!-- p4 -->
+<!-- ``` -->
 
-Model
-```{r}
-m4 <- glmmTMB(Catch ~ poly(X135_degree_winds.standardised, degree = 2) + 
-       poly(X45_degree_winds.standardised, degree = 2) +
-       X135_degree_winds.standardised:X45_degree_winds.standardised+
-        Estuary_Type *Drought_Months + (1|Estuary) , Gamma(link="log"),
-       data = luderick, offset = log10(Effort_days))
-performance::r2(m4) # 0.127
-AIC(m4) # 64.26
-```
+<!-- Model -->
+<!-- ```{r} -->
+<!-- m4 <- glmmTMB(Catch ~ poly(X135_degree_winds.standardised, degree = 2) +  -->
+<!--        poly(X45_degree_winds.standardised, degree = 2) + -->
+<!--        X135_degree_winds.standardised:X45_degree_winds.standardised+ -->
+<!--         Estuary_Type *Drought_Months + (1|Estuary) , Gamma(link="log"), -->
+<!--        data = luderick, offset = log10(Effort_days)) -->
+<!-- performance::r2(m4) # 0.127 -->
+<!-- AIC(m4) # 64.26 -->
+<!-- ``` -->
 
-Check assumptions
-```{r}
-simulationOutput <- simulateResiduals(fittedModel = m4, n = 250)
-plot(simulationOutput, quantreg = F)
+<!-- Check assumptions -->
+<!-- ```{r} -->
+<!-- simulationOutput <- simulateResiduals(fittedModel = m4, n = 250) -->
+<!-- plot(simulationOutput, quantreg = F) -->
 
-# histograms
-hist(simulationOutput$fittedResiduals)
-```
+<!-- # histograms -->
+<!-- hist(simulationOutput$fittedResiduals) -->
+<!-- ``` -->
 
-```{r}
-png("../plots/Model checks/Luderick model 1.png", width = 21, height = 14.8, units = "cm", res = 600)
-plot(simulationOutput, quantreg = F)
-dev.off()
+<!-- ```{r} -->
+<!-- png("../plots/Model checks/Luderick model 1.png", width = 21, height = 14.8, units = "cm", res = 600) -->
+<!-- plot(simulationOutput, quantreg = F) -->
+<!-- dev.off() -->
 
-png("../plots/Model checks/Luderick model 2.png", width = 21, height = 14.8, units = "cm", res = 600)
-hist(residuals(m4))
-dev.off()
-```
+<!-- png("../plots/Model checks/Luderick model 2.png", width = 21, height = 14.8, units = "cm", res = 600) -->
+<!-- hist(residuals(m4)) -->
+<!-- dev.off() -->
+<!-- ``` -->
 
 
-Check significance
-```{r}
-car::Anova(m4)
-summary(m4)
-luderick_Summary <- broom.mixed::tidy(m4)
-luderick_Summary
-write.csv(luderick_Summary, "../Data/Luderick Summary Table.csv", row.names = F)
-```
-Therefore wind is not important for luderick?
+<!-- Check significance -->
+<!-- ```{r} -->
+<!-- car::Anova(m4) -->
+<!-- summary(m4) -->
+<!-- luderick_Summary <- broom.mixed::tidy(m4) -->
+<!-- luderick_Summary -->
+<!-- write.csv(luderick_Summary, "../Data/Luderick Summary Table.csv", row.names = F) -->
+<!-- ``` -->
+<!-- Therefore wind is not important for luderick? -->
 
-```{r}
-plot(ggeffect(m4, terms = "X45_degree_winds.standardised [all]"))
-plot(ggeffect(m4, terms = "X135_degree_winds.standardised [all]"))
-plot(ggeffect(m4, terms = "Drought_Months [all]"))
-```
+<!-- ```{r} -->
+<!-- plot(ggeffect(m4, terms = "X45_degree_winds.standardised [all]")) -->
+<!-- plot(ggeffect(m4, terms = "X135_degree_winds.standardised [all]")) -->
+<!-- plot(ggeffect(m4, terms = "Drought_Months [all]")) -->
+<!-- ``` -->
 
-```{r}
-nums <- seq(-2,2, by = 0.05)
-heat_dataLuderick <- data.frame("X135_degree_winds.standardised" = rep(0,81*81), # makes empty dataframe ready for values
-                         "X45_degree_winds.standardised" =  rep(0,81*81),
-                         "Catch" =  rep(0,81*81))
-Nn <- 1
-# loop for NE
-for (i in 1:length(nums)){
-  for (j in 1:length(nums)){
-    pred_map <- data.frame("X45_degree_winds.standardised" = nums[i],
-                           "X135_degree_winds.standardised" = nums[j],
-                           "Drought_Months" = mean(my.df$Drought_Months),
-                           "Estuary_Type" = "Drowned River Valley",
-                           "Estuary" = "Hawkesbury River",
-                           "Effort_days" = mean(my.df$Effort_days))
-    PredX <- predict(m4, newdata = pred_map, type = "response", se.fit = F)
-    heat_dataLuderick$Southeast.Winds[Nn] <- pred_map$X135_degree_winds.standardised[1]
-    heat_dataLuderick$Northeast.Winds[Nn] <- pred_map$X45_degree_winds.standardised[1]
-    heat_dataLuderick$Abundance[Nn] <- PredX#$fit
-    #print(paste("This is line ", Nn, " out of 6561"))
-    Nn <- Nn + 1
-  }
-}
+<!-- ```{r} -->
+<!-- nums <- seq(-2,2, by = 0.05) -->
+<!-- heat_dataLuderick <- data.frame("X135_degree_winds.standardised" = rep(0,81*81), # makes empty dataframe ready for values -->
+<!--                          "X45_degree_winds.standardised" =  rep(0,81*81), -->
+<!--                          "Catch" =  rep(0,81*81)) -->
+<!-- Nn <- 1 -->
+<!-- # loop for NE -->
+<!-- for (i in 1:length(nums)){ -->
+<!--   for (j in 1:length(nums)){ -->
+<!--     pred_map <- data.frame("X45_degree_winds.standardised" = nums[i], -->
+<!--                            "X135_degree_winds.standardised" = nums[j], -->
+<!--                            "Drought_Months" = mean(my.df$Drought_Months), -->
+<!--                            "Estuary_Type" = "Drowned River Valley", -->
+<!--                            "Estuary" = "Hawkesbury River", -->
+<!--                            "Effort_days" = mean(my.df$Effort_days)) -->
+<!--     PredX <- predict(m4, newdata = pred_map, type = "response", se.fit = F) -->
+<!--     heat_dataLuderick$Southeast.Winds[Nn] <- pred_map$X135_degree_winds.standardised[1] -->
+<!--     heat_dataLuderick$Northeast.Winds[Nn] <- pred_map$X45_degree_winds.standardised[1] -->
+<!--     heat_dataLuderick$Abundance[Nn] <- PredX#$fit -->
+<!--     #print(paste("This is line ", Nn, " out of 6561")) -->
+<!--     Nn <- Nn + 1 -->
+<!--   } -->
+<!-- } -->
 
-pL <- ggplot(heat_dataLuderick, aes(x = Southeast.Winds,y = Northeast.Winds)) + geom_tile(aes(fill = Abundance)) +
-  geom_contour(col="white", aes(z = Abundance)) +#, binwidth = 0.002
-  scale_x_continuous(expand = c(0,0)) +
-  scale_y_continuous(expand = c(0,0)) +
-  #scale_fill_gradient(low = "blue", high = "red") +
-  theme_classic() +
-  viridis::scale_fill_viridis(option = "magma", name="Predicted Catch") + # or geom_raster()
-  xlab("Downwelling \nFavourable Winds") + ylab("Upwelling \nFavourable Winds") +
-  theme(axis.title.x = element_text(face="bold", colour="black", size = 15),
-        axis.text.x  = element_text(colour="black", size = 14),
-        axis.title.y = element_text(face="bold", colour="black", size = 15),
-        axis.text.y  = element_text(colour="black", size = 14),
-        axis.ticks = element_line(colour="black"),
-        legend.title = element_blank(),
-        legend.text = element_text(colour="black", size=10),
-        legend.position = "bottom")
+<!-- pL <- ggplot(heat_dataLuderick, aes(x = Southeast.Winds,y = Northeast.Winds)) + geom_tile(aes(fill = Abundance)) + -->
+<!--   geom_contour(col="white", aes(z = Abundance)) +#, binwidth = 0.002 -->
+<!--   scale_x_continuous(expand = c(0,0)) + -->
+<!--   scale_y_continuous(expand = c(0,0)) + -->
+<!--   #scale_fill_gradient(low = "blue", high = "red") + -->
+<!--   theme_classic() + -->
+<!--   viridis::scale_fill_viridis(option = "magma", name="Predicted Catch") + # or geom_raster() -->
+<!--   xlab("Downwelling \nFavourable Winds") + ylab("Upwelling \nFavourable Winds") + -->
+<!--   theme(axis.title.x = element_text(face="bold", colour="black", size = 15), -->
+<!--         axis.text.x  = element_text(colour="black", size = 14), -->
+<!--         axis.title.y = element_text(face="bold", colour="black", size = 15), -->
+<!--         axis.text.y  = element_text(colour="black", size = 14), -->
+<!--         axis.ticks = element_line(colour="black"), -->
+<!--         legend.title = element_blank(), -->
+<!--         legend.text = element_text(colour="black", size=10), -->
+<!--         legend.position = "bottom") -->
 
-pL
+<!-- pL -->
 
-write.csv(heat_dataLuderick, "../Data/Luderick heamap prediction data.csv", row.names = F)
+<!-- write.csv(heat_dataLuderick, "../Data/Luderick heamap prediction data.csv", row.names = F) -->
 
-```
+<!-- ``` -->
 
 
 ##Now Flathead##
@@ -653,7 +678,7 @@ flathead_Summary <- broom.mixed::tidy(m5)
 flathead_Summary
 write.csv(flathead_Summary, "../Data/Flathead Summary Table.csv", row.names = F)
 ```
-Therefore wind is not important for flathead?
+
 
 ```{r}
 plot(ggeffect(m5, terms = "X45_degree_winds.standardised [all]"))
@@ -713,13 +738,13 @@ write.csv(heat_dataFlathead, "../Data/Flathead heamap prediction data.csv", row.
 Drought plots
 ```{r}
 p1 <- plot(ggeffect(m1, terms = c("Drought_Months", "Estuary_Type"))) + ggtitle("a) Bream")+ theme(legend.position = "bottom") 
-p2 <- plot(ggeffect(m2, terms = c("Drought_Months", "Estuary_Type"))) + ggtitle("d) Mullet")+ theme(legend.position = "bottom")
-p3 <- plot(ggeffect(m3, terms = c("Drought_Months", "Estuary_Type"))) + ggtitle("e) Whiting")+ theme(legend.position = "bottom")
-p4 <- plot(ggeffect(m4, terms = c("Drought_Months", "Estuary_Type"))) + ggtitle("c) Luderick")+ theme(legend.position = "bottom")
+p2 <- plot(ggeffect(m2, terms = c("Drought_Months", "Estuary_Type"))) + ggtitle("c) Mullet")+ theme(legend.position = "bottom")
+p3 <- plot(ggeffect(m3, terms = c("Drought_Months", "Estuary_Type"))) + ggtitle("d) Whiting")+ theme(legend.position = "bottom")
+#p4 <- plot(ggeffect(m4, terms = c("Drought_Months", "Estuary_Type"))) + ggtitle("c) Luderick")+ theme(legend.position = "bottom")
 p5 <- plot(ggeffect(m5, terms = c("Drought_Months", "Estuary_Type"))) + ggtitle("b) Flathead")+ theme(legend.position = "bottom")
 
 library(patchwork)
-p1 + p5 + p4+ p2 +p3 +plot_layout(nrow = 2, guides = "collect")+ plot_layout(guides = "collect") & 
+p1 + p5 + p2 +p3 +plot_layout(nrow = 2, guides = "collect")+ plot_layout(guides = "collect") & 
   theme(legend.position = 'bottom')+ theme(axis.text = element_text(colour = "black"),
                                            axis.title = element_text(face = "bold", colour = "black"),
                                            title = element_text(face="bold"),

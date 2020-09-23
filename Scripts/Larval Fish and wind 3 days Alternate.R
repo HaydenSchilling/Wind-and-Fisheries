@@ -85,7 +85,7 @@ norm_el <- t(norm_el) #transpose matrix so columns are sites and rows are specie
 row.names(norm_el)
 
 # Subset to interested species
-include_list <- c("Girellidae_Girella.tricuspidata_37361007",# "Girellidae_Girella.spp_37361902", "Labridae_37384000",
+include_list <- c(#"Girellidae_Girella.tricuspidata_37361007",# "Girellidae_Girella.spp_37361902", "Labridae_37384000",
                    "Mugilidae_other_37381000", # "Monacanthidae_37465903", "Mugilidae_Liza.argentea_37381004",
                   "Sparidae_Acanthopagrus.australis_37353004",
                   "Sillaginidae_Sillago.ciliata_37330010",
