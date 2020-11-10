@@ -9,7 +9,7 @@ coast,Anthiinae,Sea perch,,Anthiinae_37311907
 Trop,Aploactinidae,Velvetfish,Matsubarichthys inusitatus,Aploactinidae_Matsubarichthys.inusitatus_37290013
 coast,Aplodactylidae,Sea carp,Aplodactylus spp,Aplodactylidae_Aplodactylus.spp_37376901
 coast,Apogonidae,Cardinal fish,,Apogonidae_37327926
-Ocean,Argentinidae,Herring smelt,,Argentinidae_37097000
+ocean,Argentinidae,Herring smelt,,Argentinidae_37097000
 coast/pelagic,Arripidae,Australian salmon,Arripis trutta,Arripidae_Arripis.trutta_37344002
 Ocean,Astronesthidae,Dragonfish,,Astronesthidae_37108000
 Estaury,Atherinidae,Hardyhead,,Atherinidae_37246000
@@ -50,10 +50,10 @@ trop,Chaetodontidae,Butterfly fish,,Chaetodontidae_37365900
 trop,Champsodontidae,Gapers,,Champsodontidae_37401000
 Estaury,Chandidae,Port Jackson perchlet,Ambassis jacksoniensis,Chandidae_Ambassis.jacksoniensis_37310012
 Estaury,Chandidae,Estuary perchlet,Ambassis marianus,Chandidae_Ambassis.marianus_37310018
-Ocean,Chauliodontidae,Viperfish,,Chauliodontidae_37111000
+ocean,Chauliodontidae,Viperfish,,Chauliodontidae_37111000
 coast,Cheilodactylidae,Jackass morwong,Nemadactylus macropterus,Cheilodactylidae_Nemadactylus.macropterus_37377003
 coast,Cheilodactylidae,Morwong,Cheilodactylus spp,Cheilodactylidae_Cheilodactylus.spp_37377902
-Ocean,Chiasmodontidae,Swallowers,,Chiasmodontidae_37402000
+ocean,Chiasmodontidae,Swallowers,,Chiasmodontidae_37402000
 coast,Chironemidae,Marblefish,Chironemus spp,Chironemidae_Chironemus.spp_37375901
 coast/slope,Chlorophthalmidae,Greeneyes,Chlorophthalmus spp,Chlorophthalmidae_Chlorophthalmus.spp_37120903
 trop,Cirrhitidae,Hawkfish,,Cirrhitidae_37374000
@@ -68,7 +68,7 @@ coast,Creediidae,Sand burrower,Limnichthys spp,Creediidae_Limnichthys.spp_373959
 coast,Cynoglossidae,Tongue sole,,Cynoglossidae_37463000
 trop,Dactylopteridae,Flying gurnard,Dactyloptena spp,Dactylopteridae_Dactyloptena.spp_37308902
 coast,Dinolestidae,Longfin pike,Dinolestis lewini,Dinolestidae_Dinolestis.lewini_37327002
-Ocean,Diretmidae,Discfish,Diretmus spp,Diretmidae_Diretmus.spp_37254902
+ocean,Diretmidae,Discfish,Diretmus spp,Diretmidae_Diretmus.spp_37254902
 coast pelagic,Emmelichthys,Redbait,Emmelichthys nitidus,Emmelichthys_Emmelichthys.nitidus_37345001
 coast pelagic,Engraulidae,Anchovy,Engraulis australis,Engraulidae_Engraulis.australis_37086001
 coast,Enoplosidae,Old wife,Enoplosus armatus,Enoplosidae_Enoplosus.armatus_37366001

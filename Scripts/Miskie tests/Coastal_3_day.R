@@ -1,11 +1,14 @@
 # Larval Fish Models testing using the Categories from Miskie
+# Katana Coastal 3 days
 
 # NIMO Larval Fish and wind
+#install.packages("glmmTMB")
 
 library(tidyverse)
 #library(lme4)
 library(glmmTMB)
 library(DHARMa)
+install.packages("car")
 library(car)
 #library(effects)
 library(viridis)
@@ -16,7 +19,7 @@ library(cowplot)
 library(performance)
 
 # Load Fish Data
-fish_data <- read.csv("../Data/allNIMO_dist.csv", header = T)
+fish_data <- read.csv("allNIMO_dist.csv", header = T)
 str(fish_data)
 
 # Restrict to NSW and on the continental shelf
@@ -26,10 +29,10 @@ summary(fish_data$Bathym_m)
 hist(fish_data$Bathym_m)
 
 # Load Wind Data
-wind_data <- read.csv("../Data/BARRA Data/BARRA Larval Daily 45 deg Wind Data Final.csv", header = T)
+wind_data <- read.csv("BARRA Larval Daily 45 deg Wind Data Final.csv", header = T)
 str(wind_data)
 
-wind_data_SE <- read.csv("../Data/BARRA Data/BARRA Larval Daily 135 deg Wind Data Final.csv", header = T)
+wind_data_SE <- read.csv("BARRA Larval Daily 135 deg Wind Data Final.csv", header = T)
 str(wind_data_SE)
 
 # Recognise Dates
@@ -91,17 +94,17 @@ norm_el <- t(norm_el) #transpose matrix so columns are sites and rows are specie
 row.names(norm_el)
 
 ### Load species category data
-Misk_list <- read_csv("../Data/Copy of Smith et al 2018 habitat catgeories from Miskie.csv")
+Misk_list <- read_csv("Copy of Smith et al 2018 habitat catgeories from Miskie.csv")
 Estuary_sp <- Misk_list %>% filter(Category == "coast") %>% select(NIMO_NAME)
 # Subset to interested species Based upon Ford et al.
 include_list <- Estuary_sp$NIMO_NAME
-  # c(#"Girellidae_Girella.tricuspidata_37361007",# "Girellidae_Girella.spp_37361902", "Labridae_37384000",
-  # "Mugilidae_other_37381000", # "Monacanthidae_37465903", "Mugilidae_Liza.argentea_37381004",
-  # "Sparidae_Acanthopagrus.australis_37353004",
-  # "Sillaginidae_Sillago.ciliata_37330010",
-  # #"Sparidae_Chrysophrys.auratus_37353001", "Sparidae_Rhabdosargus.sarba_37353013", "Sparidae_other_37353000",
-  # #"Terapontidae_Pelates.spp_37321908", "Terapontidae_other_37321000"
-  # "Platycephalidae_Platycephalus.fuscus_37296004")
+# c(#"Girellidae_Girella.tricuspidata_37361007",# "Girellidae_Girella.spp_37361902", "Labridae_37384000",
+# "Mugilidae_other_37381000", # "Monacanthidae_37465903", "Mugilidae_Liza.argentea_37381004",
+# "Sparidae_Acanthopagrus.australis_37353004",
+# "Sillaginidae_Sillago.ciliata_37330010",
+# #"Sparidae_Chrysophrys.auratus_37353001", "Sparidae_Rhabdosargus.sarba_37353013", "Sparidae_other_37353000",
+# #"Terapontidae_Pelates.spp_37321908", "Terapontidae_other_37321000"
+# "Platycephalidae_Platycephalus.fuscus_37296004")
 norm_el <- norm_el[include_list, ]
 
 norm_el <- t(norm_el)  ##re-transpose so columns are species and rows are sites
@@ -144,68 +147,17 @@ norm_abund
 fish_data$Coastal_Normalised_Abund <- norm_abund
 
 ## Tweedie Family for positive continuous response variable
-library(tweedie)
-
 fit4 <- glmmTMB(Coastal_Normalised_Abund~
                   poly(NE_Winds.standardised, degree = 2)*dists_km+
                   poly(SE_Winds.standardised, degree = 2)*dists_km+
                   SE_Winds.standardised:NE_Winds.standardised*
                   dists_km + (1|Project_ID), family=tweedie(), data = fish_data)
 
-library(brms)
-fit4 <- brm(Coastal_Normalised_Abund~
-                  poly(NE_Winds.standardised, degree = 2)*dists_km+
-                  poly(SE_Winds.standardised, degree = 2)*dists_km+
-                  SE_Winds.standardised:NE_Winds.standardised*
-                  dists_km + (1|Project_ID), family = hurdle_gamma, data = fish_data)
-
-summary(fit4)
-plot(fit4)
-plot(conditional_effects(fit4))
-
-fit5 <- brm(Coastal_Normalised_Abund~
-              poly(NE_Winds.standardised, degree = 2)*dists_km+
-              poly(SE_Winds.standardised, degree = 2)*dists_km+
-              SE_Winds.standardised:NE_Winds.standardised*
-              dists_km + (1|Project_ID), family = hurdle_gamma, data = fish_data, iter = 10000)
-
-plot(fit5)
-summary(fit5)
-
-library(bayesplot)
-
-post5 <- posterior_samples(fit5, add_chain = T)
-mcmc_pairs(post5)
-
-library(DHARMa)
-simulations = model$BUGSoutput$sims.list$beetlesPred
-pred = apply(model$BUGSoutput$sims.list$lambda, 2, median)
-dim(simulations)
-sim = createDHARMa(simulatedResponse = t(simulations), observedResponse = data$beetles, fittedPredictedResponse = pred, integerResponse = T)
-plotSimulatedResiduals(sim)
-
-
-plot(fit4$fit)
-
 r2(fit4)
 simulationOutput <- simulateResiduals(fittedModel = fit4, n = 250)
 plot(simulationOutput)
 hist(residuals(fit4))
 
-post <- posterior_samples(fit4, add_chain = T)
-
-plot(post)
-
-mcmcXX <- as.mcmc(fit4, inc_warmup = T)
-
-summary(mcmcXX)
-
-library(coda)
-gelman.plot(mcmcXX)
-
-plot(mcmcXX)
-library(bayesplot)
-ppc_dens_overlay()
 ## Save plots
 # png("../plots/Model checks/Larval14 day1.png", width = 21, height = 14.8, units = "cm", res = 600)
 # plot(simulationOutput)
@@ -215,48 +167,17 @@ ppc_dens_overlay()
 # hist(residuals(fit4))
 # dev.off()
 
-Anova(fit4,type="II",test="Chisq") # significant interaction between NE and SE winds
-summary(fit4)
+A_test <- broom.mixed::tidy(Anova(fit4,type="II",test="Chisq")) # significant interaction between NE and SE winds
+write.csv(A_test,"Anova Coastal 3 days 50km.csv", row.names = F)
+S_test <- broom.mixed::tidy((fit4))
+write.csv(S_test,"Summary Coastal 3 days 50km.csv", row.names = F)
 
 plot(ggpredict(fit4, terms = "NE_Winds.standardised [all]"))
 plot(ggpredict(fit4, terms = "SE_Winds.standardised [all]"))
-plot(ggpredict(fit4, terms = c( "NE_Winds.standardised", "dists_km")))
+plot(ggpredict(fit4, terms = "dists_km [all]"))
 
 
 plotResiduals(fish_data$Project_ID, simulationOutput$scaledResiduals)
-
-
-### 3 day plots
-N_dat <- ggpredict(fit4, terms = "NE_Winds.standardised [all]")
-s_dat <- ggpredict(fit4, terms = "SE_Winds.standardised [all]")
-d_dat <- ggpredict(fit4, terms = "dists_km [all]")
-
-N_dat$Term <- "Upwelling \nFavourable Winds"
-s_dat$Term <- "Downwelling \nFavourable Winds"
-d_dat$Term <- "Distance from Coast (km)"
-
-plot_dat <- bind_rows(N_dat, s_dat, d_dat)
-
-
-# marginal effects plot for distance from coast
-ggplot(plot_dat, aes(x, predicted)) + facet_wrap(~Term, scales = "free_x", strip.position = "bottom") +
-  geom_line() +
-  geom_ribbon(aes(ymin = conf.low, ymax = conf.high), alpha = .1) +
-  theme_classic() + theme(axis.title.x = element_blank(),
-                          axis.text.x  = element_text(colour="black", size = 12), 
-                          axis.title.y = element_text(face="bold", colour="black", size = 14),
-                          axis.text.y  = element_text(colour="black", size = 14),
-                          axis.ticks = element_line(colour="black"),
-                          strip.text = element_text(colour="black", face = "bold", size = 13),
-                          strip.background = element_blank(),
-                          strip.placement = "outside",
-                          #legend.justification=c(1,0), legend.position="right",
-                          panel.border = element_rect(colour = "black", fill=NA, size = 1))+
-  ylab("Predicted Normalised \nCoastal Species Abundance")
-
-### To save plot
-ggsave("../plots/larval model 3 day_coastal.png", width = 21, height = 14.8, units = "cm", dpi = 600)
-
 
 # Heatmap making for interaction plot (Run from here) - Very slow if standard error included (was run on HPC to get SE)
 nums <- seq(-2,2, by = 0.05)
@@ -269,7 +190,7 @@ for (i in 1:length(nums)){
   for (j in 1:length(nums)){
     pred_map <- data.frame("NE_Winds.standardised" = nums[i],
                            "SE_Winds.standardised" = nums[j],
-                           "dists_km" = mean(fish_data$dists_km),
+                           "dists_km" = 50,
                            "Project_ID" = "P1",
                            "Volume_m3" = 1000)
     PredX <- predict(fit4, newdata = pred_map, type = "response", se.fit = F)
@@ -280,7 +201,7 @@ for (i in 1:length(nums)){
     Nn <- Nn + 1
   }
 }
-
+write.csv(heat_dataM, "Heat data Coastal 3 day 50km.csv", row.names = F)
 
 ################################# Final Plots
 
@@ -332,5 +253,5 @@ pH
 
 plot_grid(pD, pH, labels = c("A", "B"), label_size = 12, rel_widths = c(1,2))
 ## Run below to save final plots
-ggsave("../plots/Larvae 14 day plots_Alternate.png", width = 21, height = 14.8, units = "cm", dpi = 600)
-ggsave("../plots/Larvae 14 day plots_Alternate.pdf", width = 21, height = 14.8, units = "cm", dpi = 600)
+ggsave("Coastal 3 day plots_Alternate 50km.png", width = 21, height = 14.8, units = "cm", dpi = 600)
+#ggsave("../plots/Larvae 14 day plots_Alternate.pdf", width = 21, height = 14.8, units = "cm", dpi = 600)

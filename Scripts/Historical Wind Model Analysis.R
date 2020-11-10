@@ -189,55 +189,215 @@ plot(fit1)
 
 hist(fit1$residuals)
 
-# Save model assumption plots
-png("../plots/Model checks/SE time1.png", width = 21, height = 14.8, units = "cm", res = 600)
-par(mfrow=c(2,2))
-plot(fit1)
-dev.off()
 
-png("../plots/Model checks/SE time2.png", width = 21, height = 14.8, units = "cm", res = 600)
-hist(fit1$residuals)
-dev.off()
+### Try brms
+library(brms)
+fit1b <- brm(Annual_displacement ~ Year, data = dat2_2, iter = 10000, seed = 1234)
 
-png("../plots/Model checks/SE time3.png", width = 21, height = 14.8, units = "cm", res = 600)
-res <- residuals(fit1)
-acf(res, plot = T)
-dev.off()
+plot(fit1b)
+summary(fit1b)
+
+post_samplesM1_tbl <-
+  posterior_samples(fit1b) %>%
+  select(-lp__) %>%
+  round(digits = 3)
+post_samplesM1_tbl %>%
+  head(10) %>%
+  knitr::kable(align = rep("c", 3))
 
 
-summary(fit1) # -40.54 decline per year (p = 0.03)
+library(tidybayes)
+get_variables(fit1b)
+
+fit1b %>%
+  spread_draws(b_Year) %>% #b_Intercept,
+  rename( "Year" = b_Year) %>% #"Intercept" = b_Intercept,
+  tidyr::pivot_longer(cols = c(4:4), names_to = "Variable") %>%
+  #median_qi() %>%
+  ggplot(aes(x = value, y = Variable)) +
+  stat_halfeye(normalize = "groups") + geom_vline(xintercept =0 , col = "red", lty = 2) +
+  xlab("Estimate")+
+  theme_classic() + theme(axis.text = element_text(colour="black"),
+                          axis.title = element_text(face = "bold"))# +
+
+
+#mean_regressionM1_fig <-
+  dat2_2 %>%
+  ggplot(aes(x = Year, y = Annual_displacement)) +
+  geom_point(
+    colour = "black",
+    size = 2,
+    alpha = 1
+  ) +
+  geom_abline(aes(intercept = b_Intercept, slope = b_Year),
+              data = post_samplesM1_tbl,
+              alpha = 0.01, color = "gray50"
+  ) +
+  geom_abline(
+    slope = mean(post_samplesM1_tbl$b_Year),
+    intercept = mean(post_samplesM1_tbl$b_Intercept),
+    color = "blue", size = 1
+  ) +
+    theme_classic() + ylab("Annual Displacement") + xlab("Year") +
+    theme(axis.title.x = element_text(face="bold", colour="black", size = 18),
+          axis.text.x  = element_text(colour="black", size = 12), 
+          axis.title.y = element_text(face="bold", colour="black", size = 18),
+          axis.text.y  = element_text(colour="black", size = 14),
+          axis.ticks = element_line(colour="black"),
+          #strip.text = element_text(colour="black", face = "bold", size = 14),
+          #strip.background = element_rect(colour = "white"),
+          #legend.justification=c(1,0), legend.position="right",
+          panel.border = element_rect(colour = "black", fill=NA, size = 1))#+
+
+
+### Repeat for NE winds bayesian
+#dat_NE2
+
+library(brms)
+fitNb <- brm(Annual_displacement ~ Year, data = dat_NE2, iter = 10000, seed = 1234)
+
+plot(fitNb)
+summary(fitNb)
+
+post_samplesM1_tbl_N <-
+  posterior_samples(fitNb) %>%
+  select(-lp__) %>%
+  round(digits = 3)
+post_samplesM1_tbl_N %>%
+  head(10) %>%
+  knitr::kable(align = rep("c", 3))
+
+
+library(tidybayes)
+get_variables(fitNb)
+
+fitNb %>%
+  spread_draws(b_Year) %>% #b_Intercept,
+  rename( "Year" = b_Year) %>% #"Intercept" = b_Intercept,
+  tidyr::pivot_longer(cols = c(4:4), names_to = "Variable") %>%
+  #median_qi() %>%
+  ggplot(aes(x = value, y = Variable)) +
+  stat_halfeye(normalize = "groups") + geom_vline(xintercept =0 , col = "red", lty = 2) +
+  xlab("Estimate")+
+  theme_classic() + theme(axis.text = element_text(colour="black"),
+                          axis.title = element_text(face = "bold"))# +
+
+#mean_regressionM1_fig <-
+dat_NE2 %>%
+  ggplot(aes(x = Year, y = Annual_displacement)) +
+  geom_point(
+    colour = "black",
+    size = 2,
+    alpha = 1
+  ) +
+  geom_abline(aes(intercept = b_Intercept, slope = b_Year),
+              data = post_samplesM1_tbl_N,
+              alpha = 0.01, color = "gray50"
+  ) +
+  geom_abline(
+    slope = mean(post_samplesM1_tbl_N$b_Year),
+    intercept = mean(post_samplesM1_tbl_N$b_Intercept),
+    color = "blue", size = 1
+  ) +
+  theme_classic() + ylab("Annual Displacement") + xlab("Year") +
+  theme(axis.title.x = element_text(face="bold", colour="black", size = 18),
+        axis.text.x  = element_text(colour="black", size = 12), 
+        axis.title.y = element_text(face="bold", colour="black", size = 18),
+        axis.text.y  = element_text(colour="black", size = 14),
+        axis.ticks = element_line(colour="black"),
+        #strip.text = element_text(colour="black", face = "bold", size = 14),
+        #strip.background = element_rect(colour = "white"),
+        #legend.justification=c(1,0), legend.position="right",
+        panel.border = element_rect(colour = "black", fill=NA, size = 1))#+
+
+
+  
+  
+# # Save model assumption plots
+# png("../plots/Model checks/SE time1.png", width = 21, height = 14.8, units = "cm", res = 600)
+# par(mfrow=c(2,2))
+# plot(fit1)
+# dev.off()
+# 
+# png("../plots/Model checks/SE time2.png", width = 21, height = 14.8, units = "cm", res = 600)
+# hist(fit1$residuals)
+# dev.off()
+# 
+# png("../plots/Model checks/SE time3.png", width = 21, height = 14.8, units = "cm", res = 600)
+# res <- residuals(fit1)
+# acf(res, plot = T)
+# dev.off()
+
+
+#summary(fit1) # -40.54 decline per year (p = 0.03)
 # 164 * -40.54 = -6648.56
-anova(fit1)
-plot(dat2_2$Year, dat2_2$Annual_displacement)
-abline(fit1)
+#anova(fit1)
+#plot(dat2_2$Year, dat2_2$Annual_displacement)
+#abline(fit1)
 
 
-res <- residuals(fit1)
-acf(res, plot = T) # no autocorrelation
+#res <- residuals(fit1)
+#acf(res, plot = T) # no autocorrelation
 
 SE <- dat2_2
 NE <- dat_NE2
 
 full_data <- bind_rows(list("b) Downwelling Favourable Winds" = SE,"a) Upwelling Favourable Winds" = NE), .id ="Direction")
+full_posteriors <- bind_rows(list("b) Downwelling Favourable Winds" = post_samplesM1_tbl,
+                                  "a) Upwelling Favourable Winds" = post_samplesM1_tbl_N), .id ="Direction")
+mean_trends_by_group <- full_posteriors %>% group_by(Direction) %>% summarise(Slope_Year = mean(b_Year), Intercept = mean(b_Intercept))
+mean_trends_by_group
 
-p3 <- ggplot(full_data, aes(x = Year, y = Annual_displacement)) + geom_point() + geom_smooth(method = "lm") +
-  theme_classic() + ylab("Annual Displacement") + xlab("Year") + 
+ggplot(full_data, aes(x = Year, y = Annual_displacement)) +
+  geom_point(
+    colour = "black",
+    size = 2,
+    alpha = 1
+  ) +
+  facet_wrap(~Direction, ncol = 2)+
+  geom_abline(aes(intercept = b_Intercept, slope = b_Year),
+              data = full_posteriors,
+              alpha = 0.01, color = "gray50"
+  ) +
+  geom_abline(data = mean_trends_by_group, aes(
+    slope = Slope_Year,
+    intercept = Intercept),
+    color = "blue", size = 1
+  ) +
   scale_y_continuous(limits = c(-20000, 20000), breaks = seq(-20000, 20000, by = 10000)) +
-  facet_wrap(~Direction, ncol = 2) +
+  theme_classic() + ylab("Annual Displacement") + xlab("Year") +
   theme(axis.title.x = element_text(face="bold", colour="black", size = 18),
-        axis.text.x  = element_text(colour="black", size = 14), 
+        axis.text.x  = element_text(colour="black", size = 12), 
         axis.title.y = element_text(face="bold", colour="black", size = 18),
         axis.text.y  = element_text(colour="black", size = 14),
         axis.ticks = element_line(colour="black"),
-        strip.text = element_text(colour="black", face = "bold", size = 14, hjust=0),
+        strip.text = element_text(colour="black", face = "bold", size = 14),
         strip.background = element_rect(colour = "white"),
         #legend.justification=c(1,0), legend.position="right",
-        panel.border = element_rect(colour = "black", fill=NA, size = 1)
-        #legend.key.size = unit(1, "cm"),
-        #legend.title = element_text(face = "bold", size = 14),
-        #legend.text = element_text(size = 12, face = "bold"))
-  )
-p3
+        panel.border = element_rect(colour = "black", fill=NA, size = 1))#+
 
-ggsave("../plots/Historical Wind Change.pdf", height = 14.8, width = 21, units = "cm")
-ggsave("../plots/Historical Wind Change.png", height = 14.8, width = 21, units = "cm", dpi = 600)
+
+
+
+
+# p3 <- ggplot(full_data, aes(x = Year, y = Annual_displacement)) + geom_point() + geom_smooth(method = "lm") +
+#   theme_classic() + ylab("Annual Displacement") + xlab("Year") + 
+#   scale_y_continuous(limits = c(-20000, 20000), breaks = seq(-20000, 20000, by = 10000)) +
+#   facet_wrap(~Direction, ncol = 2) +
+#   theme(axis.title.x = element_text(face="bold", colour="black", size = 18),
+#         axis.text.x  = element_text(colour="black", size = 14), 
+#         axis.title.y = element_text(face="bold", colour="black", size = 18),
+#         axis.text.y  = element_text(colour="black", size = 14),
+#         axis.ticks = element_line(colour="black"),
+#         strip.text = element_text(colour="black", face = "bold", size = 14, hjust=0),
+#         strip.background = element_rect(colour = "white"),
+#         #legend.justification=c(1,0), legend.position="right",
+#         panel.border = element_rect(colour = "black", fill=NA, size = 1)
+#         #legend.key.size = unit(1, "cm"),
+#         #legend.title = element_text(face = "bold", size = 14),
+#         #legend.text = element_text(size = 12, face = "bold"))
+#   )
+# p3
+
+ggsave("../plots/Historical Wind Change Bayesian.pdf", height = 14.8, width = 21, units = "cm")
+ggsave("../plots/Historical Wind Change Bayesian.png", height = 14.8, width = 21, units = "cm", dpi = 600)
