@@ -46,8 +46,8 @@ Investigate the environmental variation over time and the stability of the CPUE 
 head(my.df)
 
 ggplot(my.df, aes(x=Year, y = Drought_Months)) + geom_point() + facet_wrap(~Species)
-ggplot(my.df, aes(x=Year, y = Catch, col= Estuary)) + geom_line() + facet_wrap(~Species, scales = "free_y") +
-  theme_classic() + ylab("CPUE (kg)") +
+ggplot(my.df, aes(x=Year, y = Catch/1000, col= Estuary)) + geom_line() + facet_wrap(~Species, scales = "free_y") +
+  theme_classic() + ylab("Catch ('000 kg)") +
   theme(axis.title = element_text(face="bold", size=12),
         axis.text.x = element_text(colour = "black", size = 10, angle=45, hjust = 1),
         axis.text.y = element_text(colour = "black", size = 10),
@@ -99,6 +99,19 @@ ggplot(my.df, aes(x=Year, y = X135_degree_winds.standardised, col= Estuary)) + g
 ggsave("../plots/Downwelling Winds by species_time_estuary.png", height = 14.8, width=21, dpi =600, units="cm")
 
 
+ggplot(my.df, aes(x=Year, y = Effort_days, col= Estuary)) + geom_line()+ #+ facet_wrap(~Species)+
+  theme_classic() + ylab("Effort (Fishing Days)") +
+  scale_y_log10()+
+  theme(axis.title = element_text(face="bold", size=12),
+        axis.text.x = element_text(colour = "black", size = 10, angle=45, hjust = 1),
+        axis.text.y = element_text(colour = "black", size = 10),
+        strip.text = element_text(colour="black", face = "bold", size = 11, hjust=0.5),
+        strip.background = element_blank(),
+        panel.border = element_rect(colour = "black", fill=NA, size = 1),
+        legend.title = element_text(colour="black", size = 12, face = "bold"),
+        legend.text = element_text(colour="black", size=10))#, scales = "free_y")
+ggsave("../plots/Fishing Effort over time.png", height = 14.8, width=21, dpi =600, units="cm")
+
 ```
 
 
@@ -106,24 +119,24 @@ ggsave("../plots/Downwelling Winds by species_time_estuary.png", height = 14.8, 
 Do full model for all species
 
 ```{r}
-m7 <- glmmTMB(Catch ~ poly(X135_degree_winds.standardised, degree = 2) + 
-       poly(X45_degree_winds.standardised, degree = 2) +
-       X135_degree_winds.standardised:X45_degree_winds.standardised+
-        Estuary_Type *Drought_Months + Species + (Species|Estuary), family = Gamma(link="log"),
-       data = my.df, offset = log10(Effort_days))
-AIC(m7) # -38.18
-performance::r2(m7) # 0.08
-
-simulationOutput <- simulateResiduals(fittedModel = m7, n = 250)
-plot(simulationOutput, quantreg = F)
-hist(residuals(m7), breaks = 30)
-
-car::Anova(m7)
-summary(m7)
-
-total_Summary <- broom.mixed::tidy(m7)
-total_Summary
-write.csv(total_Summary, "../Data/All Species Summary Table.csv", row.names = F)
+#m7 <- glmmTMB(Catch ~ poly(X135_degree_winds.standardised, degree = 2) + 
+#       poly(X45_degree_winds.standardised, degree = 2) +
+#       X135_degree_winds.standardised:X45_degree_winds.standardised+
+#        Estuary_Type *Drought_Months + Species + (Species|Estuary), family = Gamma(link="log"),
+#       data = my.df, offset = log10(Effort_days))
+#AIC(m7) # -38.18
+#performance::r2(m7) # 0.08
+#
+#simulationOutput <- simulateResiduals(fittedModel = m7, n = 250)
+#plot(simulationOutput, quantreg = F)
+#hist(residuals(m7), breaks = 30)
+#
+#car::Anova(m7)
+#summary(m7)
+#
+#total_Summary <- broom.mixed::tidy(m7)
+#total_Summary
+#write.csv(total_Summary, "../Data/All Species Summary Table.csv", row.names = F)
 
 ```
 
@@ -131,22 +144,25 @@ Bayesian Model
 ```{r}
 library(brms)
 
+my.df2 <- my.df %>% drop_na(X135_degree_winds.standardised, X45_degree_winds.standardised)
+
 m7a <- brm(CPUE ~ poly(X135_degree_winds.standardised, degree = 2) + 
-       poly(X45_degree_winds.standardised, degree = 2) +
-       X135_degree_winds.standardised:X45_degree_winds.standardised+
-        Estuary_Type *Drought_Months + Species + (Species|Estuary),
-       data = my.df, iter = 10000, seed = 1234)
-saveRDS(m7a, "../Data/CPUE Multi_species brms model CPUE.rds")
-m7a <- readRDS("../Data/CPUE Multi_species brms model CPUE.rds")
+             poly(X45_degree_winds.standardised, degree = 2) +
+             X135_degree_winds.standardised:X45_degree_winds.standardised+
+             Estuary_Type *Drought_Months + Species + (Species|Estuary),
+           data = my.df2, iter = 10000, seed = 1234)
+saveRDS(m7a, "../Data/Fisheries Data/Lag Models/CPUE Multi_species brms model CPUE no lag.rds")
+m7a <- readRDS("../Data/Fisheries Data/Lag Models/CPUE Multi_species brms model CPUE no lag.rds")
+
 ```
 
 Check model
 ```{r}
-#plot(m7)
+#plot(m7a)
 summary(m7a)
 ranef(m7a)
 fixef(m7a)
-prior_summary(m7a)
+brms::prior_summary(m7a)
 mcmc_plot(m7a)
 bayes_R2(m7a)
 ```

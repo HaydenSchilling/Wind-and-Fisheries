@@ -239,3 +239,18 @@ p2 <- ggplot(full_dat, aes(x = Days_Prior, y = estimate, col = Colours)) + geom_
 p2  
 
 ggsave("../plots/Larval Sensitivity.png", dpi = 600, width = 24, height = 18, units = "cm")
+
+
+### Fish samples over time ###
+
+fish_time <- fish_data %>% group_by(Project_name) %>% summarise(mean_Abund = mean(Coastal_Normalised_Abund, na.rm = T), SD_Abund = sd(Coastal_Normalised_Abund, na.rm = T))
+fish_time
+
+ggplot(fish_time, aes(x = Project_name, y = mean_Abund)) + geom_point() +
+  geom_errorbar(aes(ymin=mean_Abund-SD_Abund, ymax = mean_Abund+SD_Abund)) + theme_classic()+
+  xlab("Project") + ylab("Mean Coastal Larvae Abundance (SD)")+
+  theme(axis.title = element_text(size=12, face ="bold"),
+        axis.text.y = element_text(colour = "black", size=10),
+        axis.text.x = element_text(colour = "black", size=10, angle=45, hjust = 1))
+
+ggsave("../plots/Larval Fish by project.png", dpi = 600, units = "cm", width = 21, height = 14.8)
