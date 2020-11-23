@@ -3,8 +3,8 @@ library(data.table)
 library(tidyverse)
 library(lubridate)
 
-U_dat <- read_csv("../BOM Data/BARRA Model/Estuaries_u.csv ")
-V_dat <- read_csv("../BOM Data/BARRA Model/Estuaries_v.csv ")
+U_dat <- read_csv("../Data/BARRA Data/Estuaries_u.csv ")
+V_dat <- read_csv("../Data/BARRA Data/Estuaries_v.csv ")
 
 V_dat$V_wind <- V_dat$U_wind
 V_dat$U_wind <- NULL
@@ -48,7 +48,7 @@ Full_dat$Speed_m_s <- NULL
 head(Full_dat)
 table(Full_dat$Year)
 
-fwrite(Full_dat, "../BOM Data/BARRA Model/Estuaries_speed_direction.csv", row.names = FALSE)
+fwrite(Full_dat, "../Data/BARRA Data/Estuaries_speed_direction.csv", row.names = FALSE)
 
 
 

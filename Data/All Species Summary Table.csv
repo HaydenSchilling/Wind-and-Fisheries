@@ -1,0 +1,25 @@
+"effect","component","group","term","estimate","std.error","statistic","p.value"
+"fixed","cond",NA,"(Intercept)",6.16264303882736,0.512542430789855,12.0236738826294,2.66837845608644e-33
+"fixed","cond",NA,"poly(X135_degree_winds.standardised, degree = 2)1",-0.124908050756193,0.415649681645487,-0.300512802660412,0.763786032352533
+"fixed","cond",NA,"poly(X135_degree_winds.standardised, degree = 2)2",0.185660266750329,0.439162136744378,0.42276018630995,0.67247023852234
+"fixed","cond",NA,"poly(X45_degree_winds.standardised, degree = 2)1",-1.56717125984877,0.410964697612856,-3.81339630618372,0.000137070050194987
+"fixed","cond",NA,"poly(X45_degree_winds.standardised, degree = 2)2",0.84760105717278,0.404804650723096,2.09385207323761,0.0362731597532799
+"fixed","cond",NA,"Estuary_TypeBarrier River",0.791929773831016,0.699367062322647,1.13235211735732,0.257486427077258
+"fixed","cond",NA,"Estuary_TypeDrowned River Valley",0.515613002124561,0.47953890757026,1.07522662704697,0.282273276913558
+"fixed","cond",NA,"Drought_Months",0.0555837476722602,0.011316982817788,4.91153415775218,9.03665409369596e-07
+"fixed","cond",NA,"SpeciesFlathead",-0.109318362565075,0.393406881958745,-0.27787608091853,0.781107485735059
+"fixed","cond",NA,"SpeciesMullet",1.96642832012991,0.293586815311316,6.69794492659601,2.11370890173905e-11
+"fixed","cond",NA,"SpeciesWhiting",-1.50858726338914,0.370442646997691,-4.072390896717,4.65329989430675e-05
+"fixed","cond",NA,"X135_degree_winds.standardised:X45_degree_winds.standardised",-0.0814836307987269,0.031243589174612,-2.60801120970247,0.00910699719889651
+"fixed","cond",NA,"Estuary_TypeBarrier River:Drought_Months",-0.0486324604758983,0.0144642408643246,-3.36225460652055,0.000773088056400968
+"fixed","cond",NA,"Estuary_TypeDrowned River Valley:Drought_Months",-0.0276604913026591,0.0169367798593823,-1.63316117540114,0.10243510308353
+"ran_pars","cond","Estuary","sd__(Intercept)",1.0308312122868,NA,NA,NA
+"ran_pars","cond","Estuary","sd__SpeciesFlathead",1.09945973365927,NA,NA,NA
+"ran_pars","cond","Estuary","sd__SpeciesMullet",0.812733445986807,NA,NA,NA
+"ran_pars","cond","Estuary","sd__SpeciesWhiting",1.03361412708058,NA,NA,NA
+"ran_pars","cond","Estuary","cor__(Intercept).SpeciesFlathead",-0.26364149966698,NA,NA,NA
+"ran_pars","cond","Estuary","cor__(Intercept).SpeciesMullet",-0.701756681653073,NA,NA,NA
+"ran_pars","cond","Estuary","cor__(Intercept).SpeciesWhiting",-0.787334566052088,NA,NA,NA
+"ran_pars","cond","Estuary","cor__SpeciesFlathead.SpeciesMullet",0.809202087733167,NA,NA,NA
+"ran_pars","cond","Estuary","cor__SpeciesFlathead.SpeciesWhiting",0.771749761169784,NA,NA,NA
+"ran_pars","cond","Estuary","cor__SpeciesMullet.SpeciesWhiting",0.919306479257244,NA,NA,NA

@@ -1,0 +1,76 @@
+effect,component,group,term,estimate,std.error,statistic,p.value,Species
+fixed,cond,NA,(Intercept),6.220969512,0.373871757,16.63931386,3.62E-62,All
+fixed,cond,NA,(Intercept),6.87212618,0.355010382,19.35753581,1.76E-83,Bream
+fixed,cond,NA,(Intercept),7.502514946,0.47958818,15.64366109,3.67E-55,Flathead
+fixed,cond,NA,(Intercept),7.54063794,0.547625574,13.76969649,3.88E-43,Luderick
+fixed,cond,NA,(Intercept),8.813466108,0.340081717,25.91573046,4.43E-148,Mullet
+fixed,cond,NA,(Intercept),5.107724664,0.315097751,16.20996866,4.29E-59,Whiting
+fixed,cond,NA,Drought_Months,0.05018969,0.009699647,5.17438318,2.29E-07,All
+fixed,cond,NA,Drought_Months,0.099977705,0.027212951,3.673901648,0.000238875,Bream
+fixed,cond,NA,Drought_Months,0.007645765,0.015778778,0.484560032,0.627988471,Flathead
+fixed,cond,NA,Drought_Months,0.030398751,0.018077781,1.681553281,0.092655496,Luderick
+fixed,cond,NA,Drought_Months,0.036983372,0.016078742,2.300140982,0.021440234,Mullet
+fixed,cond,NA,Drought_Months,0.076343801,0.027089148,2.818242982,0.004828725,Whiting
+fixed,cond,NA,Estuary_TypeBarrier River,0.161448231,0.326896802,0.49388134,0.621389984,All
+fixed,cond,NA,Estuary_TypeBarrier River,-1.127220902,0.499037126,-2.258791667,0.023896347,Bream
+fixed,cond,NA,Estuary_TypeBarrier River,-1.079816912,0.676500804,-1.596179792,0.110448658,Flathead
+fixed,cond,NA,Estuary_TypeBarrier River,-1.042530009,0.770834759,-1.352468861,0.176225374,Luderick
+fixed,cond,NA,Estuary_TypeBarrier River,0.014178625,0.479387696,0.02957653,0.976404783,Mullet
+fixed,cond,NA,Estuary_TypeBarrier River,0.113360206,0.430860866,0.263101653,0.79247223,Whiting
+fixed,cond,NA,Estuary_TypeBarrier River:Drought_Months,-0.052575583,0.012499884,-4.206085633,2.60E-05,All
+fixed,cond,NA,Estuary_TypeBarrier River:Drought_Months,-0.051617128,0.034124255,-1.512622862,0.130375484,Bream
+fixed,cond,NA,Estuary_TypeBarrier River:Drought_Months,-0.049302673,0.018299203,-2.69425243,0.007054671,Flathead
+fixed,cond,NA,Estuary_TypeBarrier River:Drought_Months,-0.067729345,0.022628578,-2.993088825,0.002761694,Luderick
+fixed,cond,NA,Estuary_TypeBarrier River:Drought_Months,-0.066638515,0.020873354,-3.19251592,0.001410392,Mullet
+fixed,cond,NA,Estuary_TypeBarrier River:Drought_Months,-0.041149116,0.032361607,-1.271541198,0.203536181,Whiting
+fixed,cond,NA,Estuary_TypeDrowned River Valley,1.336204637,0.443956493,3.009764824,0.0026145,All
+fixed,cond,NA,Estuary_TypeDrowned River Valley,0.067342853,0.559254305,0.12041544,0.904154061,Bream
+fixed,cond,NA,Estuary_TypeDrowned River Valley,-1.930818055,0.75651364,-2.552258086,0.010702721,Flathead
+fixed,cond,NA,Estuary_TypeDrowned River Valley,-0.620204636,0.86218237,-0.719342748,0.471929763,Luderick
+fixed,cond,NA,Estuary_TypeDrowned River Valley,-0.480443257,0.535460535,-0.897252413,0.369584243,Mullet
+fixed,cond,NA,Estuary_TypeDrowned River Valley,-0.717491763,0.482343346,-1.487512516,0.1368795,Whiting
+fixed,cond,NA,Estuary_TypeDrowned River Valley:Drought_Months,-0.029852301,0.014731444,-2.026434061,0.042720324,All
+fixed,cond,NA,Estuary_TypeDrowned River Valley:Drought_Months,-0.071573695,0.038986573,-1.835854984,0.066379107,Bream
+fixed,cond,NA,Estuary_TypeDrowned River Valley:Drought_Months,0.017744727,0.021406448,0.828943064,0.407136626,Flathead
+fixed,cond,NA,Estuary_TypeDrowned River Valley:Drought_Months,-0.044645069,0.027296313,-1.635571387,0.101929323,Luderick
+fixed,cond,NA,Estuary_TypeDrowned River Valley:Drought_Months,-0.068112597,0.023338759,-2.918432648,0.003517959,Mullet
+fixed,cond,NA,Estuary_TypeDrowned River Valley:Drought_Months,0.008441415,0.03833578,0.220196771,0.825717912,Whiting
+fixed,cond,NA,"poly(X135_degree_winds.standardised, degree = 2)1",0.091068127,0.411500052,0.221307692,0.824852861,All
+fixed,cond,NA,"poly(X135_degree_winds.standardised, degree = 2)1",0.319133682,0.45811666,0.696620991,0.486040016,Bream
+fixed,cond,NA,"poly(X135_degree_winds.standardised, degree = 2)1",-0.042963492,0.294416667,-0.145927514,0.883978611,Flathead
+fixed,cond,NA,"poly(X135_degree_winds.standardised, degree = 2)1",0.004625016,0.436209554,0.010602738,0.991540397,Luderick
+fixed,cond,NA,"poly(X135_degree_winds.standardised, degree = 2)1",-0.125594423,0.366224108,-0.342944169,0.731640462,Mullet
+fixed,cond,NA,"poly(X135_degree_winds.standardised, degree = 2)1",-0.463692296,0.6130433,-0.756377723,0.44942276,Whiting
+fixed,cond,NA,"poly(X135_degree_winds.standardised, degree = 2)2",0.118506398,0.423852186,0.279593693,0.779789246,All
+fixed,cond,NA,"poly(X135_degree_winds.standardised, degree = 2)2",0.224903866,0.475753572,0.472731851,0.6364045,Bream
+fixed,cond,NA,"poly(X135_degree_winds.standardised, degree = 2)2",0.223278467,0.470697037,0.474357069,0.635245302,Flathead
+fixed,cond,NA,"poly(X135_degree_winds.standardised, degree = 2)2",0.394591846,0.418761311,0.942283434,0.346047547,Luderick
+fixed,cond,NA,"poly(X135_degree_winds.standardised, degree = 2)2",0.146246839,0.404075125,0.361929824,0.717404472,Mullet
+fixed,cond,NA,"poly(X135_degree_winds.standardised, degree = 2)2",0.597612925,0.662266276,0.902375596,0.36685738,Whiting
+fixed,cond,NA,"poly(X45_degree_winds.standardised, degree = 2)1",-1.501093974,0.404916962,-3.707164961,0.000209592,All
+fixed,cond,NA,"poly(X45_degree_winds.standardised, degree = 2)1",-0.621219036,0.47437895,-1.30954174,0.190350908,Bream
+fixed,cond,NA,"poly(X45_degree_winds.standardised, degree = 2)1",-0.84475038,0.313954141,-2.690680804,0.007130638,Flathead
+fixed,cond,NA,"poly(X45_degree_winds.standardised, degree = 2)1",-0.295926394,0.374651295,-0.789871534,0.429602797,Luderick
+fixed,cond,NA,"poly(X45_degree_winds.standardised, degree = 2)1",-0.523159401,0.296761603,-1.762894511,0.077918283,Mullet
+fixed,cond,NA,"poly(X45_degree_winds.standardised, degree = 2)1",-0.876755637,0.573848509,-1.527852079,0.126549269,Whiting
+fixed,cond,NA,"poly(X45_degree_winds.standardised, degree = 2)2",0.698460312,0.405464881,1.722616049,0.084957981,All
+fixed,cond,NA,"poly(X45_degree_winds.standardised, degree = 2)2",0.549429502,0.495178431,1.109558632,0.267189266,Bream
+fixed,cond,NA,"poly(X45_degree_winds.standardised, degree = 2)2",0.226401775,0.28180472,0.803399513,0.421743856,Flathead
+fixed,cond,NA,"poly(X45_degree_winds.standardised, degree = 2)2",0.124131272,0.431701913,0.287539315,0.773699403,Luderick
+fixed,cond,NA,"poly(X45_degree_winds.standardised, degree = 2)2",0.06995159,0.326470488,0.214266198,0.830339476,Mullet
+fixed,cond,NA,"poly(X45_degree_winds.standardised, degree = 2)2",0.616445897,0.608702901,1.012720484,0.311193691,Whiting
+ran_pars,cond,Estuary,sd__(Intercept),0.580339555,NA,NA,NA,Bream
+ran_pars,cond,Estuary,sd__(Intercept),0.821786424,NA,NA,NA,Flathead
+ran_pars,cond,Estuary,sd__(Intercept),0.934581458,NA,NA,NA,Luderick
+ran_pars,cond,Estuary,sd__(Intercept),0.574592543,NA,NA,NA,Mullet
+ran_pars,cond,Estuary,sd__(Intercept),0.492839929,NA,NA,NA,Whiting
+fixed,cond,NA,SpeciesFlathead,-0.114504596,0.390577238,-0.293167611,0.769394039,All
+fixed,cond,NA,SpeciesLuderick,0.261365677,0.341746416,0.764794202,0.444394101,All
+fixed,cond,NA,SpeciesMullet,1.961493052,0.291472704,6.729594307,1.70E-11,All
+fixed,cond,NA,SpeciesWhiting,-1.50981518,0.368932455,-4.092389166,4.27E-05,All
+fixed,cond,NA,X135_degree_winds.standardised:X45_degree_winds.standardised,-0.07893187,0.028572868,-2.762476277,0.005736473,All
+fixed,cond,NA,X135_degree_winds.standardised:X45_degree_winds.standardised,-0.141517822,0.05986191,-2.364071279,0.018075335,Bream
+fixed,cond,NA,X135_degree_winds.standardised:X45_degree_winds.standardised,-0.009861394,0.064669468,-0.152489179,0.878801125,Flathead
+fixed,cond,NA,X135_degree_winds.standardised:X45_degree_winds.standardised,-0.005993621,0.086511361,-0.06928132,0.944765694,Luderick
+fixed,cond,NA,X135_degree_winds.standardised:X45_degree_winds.standardised,0.050732071,0.062566862,0.810845692,0.417454291,Mullet
+fixed,cond,NA,X135_degree_winds.standardised:X45_degree_winds.standardised,-0.080552278,0.126817892,-0.63518071,0.525310563,Whiting

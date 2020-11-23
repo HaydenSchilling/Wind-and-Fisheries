@@ -1,0 +1,14 @@
+"effect","component","group","term","estimate","std.error","statistic","p.value"
+"fixed","cond",NA,"(Intercept)",-6.11771125755152,0.849208514439723,-7.20401544912413,5.84647376676376e-13
+"fixed","cond",NA,"poly(NE_Winds.standardised, degree = 2)1",-73.0232982201795,7.39688488680733,-9.87216907355416,5.49630038833845e-23
+"fixed","cond",NA,"poly(NE_Winds.standardised, degree = 2)2",-17.0405551885998,10.2748933867581,-1.65846540174919,0.0972235652971644
+"fixed","cond",NA,"dists_km",0.0754618823217982,0.0133619030806218,5.64754001480802,1.62759959952819e-08
+"fixed","cond",NA,"poly(SE_Winds.standardised, degree = 2)1",13.6554690172085,9.17961090371975,1.48758690977578,0.136859867706621
+"fixed","cond",NA,"poly(SE_Winds.standardised, degree = 2)2",-41.7648614816456,8.45746433530608,-4.93822496032248,7.88368681142103e-07
+"fixed","cond",NA,"poly(NE_Winds.standardised, degree = 2)1:dists_km",4.00700668258929,0.617297173424333,6.49121177788847,8.51486839438007e-11
+"fixed","cond",NA,"poly(NE_Winds.standardised, degree = 2)2:dists_km",0.109145934714048,0.809018075487488,0.134911614488069,0.892681756475946
+"fixed","cond",NA,"dists_km:poly(SE_Winds.standardised, degree = 2)1",-2.04342628323642,0.758368580414673,-2.69450282621028,0.00704937287965279
+"fixed","cond",NA,"dists_km:poly(SE_Winds.standardised, degree = 2)2",3.49646742200798,0.712119565960974,4.90994432555669,9.11022541224746e-07
+"fixed","cond",NA,"SE_Winds.standardised:NE_Winds.standardised",1.38793456830857,0.238126065054581,5.82857054304594,5.59041646776241e-09
+"fixed","cond",NA,"dists_km:SE_Winds.standardised:NE_Winds.standardised",-0.0620874135914844,0.016832597768551,-3.68852238051364,0.000225560188207525
+"ran_pars","cond","Project_ID","sd__(Intercept)",2.16175805732029,NA,NA,NA

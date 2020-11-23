@@ -6,24 +6,24 @@ library(ggplot2)
 library(scales)
 library(ggallin)
 
-dat3 <- read.csv("../Data/Larval fish model coefs 3 day.csv", header = T)
-dat3$Model <- "A) 3 Day"
-dat14 <- read.csv("../Data/Larval fish model coefs 14 day.csv", header = T)
-dat14$Model <- "B) 14 Day"
+dat3 <- read.csv("../Data/Larval fish model coefs 3 day Bayesian.csv", header = T)
+dat3$Model <- "B) 3 Day"
+dat14 <- read.csv("../Data/Larval fish model coefs 14 day Bayesian.csv", header = T)
+dat14$Model <- "A) 14 Day"
 
 larval_coef_dat <- bind_rows(dat3, dat14)
 larval_coef_dat$Parameter <- as.character(larval_coef_dat$Parameter)
 
 # Faceted coefficient plot
-p1 <- ggplot(larval_coef_dat, aes(Parameter, Estimate)) + 
+p1 <- ggplot(larval_coef_dat, aes(Parameter, .value)) + 
   geom_hline(yintercept=0, lty=2, lwd=1, colour="red") +
-  geom_errorbar(aes(ymin=Estimate - se, ymax=Estimate + se), 
+  geom_errorbar(aes(ymin= .lower, ymax= .upper), 
                 lwd=1, width=0, colour="black") +
   geom_point(size=2, colour = "black") +
   facet_grid(.~ Model, scales = "free") +
   coord_flip() +
   guides(colour=FALSE) +
-  labs(x="Parameter", y="Estimate (± SE)") +
+  labs(x="Parameter", y="Estimate (95% CI)") +
   theme_classic() +
   scale_y_continuous(trans = ssqrt_trans, breaks = c(-40, -20, -10, -1,1,10,20)) +
   theme(axis.title.x = element_text(face="bold", colour="black", size = 16),
@@ -99,7 +99,7 @@ p2 <- ggplot(mydata, aes(Model.Term, coef.est)) +
   guides(colour=FALSE) +
   labs(x="Parameter", y="Estimate (± SE)") +
   theme_classic() +
-  scale_y_continuous(trans = ssqrt_trans, breaks=seq(-4,2,1)) +
+  scale_y_continuous(trans = ssqrt_trans, breaks=c(-3, -2, -1, 0,1,2,4,6,8)) +
     theme(axis.title.x = element_text(face="bold", colour="black", size = 16),
         axis.text.x  = element_text(colour="black", size = 10), 
         axis.title.y = element_text(face="bold", colour="black", size = 16),

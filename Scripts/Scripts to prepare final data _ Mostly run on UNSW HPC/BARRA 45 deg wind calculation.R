@@ -1,7 +1,7 @@
 library(tidyverse)
 library(REdaS)
 
-mydata <- read_csv("../BOM Data/BARRA Model/Estuaries_speed_direction.csv")
+mydata <- read_csv("../Data/BARRA Data/Estuaries_speed_direction.csv")
 
 # Classify onshore/offshore
 mydata$Onshore_Offshore <- "Offshore"
@@ -42,13 +42,13 @@ datM <- mydata %>% group_by(estuary, Year, Month) %>%
   summarise(displacement = (sum(Wind.speed.adjusted, na.rm = TRUE)), count = n())
 head(datM)
 
-fwrite(datM, file = "../BOM Data/BARRA Model/BARRA Monthly Modelled Estuary 45 deg Wind Data Final.csv")
+fwrite(datM, file = "../Data/BARRA Data/BARRA Monthly Modelled Estuary 45 deg Wind Data Final.csv")
 
 mydata$estuary <- as.factor(mydata$estuary)
 estuaries <- levels(mydata$estuary)
 
 for (i in as.character(estuaries)) {
   dat2 <- subset(datM, estuary == i)
-  fwrite(dat2, file = paste("../BOM Data/BARRA Model/45 winds/BARRA_", i, "_Monthly Modelled Wind Data Final 45 degree.csv", sep = ""))
+  fwrite(dat2, file = paste("../Data/BARRA Data/BARRA_", i, "_Monthly Modelled Wind Data Final 45 degree.csv", sep = ""))
   
 }

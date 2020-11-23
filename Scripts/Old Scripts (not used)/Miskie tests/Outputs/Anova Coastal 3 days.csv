@@ -1,0 +1,80 @@
+Coastal 3 Day,term,statistic,df,p.value,,,Ocean 3 Day,term,statistic,df,p.value
+,"poly(NE_Winds.standardised, degree = 2)",6.376237885,2,0.04124939,,,,"poly(NE_Winds.standardised, degree = 2)",92.90690142,2,6.69E-21
+,dists_km,2.628088554,1,0.104988037,,,,dists_km,9.7976219,1,0.001747377
+,"poly(SE_Winds.standardised, degree = 2)",18.15482839,2,0.000114217,,,,"poly(SE_Winds.standardised, degree = 2)",5.719041606,2,0.05729621
+,"poly(NE_Winds.standardised, degree = 2):dists_km",21.77979443,2,1.86E-05,,,,"poly(NE_Winds.standardised, degree = 2):dists_km",45.49405666,2,1.32E-10
+,"dists_km:poly(SE_Winds.standardised, degree = 2)",4.625451589,2,0.098991054,,,,"dists_km:poly(SE_Winds.standardised, degree = 2)",24.1565941,2,5.68E-06
+,SE_Winds.standardised:NE_Winds.standardised,1.510679447,1,0.219035438,,,,SE_Winds.standardised:NE_Winds.standardised,41.69781989,1,1.07E-10
+,dists_km:SE_Winds.standardised:NE_Winds.standardised,1.864042458,1,0.172158967,,,,dists_km:SE_Winds.standardised:NE_Winds.standardised,13.60519735,1,0.00022556
+,,,,,,,,,,,
+Coastal 14 Day,term,statistic,df,p.value,,,Ocean 14 Day,term,statistic,df,p.value
+,"poly(NE_Winds.standardised, degree = 2)",9.930904216,2,0.006974797,,,,"poly(NE_Winds.standardised, degree = 2)",59.1015971,2,1.47E-13
+,dists_km,1.894268898,1,0.168721217,,,,dists_km,3.242950812,1,0.071731337
+,"poly(SE_Winds.standardised, degree = 2)",13.97777584,2,0.000922071,,,,"poly(SE_Winds.standardised, degree = 2)",42.8960167,2,4.84E-10
+,"poly(NE_Winds.standardised, degree = 2):dists_km",6.547616856,2,0.037861958,,,,"poly(NE_Winds.standardised, degree = 2):dists_km",8.83040015,2,0.012092135
+,"dists_km:poly(SE_Winds.standardised, degree = 2)",7.676433543,2,0.021531964,,,,"dists_km:poly(SE_Winds.standardised, degree = 2)",28.11563072,2,7.85E-07
+,SE_Winds.standardised:NE_Winds.standardised,0.005589063,1,0.940405641,,,,SE_Winds.standardised:NE_Winds.standardised,27.74225302,1,1.39E-07
+,dists_km:SE_Winds.standardised:NE_Winds.standardised,5.231809158,1,0.022177453,,,,dists_km:SE_Winds.standardised:NE_Winds.standardised,14.0255476,1,0.000180344
+,,,,,,,,,,,
+,,,,,,,,,,,
+,,,,,,,,,,,
+,,,,,,,,,,,
+,,,,,,,,,,,
+,,,,,,,,,,,
+,,,,,,,,,,,
+,,,,,,,,,,,
+,,,,,,,,,,,
+,,,,,,,,,,,
+,,,,,,,,,,,
+,,,,,,,,,,,
+,,,,,,,,,,,
+,,,,,,,,,,,
+,,,,,,,,,,,
+,,,,,,,,,,,
+,,,,,,,,,,,
+,,,,,,,,,,,
+,,,,,,,,,,,
+,,,,,,,,,,,
+,,,,,,,,,,,
+,,,,,,,,,,,
+,,,,,,,,,,,
+,,,,,,,,,,,
+,,,,,,,,,,,
+,,,,,,,,,,,
+,,,,,,,,,,,
+,,,,,,,,,,,
+,,,,,,,,,,,
+,,,,,,,,,,,
+,,,,,,,,,,,
+,,,,,,,,,,,
+,,,,,,,,,,,
+,,,,,,,,,,,
+,,,,,,,,,,,
+,,,,,,,,,,,
+,,,,,,,,,,,
+,,,,,,,,,,,
+,,,,,,,,,,,
+,,,,,,,,,,,
+,,,,,,,,,,,
+,,,,,,,,,,,
+,,,,,,,,,,,
+,,,,,,,,,,,
+,,,,,,,,,,,
+,,,,,,,,,,,
+,,,,,,,,,,,
+,,,,,,,,,,,
+,,,,,,,,,,,
+,,,,,,,,,,,
+,,,,,,,,,,,
+,,,,,,,,,,,
+,,,,,,,,,,,
+,,,,,,,,,,,
+,,,,,,,,,,,
+,,,,,,,,,,,
+,,,,,,,,,,,
+,,,,,,,,,,,
+,,,,,,,,,,,
+,,,,,,,,,,,
+,,,,,,,,,,,
+,,,,,,,,,,,
+,,,,,,,,,,,

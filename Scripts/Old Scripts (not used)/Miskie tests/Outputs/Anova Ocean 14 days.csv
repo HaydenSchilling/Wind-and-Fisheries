@@ -1,0 +1,8 @@
+"term","statistic","df","p.value"
+"poly(NE_Winds.standardised, degree = 2)",59.1015971025327,2,1.4663959529071e-13
+"dists_km",3.24295081201741,1,0.0717313369298743
+"poly(SE_Winds.standardised, degree = 2)",42.8960167039543,2,4.84449291308492e-10
+"poly(NE_Winds.standardised, degree = 2):dists_km",8.83040014962047,2,0.0120921345515123
+"dists_km:poly(SE_Winds.standardised, degree = 2)",28.1156307189514,2,7.84816927706056e-07
+"SE_Winds.standardised:NE_Winds.standardised",27.7422530165897,1,1.38602122786401e-07
+"dists_km:SE_Winds.standardised:NE_Winds.standardised",14.0255475982245,1,0.000180343648950668
