@@ -20,7 +20,7 @@ library(performance)
 
 
 #### This loop will be very slow - Do not need to run again ###
-for (lag_days in 9:20){
+for (lag_days in 17:20){
 
 # Load Fish Data
 fish_data <- read.csv("../Data/allNIMO_dist.csv", header = T)
@@ -171,12 +171,12 @@ library(brms)
 #plot(conditional_effects(fit4))
 
 fit5 <- brm(Coastal_Normalised_Abund~
-               poly(NE_Winds.standardised, degree = 2)*dists_km+
-               poly(SE_Winds.standardised, degree = 2)*dists_km+
+               poly(NE_Winds.standardised, degree = 2)*dists_km.standardised+
+               poly(SE_Winds.standardised, degree = 2)*dists_km.standardised+
                SE_Winds.standardised:NE_Winds.standardised*
-               dists_km + (1|Project_ID), family = hurdle_gamma, data = fish_data, iter = 10000, seed = 1234)
+              dists_km.standardised + (1|Project_ID), family = hurdle_gamma, data = fish_data, iter = 10000, seed = 1234)
 
-saveRDS(fit5, paste0("../Data/Coastal 14 day brms model_",as.character(lag_days),".rds"))
+saveRDS(fit5, paste0("../Data/Coastal 14 day brms modelV2_",as.character(lag_days),".rds"))
 #fit5 <- readRDS("../Data/Coastal 14 day brms model.rds")
 
 #plot(fit5)
@@ -218,15 +218,15 @@ unique(full_dat$term)
 full_dat$term <- recode(full_dat$term, "b_Intercept" = "Intercept",
                    "b_polyNE_Winds.standardiseddegreeEQ21" = "Up Winds",             
                    "b_polyNE_Winds.standardiseddegreeEQ22" = "Up Winds (quadratic)",
-                   "b_dists_km" = "Distance to Coast",
+                   "b_dists_km.standardised" = "Distance to Coast",
                    "b_polySE_Winds.standardiseddegreeEQ21" = "Down Winds",
                    "b_polySE_Winds.standardiseddegreeEQ22" = "Down Winds (Quadratic)",
-                   "b_polyNE_Winds.standardiseddegreeEQ21:dists_km" = "Up Winds * Distance",
-                   "b_polyNE_Winds.standardiseddegreeEQ22:dists_km" = "Up Winds (Quadratic) *\n Distance",
-                   "b_dists_km:polySE_Winds.standardiseddegreeEQ21" = "Down Winds * Distance",
-                   "b_dists_km:polySE_Winds.standardiseddegreeEQ22" = "Down Winds (Quadratic) *\n Distance",
+                   "b_polyNE_Winds.standardiseddegreeEQ21:dists_km.standardised" = "Up Winds * Distance",
+                   "b_polyNE_Winds.standardiseddegreeEQ22:dists_km.standardised" = "Up Winds (Quadratic) *\n Distance",
+                   "b_dists_km.standardised:polySE_Winds.standardiseddegreeEQ21" = "Down Winds * Distance",
+                   "b_dists_km.standardised:polySE_Winds.standardiseddegreeEQ22" = "Down Winds (Quadratic) *\n Distance",
                    "b_SE_Winds.standardised:NE_Winds.standardised"  = "Up Winds * Down Winds",
-                   "b_dists_km:SE_Winds.standardised:NE_Winds.standardised" = "Up Winds * Down Winds *\n Distance")
+                   "b_dists_km.standardised:SE_Winds.standardised:NE_Winds.standardised" = "Up Winds * Down Winds *\n Distance")
 
 p2 <- ggplot(full_dat, aes(x = Days_Prior, y = estimate, col = Colours)) + geom_point() +
   facet_wrap(~term, scales = "free_y") +
@@ -248,7 +248,7 @@ fish_time
 
 ggplot(fish_time, aes(x = Project_name, y = mean_Abund)) + geom_point() +
   geom_errorbar(aes(ymin=mean_Abund-SD_Abund, ymax = mean_Abund+SD_Abund)) + theme_classic()+
-  xlab("Project") + ylab("Mean Coastal Larvae Abundance (SD)")+
+  xlab("Project") + ylab("Mean Coastal Larvae Abundance (±1 SD)")+
   theme(axis.title = element_text(size=12, face ="bold"),
         axis.text.y = element_text(colour = "black", size=10),
         axis.text.x = element_text(colour = "black", size=10, angle=45, hjust = 1))

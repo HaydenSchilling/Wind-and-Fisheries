@@ -143,15 +143,16 @@ Do full model for all species
 Bayesian Model
 ```{r}
 library(brms)
+library(tidyverse)
 
 my.df2 <- my.df %>% drop_na(X135_degree_winds.standardised, X45_degree_winds.standardised)
 
-m7a <- brm(CPUE ~ poly(X135_degree_winds.standardised, degree = 2) + 
-             poly(X45_degree_winds.standardised, degree = 2) +
-             X135_degree_winds.standardised:X45_degree_winds.standardised+
-             Estuary_Type *Drought_Months + Species + (Species|Estuary),
-           data = my.df2, iter = 10000, seed = 1234)
-saveRDS(m7a, "../Data/Fisheries Data/Lag Models/CPUE Multi_species brms model CPUE no lag.rds")
+#m7a <- brm(CPUE ~ poly(X135_degree_winds.standardised, degree = 2) + 
+#             poly(X45_degree_winds.standardised, degree = 2) +
+#             X135_degree_winds.standardised:X45_degree_winds.standardised+
+#             Estuary_Type *Drought_Months + Species + (Species|Estuary),
+#           data = my.df2, iter = 10000, seed = 1234)
+#saveRDS(m7a, "../Data/Fisheries Data/Lag Models/CPUE Multi_species brms model CPUE no lag.rds")
 m7a <- readRDS("../Data/Fisheries Data/Lag Models/CPUE Multi_species brms model CPUE no lag.rds")
 
 ```
@@ -165,6 +166,7 @@ fixef(m7a)
 brms::prior_summary(m7a)
 mcmc_plot(m7a)
 bayes_R2(m7a)
+performance::r2_bayes(m7a)
 ```
 marginal effects
 ```{r}
@@ -215,9 +217,9 @@ m7a %>%
         "Est Type (Barrier River) * Drought" = `b_Estuary_TypeBarrierRiver:Drought_Months`,
         "Est Type (Drowned River Valley) * Drought" = `b_Estuary_TypeDrownedRiverValley:Drought_Months`,
         "Species: Flathead" = b_SpeciesFlathead, "Species: Mullet" = b_SpeciesMullet, "Species: Whiting" = b_SpeciesWhiting) %>%
-  tidyr::pivot_longer(cols = c(4:17), names_to = "Variable") %>%
+  tidyr::pivot_longer(cols = c(4:17), names_to = "Parameter") %>%
   #median_qi() %>%
-  ggplot(aes(x = value, y = Variable)) +
+  ggplot(aes(x = value, y = Parameter)) +
   stat_halfeye(normalize = "groups") + geom_vline(xintercept =0 , col = "red", lty = 2) +
   xlab("Estimate")+
   theme_classic() + theme(axis.text = element_text(colour="black"),
@@ -241,16 +243,139 @@ m7a %>%
 ```
 
 
+Model checks
+```{r}
+my.df2 %>%
+  add_residual_draws(m7a) %>%
+  ggplot(aes(x = .row, y = .residual)) +
+  stat_pointinterval()
+```
+
+
+```{r}
+my.df2 %>%
+  add_residual_draws(m7a) %>%
+  median_qi() %>%
+  ggplot(aes(sample = .residual)) +
+  geom_qq() +
+  geom_qq_line()
+
+my.df2 %>%
+  add_predicted_draws(m7a) %>%
+  summarise(
+    p_residual = mean(.prediction < CPUE),
+    z_residual = qnorm(p_residual)
+  ) %>%
+  ggplot(aes(sample = z_residual)) +
+  geom_qq() +
+  geom_abline()
+```
+
+
+
+
 
 
 Save model checking plots - These were combined manually in Inkscape later
 ```{r}
-png("../plots/Model checks/Mulitspecies model 1.png", width = 21, height = 14.8, units = "cm", res = 600)
-plot(simulationOutput, quantreg = F)
-dev.off()
+### Residual plots
+m6.residual <- data.frame(residuals(m7a,summary = TRUE))
+m6.fitted <- data.frame(fitted(m7a, summary = TRUE))
+m6.predicted <- data.frame(predict(m7a,summary = TRUE))
+coef(m7a)
 
-png("../plots/Model checks/Mulitspecies model 2.png", width = 21, height = 14.8, units = "cm", res = 600)
-hist(residuals(m7), breaks = 30)
+m6.re <- cbind(m6.residual,m6.fitted,m6.predicted)
+colnames(m6.re) <- c("Residual","residual.Error","residual.Q2.5","residual.Q97.5",
+                     "Fitted","fitted.Error","fitted.Q2.5","fitted.Q97.5",
+                     "Predicted","predicted.Error","predicted.Q2.5","predicted.Q97.5")
+m6.re <- cbind(my.df2,m6.re)
+
+# Basic version of observed vs fitted values#
+ggplot(m6.re, aes(x = Fitted, y = CPUE)) + 
+  geom_point() + 
+  geom_smooth(method = 'gam', formula = y ~ s(x, bs = 'cs', k = 5), se = FALSE, size = 1.25,colour="black") +
+  xlab('Fitted age-0+ Atlantic salmon density') +
+  ylab('Observed age-0+ Atlantic salmon density')+ theme_classic()+
+  theme(axis.title = element_text(size=12, face = "bold"),
+        axis.text = element_text(size = 10, colour = "black")) #+
+#style
+
+#ggsave("Figure_Sal_observed vs fitted.png",width = 17, height = 9)
+
+
+#Density histogram of residuals
+hist_p <- ggplot(m6.re, aes(x = Residual)) + 
+  geom_histogram(aes(y = ..density..), bins = 15, fill = 'grey', colour = 'black') + 
+  geom_line(aes(y = ..density..), stat = 'density') +
+  xlab('Residual') + theme_classic()+
+  ylab('Density') +
+  theme(axis.title = element_text(size=12, face = "bold"),
+        axis.text = element_text(size = 10, colour = "black"))#+
+#style
+hist_p
+
+#ggsave("Figure_Sal_density histogram of residuals.png",width = 17, height = 9)
+
+ #QQ plot#
+ QQ_p <- my.df2 %>%
+   add_residual_draws(m7a) %>%
+   median_qi() %>%
+   ggplot(aes(sample = .residual)) +
+   geom_qq() +
+   geom_qq_line() + theme_classic()+
+   theme(axis.title = element_text(size=12, face = "bold"),
+        axis.text = element_text(size = 10, colour = "black"))+
+   xlab('Theoretical quantiles') +
+   ylab('Sample quantiles')# +
+ #style
+ QQ_p
+
+
+qq_plot <- my.df2 %>%
+  add_predicted_draws(m7a) %>%
+  summarise(
+    p_residual = mean(.prediction < CPUE),
+    z_residual = qnorm(p_residual)
+  ) %>%
+  ggplot(aes(sample = z_residual)) +
+  geom_qq() + ylab("Sample") + xlab("Theoretical")+
+  geom_abline() + theme_classic() + theme_classic()+
+  theme(axis.title = element_text(size=12, face = "bold"),
+        axis.text = element_text(size = 10, colour = "black"))
+
+
+#ggsave("Figure_Sal_QQ_Plot.png",width = 17, height = 9)
+
+#Residuals vs fitted
+Resid_p <- ggplot(m6.re, aes(x = Fitted, y = Residual)) + 
+  geom_point() + 
+  geom_smooth(method = 'gam', formula = y ~ s(x, bs = 'cs', k = 5), se = FALSE, size = 1.25,colour="black") +
+  xlab('Fitted value') +
+  ylab("Pearson's residuals") +
+  theme(axis.title.x=element_text(vjust=1.8))+ theme_classic()+
+  theme(axis.title = element_text(size=12, face = "bold"),
+        axis.text = element_text(size = 10, colour = "black")) #+
+#style
+Resid_p
+#ggsave("Figure_Sal_residuals vs fitted.png",width = 17, height = 9)
+
+#acf#
+rs <- data.frame('r' = resid(m7a),'f.' = fitted(m7a))
+
+require(ggfortify)
+acf_p <- autoplot(acf(rs$r.Estimate)) + 
+  ylab("Autocorrelation function") +
+  ggtitle("") + 
+  theme(axis.title.x=element_text(vjust=1.8)) +
+  geom_hline(yintercept = 0)+ theme_classic()+
+  theme(axis.title = element_text(size=12, face = "bold"),
+        axis.text = element_text(size = 10, colour = "black")) #+
+#style
+acf_p
+
+library(gridExtra)
+
+ggsave("../Plots/CPUE_ModelDiagnostics.png", arrangeGrob(hist_p, QQ_p, Resid_p, acf_p, ncol = 2,nrow = 2),width = 9.5, height = 7.5)
 dev.off()
 ```
 
@@ -258,9 +383,9 @@ dev.off()
 
 
 ```{r}
-plot(ggeffect(m7, terms = "X45_degree_winds.standardised [all]"))
-plot(ggeffect(m7, terms = "X135_degree_winds.standardised [all]"))
-plot(ggeffect(m7, terms = "Drought_Months [all]"))
+plot(ggeffect(m7a, terms = "X45_degree_winds.standardised [all]"), xlim=c(-2,2), ylim=c(0,1))
+plot(ggeffect(m7a, terms = "X135_degree_winds.standardised [all]"))
+plot(ggeffect(m7a, terms = "Drought_Months [all]"))
 ```
 Heatmap making for interaction plot (Run from here) - Very slow if standard error included (was run on HPC to get SE)
 ```{r message=FALSE}
@@ -310,650 +435,4 @@ pH
 write.csv(heat_dataM, "../Data/All Species heamap prediction data.csv", row.names = F)
 
 ```
-
-
-
-Now for some species specific Models
-Bream First
-Prepare Data
-```{r}
-bream <- subset(my.df, Species == "Bream")
-
-```
-
-Model
-```{r}
-m1 <- glmmTMB(Catch ~ poly(X135_degree_winds.standardised, degree = 2) + 
-       poly(X45_degree_winds.standardised, degree = 2) +
-       X135_degree_winds.standardised:X45_degree_winds.standardised+
-        Estuary_Type *Drought_Months + (1|Estuary) , family = Gamma(link="log"),
-       data = bream, offset = log10(Effort_days))
-performance::r2(m1)
-AIC(m1) # 43.17
-```
-
-bayesian
-```{r}
-m1a <- brm(CPUE ~ poly(X135_degree_winds.standardised, degree = 2) + 
-       poly(X45_degree_winds.standardised, degree = 2) +
-       X135_degree_winds.standardised:X45_degree_winds.standardised+
-        Estuary_Type *Drought_Months + (1|Estuary),
-       data = bream, iter = 10000, seed = 1234)
-#saveRDS(m1, "../Data/CPUE Bream brms model.rds")
-#m1 <- readRDS("../Data/CPUE Bream brms model.rds")
-```
-
-Check model
-```{r}
-#plot(m7)
-summary(m1a)
-ranef(m1)
-fixef(m1)
-prior_summary(m1)
-mcmc_plot(m1)
-```
-marginal effects
-```{r}
-plot(conditional_effects(m1a))
-
-```
-
-
-Check assumptions
-```{r}
-simulationOutput <- simulateResiduals(fittedModel = m1, n = 250)
-plot(simulationOutput, quantreg = F)
-
-# histograms
-hist(simulationOutput$fittedResiduals)
-```
-
-Model checking plots - note these were combined in Inkscape manually later
-```{r}
-png("../plots/Model checks/Bream model 1.png", width = 21, height = 14.8, units = "cm", res = 600)
-plot(simulationOutput, quantreg = F)
-dev.off()
-
-png("../plots/Model checks/Bream model 2.png", width = 21, height = 14.8, units = "cm", res = 600)
-hist(residuals(m1))
-dev.off()
-```
-
-
-Check significance
-```{r}
-car::Anova(m1)
-
-summary(m1)
-
-bream_Summary <- broom.mixed::tidy(m1)
-bream_Summary
-write.csv(bream_Summary, "../Data/Bream Summary Table.csv", row.names = F)
-
-```
-
-```{r}
-plot(ggeffect(m1, terms = "X45_degree_winds.standardised [all]"))
-plot(ggeffect(m1, terms = "X135_degree_winds.standardised [all]"))
-plot(ggeffect(m1, terms = c("Drought_Months", "Estuary_Type")))
-```
-Heatmap making for interaction plot (Run from here) - Very slow if standard error included (was run on HPC to get SE)
-```{r message=FALSE}
-nums <- seq(-2,2, by = 0.05)
-heat_dataBream <- data.frame("X135_degree_winds.standardised" = rep(0,81*81), # makes empty dataframe ready for values
-                         "X45_degree_winds.standardised" =  rep(0,81*81),
-                         "Catch" =  rep(0,81*81))
-Nn <- 1
-# loop for NE
-for (i in 1:length(nums)){
-  for (j in 1:length(nums)){
-    pred_map <- data.frame("X45_degree_winds.standardised" = nums[i],
-                           "X135_degree_winds.standardised" = nums[j],
-                           "Drought_Months" = mean(my.df$Drought_Months),
-                           "Estuary_Type" = "Drowned River Valley",
-                           "Estuary" = "Hawkesbury River",
-                           "Effort_days" = mean(my.df$Effort_days))
-    PredX <- predict(m1, newdata = pred_map, type = "response", se.fit = F)
-    heat_dataBream$Southeast.Winds[Nn] <- pred_map$X135_degree_winds.standardised[1]
-    heat_dataBream$Northeast.Winds[Nn] <- pred_map$X45_degree_winds.standardised[1]
-    heat_dataBream$Abundance[Nn] <- PredX#$fit
-    #print(paste("This is line ", Nn, " out of 6561"))
-    Nn <- Nn + 1
-  }
-}
-
-pB <- ggplot(heat_dataBream, aes(x = Southeast.Winds,y = Northeast.Winds)) + geom_tile(aes(fill = Abundance)) +
-  geom_contour(col="white", aes(z = Abundance)) +#, binwidth = 0.002
-  scale_x_continuous(expand = c(0,0)) +
-  scale_y_continuous(expand = c(0,0)) +
-  #scale_fill_gradient(low = "blue", high = "red") +
-  theme_classic() +
-  viridis::scale_fill_viridis(option = "magma", name="Predicted Catch") + # or geom_raster()
-  xlab("Downwelling \nFavourable Winds") + ylab("Upwelling \nFavourable Winds") +
-  theme(axis.title.x = element_text(face="bold", colour="black", size = 15),
-        axis.text.x  = element_text(colour="black", size = 14),
-        axis.title.y = element_text(face="bold", colour="black", size = 15),
-        axis.text.y  = element_text(colour="black", size = 14),
-        axis.ticks = element_line(colour="black"),
-        legend.title = element_blank(),
-        legend.text = element_text(colour="black", size=10),
-        legend.position = "bottom")
-
-pB
-
- write.csv(heat_dataBream, "../Data/Bream heamap prediction data.csv", row.names = F)
-
-```
-
-
-##Now Mullet##
-Prepare Data
-```{r}
-mullet <- subset(my.df, Species == "Mullet")
-
-p2 <- ggplot(mullet, aes(x = X135_degree_winds.standardised,y = X45_degree_winds.standardised, size = log10(CPUE))) + geom_point(alpha = 0.1) +
-  theme_classic() + labs(title = "CPUE by lagged Winds")
-p2
-```
-
-Model
-```{r}
-m2 <- glmmTMB(Catch ~ poly(X135_degree_winds.standardised, degree = 2) + 
-       poly(X45_degree_winds.standardised, degree = 2) +
-       X135_degree_winds.standardised:X45_degree_winds.standardised+
-        Estuary_Type *Drought_Months + (1|Estuary) , family = Gamma(link="log"),
-       data = mullet, offset = log10(Effort_days))
-performance::r2(m2) # 0.147
-AIC(m2) # -22.726
-```
-
-Check assumptions
-```{r}
-simulationOutput <- simulateResiduals(fittedModel = m2, n = 250)
-plot(simulationOutput, quantreg =F)
-
-# histograms
-hist(simulationOutput$fittedResiduals)
-```
-
-```{r}
-png("../plots/Model checks/Mullet model 1.png", width = 21, height = 14.8, units = "cm", res = 600)
-plot(simulationOutput, quantreg = F)
-dev.off()
-
-png("../plots/Model checks/Mullet model 2.png", width = 21, height = 14.8, units = "cm", res = 600)
-hist(residuals(m2))
-dev.off()
-```
-
-Bayesian
-```{r}
-#m2 <- brm(Catch ~ poly(X135_degree_winds.standardised, degree = 2) + 
-#       poly(X45_degree_winds.standardised, degree = 2) +
-#      X135_degree_winds.standardised:X45_degree_winds.standardised+
-#        Estuary_Type *Drought_Months + (1|Estuary) + offset(log(Effort_days)), family = Gamma(link="log"),
-#       data = mullet, iter = 10000, seed = 1234)
-#saveRDS(m2, "../Data/CPUE Mullet brms model.rds")
-m2 <- readRDS("../Data/CPUE Mullet brms model.rds")
-```
-
-```{r}
-# run these in console or it crashes
-#plot(conditional_effects(m2))
-#plot(m2)
-summary(m2)
-```
-
-
-
-Check significance
-```{r}
-car::Anova(m2)
-
-summary(m2)
-mullet_Summary <- broom.mixed::tidy(m2)
-mullet_Summary
-write.csv(mullet_Summary, "../Data/Mullet Summary Table.csv", row.names = F)
-
-```
-Therefore wind is not important for mullet?
-
-```{r}
-plot(allEffects(m2))
-```
-
-```{r}
-plot(ggeffect(m2, terms = "X45_degree_winds.standardised [all]"))
-plot(ggeffect(m2, terms = "X135_degree_winds.standardised [all]"))
-plot(ggeffect(m2, terms = "Drought_Months [all]"))
-```
-
-
-```{r}
-nums <- seq(-2,2, by = 0.05)
-heat_dataMullet <- data.frame("X135_degree_winds.standardised" = rep(0,81*81), # makes empty dataframe ready for values
-                         "X45_degree_winds.standardised" =  rep(0,81*81),
-                         "Catch" =  rep(0,81*81))
-Nn <- 1
-# loop for NE
-for (i in 1:length(nums)){
-  for (j in 1:length(nums)){
-    pred_map <- data.frame("X45_degree_winds.standardised" = nums[i],
-                           "X135_degree_winds.standardised" = nums[j],
-                           "Drought_Months" = mean(my.df$Drought_Months),
-                           "Estuary_Type" = "Drowned River Valley",
-                           "Estuary" = "Hawkesbury River",
-                           "Effort_days" = mean(my.df$Effort_days))
-    PredX <- predict(m2, newdata = pred_map, type = "response", se.fit = F)
-    heat_dataMullet$Southeast.Winds[Nn] <- pred_map$X135_degree_winds.standardised[1]
-    heat_dataMullet$Northeast.Winds[Nn] <- pred_map$X45_degree_winds.standardised[1]
-    heat_dataMullet$Abundance[Nn] <- PredX#$fit
-    #print(paste("This is line ", Nn, " out of 6561"))
-    Nn <- Nn + 1
-  }
-}
-
-pM <- ggplot(heat_dataMullet, aes(x = Southeast.Winds,y = Northeast.Winds)) + geom_tile(aes(fill = Abundance)) +
-  geom_contour(col="white", aes(z = Abundance)) +#, binwidth = 0.002
-  scale_x_continuous(expand = c(0,0)) +
-  scale_y_continuous(expand = c(0,0)) +
-  #scale_fill_gradient(low = "blue", high = "red") +
-  theme_classic() +
-  viridis::scale_fill_viridis(option = "magma", name="Predicted Catch") + # or geom_raster()
-  xlab("Downwelling \nFavourable Winds") + ylab("Upwelling \nFavourable Winds") +
-  theme(axis.title.x = element_text(face="bold", colour="black", size = 15),
-        axis.text.x  = element_text(colour="black", size = 14),
-        axis.title.y = element_text(face="bold", colour="black", size = 15),
-        axis.text.y  = element_text(colour="black", size = 14),
-        axis.ticks = element_line(colour="black"),
-        legend.title = element_blank(),
-        legend.text = element_text(colour="black", size=10),
-        legend.position = "bottom")
-
-pM
-
-write.csv(heat_dataMullet, "../Data/Mullet heamap prediction data.csv", row.names = F)
-
-```
-
-
-##Now Whiting##
-Prepare Data
-```{r}
-whiting <- subset(my.df, Species == "Whiting")
-
-#m1 <- lmer(CPUE.standardised ~ X135_degree_winds.standardised * X45_degree_winds.standardised + 
-#           Estuary_Type + Drought_Months + (1|Estuary), data = bream)
-#AIC(m1) #215.42
-
-p3 <- ggplot(whiting, aes(x = X135_degree_winds.standardised,y = X45_degree_winds.standardised, size = log10(CPUE))) + geom_point(alpha = 0.1) +
-  theme_classic() + labs(title = "CPUE by lagged Winds")
-p3
-```
-
-Model
-```{r}
-m3 <- glmmTMB(Catch ~ poly(X135_degree_winds.standardised, degree = 2) + 
-       poly(X45_degree_winds.standardised, degree = 2) +
-       X135_degree_winds.standardised:X45_degree_winds.standardised+
-        Estuary_Type *Drought_Months + (1|Estuary) , family = Gamma(link="log"),
-       data = whiting, offset = log10(Effort_days))
-performance::r2(m3) # 0.127
-AIC(m3) # 64.26
-```
-
-Check assumptions
-```{r}
-simulationOutput <- simulateResiduals(fittedModel = m3, n = 250)
-plot(simulationOutput, quantreg = F)
-
-# histograms
-hist(simulationOutput$fittedResiduals)
-```
-
-```{r}
-png("../plots/Model checks/Whiting model 1.png", width = 21, height = 14.8, units = "cm", res = 600)
-plot(simulationOutput, quantreg = F)
-dev.off()
-
-png("../plots/Model checks/Whiting model 2.png", width = 21, height = 14.8, units = "cm", res = 600)
-hist(residuals(m3))
-dev.off()
-```
-
-Bayesian
-```{r}
-#m3 <- brm(Catch ~ poly(X135_degree_winds.standardised, degree = 2) + 
-#       poly(X45_degree_winds.standardised, degree = 2) +
-#      X135_degree_winds.standardised:X45_degree_winds.standardised+
-#        Estuary_Type *Drought_Months + (1|Estuary) + offset(log(Effort_days)), family = Gamma(link="log"),
-#       data = whiting, iter = 10000, seed = 1234)
-#saveRDS(m3, "../Data/CPUE Whiting brms model.rds")
-m3 <- readRDS("../Data/CPUE Whiting brms model.rds")
-```
-
-```{r}
-# run these in console or it crashes
-#plot(conditional_effects(m3))
-#plot(m3)
-summary(m3)
-```
-
-
-
-Check significance
-```{r}
-car::Anova(m3)
-summary(m3)
-whiting_Summary <- broom.mixed::tidy(m3)
-whiting_Summary
-write.csv(whiting_Summary, "../Data/Whiting Summary Table.csv", row.names = F)
-
-```
-Therefore wind is not important for whiting?
-
-```{r}
-plot(ggeffect(m3, terms = "X45_degree_winds.standardised [all]"))
-plot(ggeffect(m3, terms = "X135_degree_winds.standardised [all]"))
-#plot(ggeffect(m3, terms = "Estuary_Type:Drought_Months"))
-```
-```{r}
-nums <- seq(-2,2, by = 0.05)
-heat_dataWhiting <- data.frame("X135_degree_winds.standardised" = rep(0,81*81), # makes empty dataframe ready for values
-                         "X45_degree_winds.standardised" =  rep(0,81*81),
-                         "Catch" =  rep(0,81*81))
-Nn <- 1
-# loop for NE
-for (i in 1:length(nums)){
-  for (j in 1:length(nums)){
-    pred_map <- data.frame("X45_degree_winds.standardised" = nums[i],
-                           "X135_degree_winds.standardised" = nums[j],
-                           "Drought_Months" = mean(my.df$Drought_Months),
-                           "Estuary_Type" = "Drowned River Valley",
-                           "Estuary" = "Hawkesbury River",
-                           "Effort_days" = mean(my.df$Effort_days))
-    PredX <- predict(m3, newdata = pred_map, type = "response", se.fit = F)
-    heat_dataWhiting$Southeast.Winds[Nn] <- pred_map$X135_degree_winds.standardised[1]
-    heat_dataWhiting$Northeast.Winds[Nn] <- pred_map$X45_degree_winds.standardised[1]
-    heat_dataWhiting$Abundance[Nn] <- PredX#$fit
-    #print(paste("This is line ", Nn, " out of 6561"))
-    Nn <- Nn + 1
-  }
-}
-
-pW <- ggplot(heat_dataWhiting, aes(x = Southeast.Winds,y = Northeast.Winds)) + geom_tile(aes(fill = Abundance)) +
-  geom_contour(col="white", aes(z = Abundance)) +#, binwidth = 0.002
-  scale_x_continuous(expand = c(0,0)) +
-  scale_y_continuous(expand = c(0,0)) +
-  #scale_fill_gradient(low = "blue", high = "red") +
-  theme_classic() +
-  viridis::scale_fill_viridis(option = "magma", name="Predicted Catch") + # or geom_raster()
-  xlab("Downwelling \nFavourable Winds") + ylab("Upwelling \nFavourable Winds") +
-  theme(axis.title.x = element_text(face="bold", colour="black", size = 15),
-        axis.text.x  = element_text(colour="black", size = 14),
-        axis.title.y = element_text(face="bold", colour="black", size = 15),
-        axis.text.y  = element_text(colour="black", size = 14),
-        axis.ticks = element_line(colour="black"),
-        legend.title = element_blank(),
-        legend.text = element_text(colour="black", size=10),
-        legend.position = "bottom")
-
-pW
-
-write.csv(heat_dataWhiting, "../Data/Whiting heamap prediction data.csv", row.names = F)
-
-```
-
-
-
-<!-- ##Now Luderick## --- REOMVED AS SPAWNING PERIOD IS UNCERTAIN -->
-<!-- Prepare Data -->
-<!-- ```{r} -->
-<!-- luderick <- subset(my.df, Species == "Luderick") -->
-
-<!-- #m1 <- lmer(CPUE.standardised ~ X135_degree_winds.standardised * X45_degree_winds.standardised +  -->
-<!-- #           Estuary_Type + Drought_Months + (1|Estuary), data = bream) -->
-<!-- #AIC(m1) #215.42 -->
-
-<!-- p4 <- ggplot(luderick, aes(x = X135_degree_winds.standardised,y = X45_degree_winds.standardised, size = log10(CPUE))) + geom_point(alpha = 0.1) + -->
-<!--   theme_classic() + labs(title = "CPUE by lagged Winds") -->
-<!-- p4 -->
-<!-- ``` -->
-
-<!-- Model -->
-<!-- ```{r} -->
-<!-- m4 <- glmmTMB(Catch ~ poly(X135_degree_winds.standardised, degree = 2) +  -->
-<!--        poly(X45_degree_winds.standardised, degree = 2) + -->
-<!--        X135_degree_winds.standardised:X45_degree_winds.standardised+ -->
-<!--         Estuary_Type *Drought_Months + (1|Estuary) , Gamma(link="log"), -->
-<!--        data = luderick, offset = log10(Effort_days)) -->
-<!-- performance::r2(m4) # 0.127 -->
-<!-- AIC(m4) # 64.26 -->
-<!-- ``` -->
-
-<!-- Check assumptions -->
-<!-- ```{r} -->
-<!-- simulationOutput <- simulateResiduals(fittedModel = m4, n = 250) -->
-<!-- plot(simulationOutput, quantreg = F) -->
-
-<!-- # histograms -->
-<!-- hist(simulationOutput$fittedResiduals) -->
-<!-- ``` -->
-
-<!-- ```{r} -->
-<!-- png("../plots/Model checks/Luderick model 1.png", width = 21, height = 14.8, units = "cm", res = 600) -->
-<!-- plot(simulationOutput, quantreg = F) -->
-<!-- dev.off() -->
-
-<!-- png("../plots/Model checks/Luderick model 2.png", width = 21, height = 14.8, units = "cm", res = 600) -->
-<!-- hist(residuals(m4)) -->
-<!-- dev.off() -->
-<!-- ``` -->
-
-
-<!-- Check significance -->
-<!-- ```{r} -->
-<!-- car::Anova(m4) -->
-<!-- summary(m4) -->
-<!-- luderick_Summary <- broom.mixed::tidy(m4) -->
-<!-- luderick_Summary -->
-<!-- write.csv(luderick_Summary, "../Data/Luderick Summary Table.csv", row.names = F) -->
-<!-- ``` -->
-<!-- Therefore wind is not important for luderick? -->
-
-<!-- ```{r} -->
-<!-- plot(ggeffect(m4, terms = "X45_degree_winds.standardised [all]")) -->
-<!-- plot(ggeffect(m4, terms = "X135_degree_winds.standardised [all]")) -->
-<!-- plot(ggeffect(m4, terms = "Drought_Months [all]")) -->
-<!-- ``` -->
-
-<!-- ```{r} -->
-<!-- nums <- seq(-2,2, by = 0.05) -->
-<!-- heat_dataLuderick <- data.frame("X135_degree_winds.standardised" = rep(0,81*81), # makes empty dataframe ready for values -->
-<!--                          "X45_degree_winds.standardised" =  rep(0,81*81), -->
-<!--                          "Catch" =  rep(0,81*81)) -->
-<!-- Nn <- 1 -->
-<!-- # loop for NE -->
-<!-- for (i in 1:length(nums)){ -->
-<!--   for (j in 1:length(nums)){ -->
-<!--     pred_map <- data.frame("X45_degree_winds.standardised" = nums[i], -->
-<!--                            "X135_degree_winds.standardised" = nums[j], -->
-<!--                            "Drought_Months" = mean(my.df$Drought_Months), -->
-<!--                            "Estuary_Type" = "Drowned River Valley", -->
-<!--                            "Estuary" = "Hawkesbury River", -->
-<!--                            "Effort_days" = mean(my.df$Effort_days)) -->
-<!--     PredX <- predict(m4, newdata = pred_map, type = "response", se.fit = F) -->
-<!--     heat_dataLuderick$Southeast.Winds[Nn] <- pred_map$X135_degree_winds.standardised[1] -->
-<!--     heat_dataLuderick$Northeast.Winds[Nn] <- pred_map$X45_degree_winds.standardised[1] -->
-<!--     heat_dataLuderick$Abundance[Nn] <- PredX#$fit -->
-<!--     #print(paste("This is line ", Nn, " out of 6561")) -->
-<!--     Nn <- Nn + 1 -->
-<!--   } -->
-<!-- } -->
-
-<!-- pL <- ggplot(heat_dataLuderick, aes(x = Southeast.Winds,y = Northeast.Winds)) + geom_tile(aes(fill = Abundance)) + -->
-<!--   geom_contour(col="white", aes(z = Abundance)) +#, binwidth = 0.002 -->
-<!--   scale_x_continuous(expand = c(0,0)) + -->
-<!--   scale_y_continuous(expand = c(0,0)) + -->
-<!--   #scale_fill_gradient(low = "blue", high = "red") + -->
-<!--   theme_classic() + -->
-<!--   viridis::scale_fill_viridis(option = "magma", name="Predicted Catch") + # or geom_raster() -->
-<!--   xlab("Downwelling \nFavourable Winds") + ylab("Upwelling \nFavourable Winds") + -->
-<!--   theme(axis.title.x = element_text(face="bold", colour="black", size = 15), -->
-<!--         axis.text.x  = element_text(colour="black", size = 14), -->
-<!--         axis.title.y = element_text(face="bold", colour="black", size = 15), -->
-<!--         axis.text.y  = element_text(colour="black", size = 14), -->
-<!--         axis.ticks = element_line(colour="black"), -->
-<!--         legend.title = element_blank(), -->
-<!--         legend.text = element_text(colour="black", size=10), -->
-<!--         legend.position = "bottom") -->
-
-<!-- pL -->
-
-<!-- write.csv(heat_dataLuderick, "../Data/Luderick heamap prediction data.csv", row.names = F) -->
-
-<!-- ``` -->
-
-
-##Now Flathead##
-Prepare Data
-```{r}
-flathead <- subset(my.df, Species == "Flathead")
-```
-
-Model
-```{r}
-m5 <- glmmTMB(Catch ~ poly(X135_degree_winds.standardised, degree = 2) + 
-       poly(X45_degree_winds.standardised, degree = 2) +
-       X135_degree_winds.standardised:X45_degree_winds.standardised+
-        Estuary_Type *Drought_Months + (1|Estuary) , Gamma(link="log"),
-       data = flathead, offset = log10(Effort_days))
-performance::r2(m5) # 0.127
-AIC(m5) # 64.26
-```
-
-Check assumptions
-```{r}
-simulationOutput <- simulateResiduals(fittedModel = m5, n = 250)
-plot(simulationOutput, quantreg = F)
-
-# histograms
-hist(simulationOutput$fittedResiduals)
-```
-
-```{r}
-png("../plots/Model checks/Flathead model 1.png", width = 21, height = 14.8, units = "cm", res = 600)
-plot(simulationOutput, quantreg = F)
-dev.off()
-
-png("../plots/Model checks/Flathead model 2.png", width = 21, height = 14.8, units = "cm", res = 600)
-hist(residuals(m5))
-dev.off()
-```
-
-Bayesian
-```{r}
-m5 <- brm(CPUE ~ poly(X135_degree_winds.standardised, degree = 2) + 
-      poly(X45_degree_winds.standardised, degree = 2) +
-      X135_degree_winds.standardised:X45_degree_winds.standardised+
-        Estuary_Type *Drought_Months + (1|Estuary),
-       data = flathead, iter = 10000, seed = 1234)
-saveRDS(m5, "../Data/CPUE Flathead brms model.rds")
-m5 <- readRDS("../Data/CPUE Flathead brms model.rds")
-```
-
-```{r}
-# run these in console or it crashes
-#plot(conditional_effects(m5))
-#plot(m5)
-summary(m5)
-```
-
-
-
-Check significance
-```{r}
-car::Anova(m5)
-summary(m5)
-flathead_Summary <- broom.mixed::tidy(m5)
-flathead_Summary
-write.csv(flathead_Summary, "../Data/Flathead Summary Table.csv", row.names = F)
-```
-
-
-```{r}
-plot(ggeffect(m5, terms = "X45_degree_winds.standardised [all]"))
-plot(ggeffect(m5, terms = "X135_degree_winds.standardised [all]"))
-plot(ggeffect(m5, terms = "Drought_Months [all]"))
-```
-
-
-```{r}
-nums <- seq(-2,2, by = 0.05)
-heat_dataFlathead <- data.frame("X135_degree_winds.standardised" = rep(0,81*81), # makes empty dataframe ready for values
-                         "X45_degree_winds.standardised" =  rep(0,81*81),
-                         "Catch" =  rep(0,81*81))
-Nn <- 1
-# loop for NE
-for (i in 1:length(nums)){
-  for (j in 1:length(nums)){
-    pred_map <- data.frame("X45_degree_winds.standardised" = nums[i],
-                           "X135_degree_winds.standardised" = nums[j],
-                           "Drought_Months" = mean(my.df$Drought_Months),
-                           "Estuary_Type" = "Drowned River Valley",
-                           "Estuary" = "Hawkesbury River",
-                           "Effort_days" = mean(my.df$Effort_days))
-    PredX <- predict(m5, newdata = pred_map, type = "response", se.fit = F)
-    heat_dataFlathead$Southeast.Winds[Nn] <- pred_map$X135_degree_winds.standardised[1]
-    heat_dataFlathead$Northeast.Winds[Nn] <- pred_map$X45_degree_winds.standardised[1]
-    heat_dataFlathead$Abundance[Nn] <- PredX#$fit
-    #print(paste("This is line ", Nn, " out of 6561"))
-    Nn <- Nn + 1
-  }
-}
-
-pF <- ggplot(heat_dataFlathead, aes(x = Southeast.Winds,y = Northeast.Winds)) + geom_tile(aes(fill = Abundance)) +
-  geom_contour(col="white", aes(z = Abundance)) +#, binwidth = 0.002
-  scale_x_continuous(expand = c(0,0)) +
-  scale_y_continuous(expand = c(0,0)) +
-  #scale_fill_gradient(low = "blue", high = "red") +
-  theme_classic() +
-  viridis::scale_fill_viridis(option = "magma", name="Predicted Catch") + # or geom_raster()
-  xlab("Downwelling \nFavourable Winds") + ylab("Upwelling \nFavourable Winds") +
-  theme(axis.title.x = element_text(face="bold", colour="black", size = 15),
-        axis.text.x  = element_text(colour="black", size = 14),
-        axis.title.y = element_text(face="bold", colour="black", size = 15),
-        axis.text.y  = element_text(colour="black", size = 14),
-        axis.ticks = element_line(colour="black"),
-        legend.title = element_blank(),
-        legend.text = element_text(colour="black", size=10),
-        legend.position = "bottom")
-
-pF
-
-write.csv(heat_dataFlathead, "../Data/Flathead heamap prediction data.csv", row.names = F)
-
-```
-
-
-Drought plots
-```{r}
-p1 <- plot(ggeffect(m1, terms = c("Drought_Months", "Estuary_Type"))) + ggtitle("a) Bream")+ theme(legend.position = "bottom") 
-p2 <- plot(ggeffect(m2, terms = c("Drought_Months", "Estuary_Type"))) + ggtitle("c) Mullet")+ theme(legend.position = "bottom")
-p3 <- plot(ggeffect(m3, terms = c("Drought_Months", "Estuary_Type"))) + ggtitle("d) Whiting")+ theme(legend.position = "bottom")
-#p4 <- plot(ggeffect(m4, terms = c("Drought_Months", "Estuary_Type"))) + ggtitle("c) Luderick")+ theme(legend.position = "bottom")
-p5 <- plot(ggeffect(m5, terms = c("Drought_Months", "Estuary_Type"))) + ggtitle("b) Flathead")+ theme(legend.position = "bottom")
-
-library(patchwork)
-p1 + p5 + p2 +p3 +plot_layout(nrow = 2, guides = "collect")+ plot_layout(guides = "collect") & 
-  theme(legend.position = 'bottom')+ theme(axis.text = element_text(colour = "black"),
-                                           axis.title = element_text(face = "bold", colour = "black"),
-                                           title = element_text(face="bold"),
-                                           legend.title = element_text(colour = "black"),
-                                           legend.text = element_text(colour = "black")) &
-  xlab("Months of Drought") & scale_x_continuous(breaks=c(0,3,6,9,12))
-
-ggsave("../plots/Species Specific Drought Responses.png", dpi = 600, width = 21, height = 14.8, units="cm")
-```
-
 

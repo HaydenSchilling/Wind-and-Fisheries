@@ -401,3 +401,211 @@ ggplot(full_data, aes(x = Year, y = Annual_displacement)) +
 
 ggsave("../plots/Historical Wind Change Bayesian.pdf", height = 14.8, width = 21, units = "cm")
 ggsave("../plots/Historical Wind Change Bayesian.png", height = 14.8, width = 21, units = "cm", dpi = 600)
+
+
+### Bayesian Residual Checks
+fit1b <- brm(Annual_displacement ~ Year, data = dat2_2, iter = 10000, seed = 1234)
+
+### Residual plots
+m6.residual <- data.frame(residuals(fit1b,summary = TRUE))
+m6.fitted <- data.frame(fitted(fit1b, summary = TRUE))
+m6.predicted <- data.frame(predict(fit1b,summary = TRUE))
+coef(fit1b)
+
+m6.re <- cbind(m6.residual,m6.fitted,m6.predicted)
+colnames(m6.re) <- c("Residual","residual.Error","residual.Q2.5","residual.Q97.5",
+                     "Fitted","fitted.Error","fitted.Q2.5","fitted.Q97.5",
+                     "Predicted","predicted.Error","predicted.Q2.5","predicted.Q97.5")
+m6.re <- cbind(dat2_2,m6.re)
+
+# Basic version of observed vs fitted values#
+ggplot(m6.re, aes(x = Fitted, y = Annual_displacement)) + 
+  geom_point() + 
+  geom_smooth(method = 'gam', formula = y ~ s(x, bs = 'cs', k = 5), se = FALSE, size = 1.25,colour="black") +
+  xlab('Fitted age-0+ Atlantic salmon density') +
+  ylab('Observed age-0+ Atlantic salmon density')+ theme_classic()+
+  theme(axis.title = element_text(size=12, face = "bold"),
+        axis.text = element_text(size = 10, colour = "black")) #+
+#style
+
+ggsave("Figure_Sal_observed vs fitted.png",width = 17, height = 9)
+
+
+#Density histogram of residuals
+hist_p <- ggplot(m6.re, aes(x = Residual)) + 
+  geom_histogram(aes(y = ..density..), bins = 15, fill = 'grey', colour = 'black') + 
+  geom_line(aes(y = ..density..), stat = 'density') +
+  xlab('Residual') + theme_classic()+
+  ylab('Density') +
+  theme(axis.title = element_text(size=12, face = "bold"),
+        axis.text = element_text(size = 10, colour = "black"))#+
+#style
+hist_p
+
+#ggsave("Figure_Sal_density histogram of residuals.png",width = 17, height = 9)
+
+# #QQ plot#
+# QQ_p <- dat2_2 %>%
+#   add_residual_draws(fit1b) %>%
+#   median_qi() %>%
+#   ggplot(aes(sample = .residual)) +
+#   geom_qq() +
+#   geom_qq_line() + 
+#   xlab('Theoretical quantiles') +
+#   ylab('Sample quantiles')# +
+# #style
+# QQ_p
+
+
+qq_plot <- dat2_2 %>%
+  add_predicted_draws(fit1b) %>%
+  summarise(
+    p_residual = mean(.prediction < Annual_displacement),
+    z_residual = qnorm(p_residual)
+  ) %>%
+  ggplot(aes(sample = z_residual)) +
+  geom_qq() + ylab("Sample") + xlab("Theoretical")+
+  geom_abline() + theme_classic() + theme_classic()+
+  theme(axis.title = element_text(size=12, face = "bold"),
+        axis.text = element_text(size = 10, colour = "black"))
+
+
+#ggsave("Figure_Sal_QQ_Plot.png",width = 17, height = 9)
+
+#Residuals vs fitted
+Resid_p <- ggplot(m6.re, aes(x = Fitted, y = Residual)) + 
+  geom_point() + 
+  geom_smooth(method = 'gam', formula = y ~ s(x, bs = 'cs', k = 5), se = FALSE, size = 1.25,colour="black") +
+  xlab('Fitted value') +
+  ylab("Pearson's residuals") +
+  theme(axis.title.x=element_text(vjust=1.8))+ theme_classic()+
+  theme(axis.title = element_text(size=12, face = "bold"),
+        axis.text = element_text(size = 10, colour = "black")) #+
+#style
+Resid_p
+#ggsave("Figure_Sal_residuals vs fitted.png",width = 17, height = 9)
+
+#acf#
+rs <- data.frame('r' = resid(fit1b),'f.' = fitted(fit1b))
+
+require(ggfortify)
+acf_p <- autoplot(acf(rs$r.Estimate)) + 
+  ylab("Autocorrelation function") +
+  ggtitle("") + 
+  theme(axis.title.x=element_text(vjust=1.8)) +
+  geom_hline(yintercept = 0)+ theme_classic()+
+  theme(axis.title = element_text(size=12, face = "bold"),
+        axis.text = element_text(size = 10, colour = "black")) #+
+#style
+acf_p
+
+library(gridExtra)
+
+ggsave("../Plots/Historical_SE_ModelDiagnostics.png", arrangeGrob(hist_p, qq_plot, Resid_p, acf_p, ncol = 2,nrow = 2),width = 9.5, height = 7.5)
+dev.off()
+
+
+#### NOW DO NE WINDS
+
+### Bayesian Residual Checks
+fitNb <- brm(Annual_displacement ~ Year, data = dat_NE2, iter = 10000, seed = 1234)
+
+
+### Residual plots
+m6.residual <- data.frame(residuals(fitNb,summary = TRUE))
+m6.fitted <- data.frame(fitted(fitNb, summary = TRUE))
+m6.predicted <- data.frame(predict(fitNb,summary = TRUE))
+coef(fitNb)
+
+m6.re <- cbind(m6.residual,m6.fitted,m6.predicted)
+colnames(m6.re) <- c("Residual","residual.Error","residual.Q2.5","residual.Q97.5",
+                     "Fitted","fitted.Error","fitted.Q2.5","fitted.Q97.5",
+                     "Predicted","predicted.Error","predicted.Q2.5","predicted.Q97.5")
+m6.re <- cbind(dat_NE2,m6.re)
+
+# Basic version of observed vs fitted values#
+ggplot(m6.re, aes(x = Fitted, y = Annual_displacement)) + 
+  geom_point() + 
+  geom_smooth(method = 'gam', formula = y ~ s(x, bs = 'cs', k = 5), se = FALSE, size = 1.25,colour="black") +
+  xlab('Fitted age-0+ Atlantic salmon density') +
+  ylab('Observed age-0+ Atlantic salmon density')+ theme_classic()+
+  theme(axis.title = element_text(size=12, face = "bold"),
+        axis.text = element_text(size = 10, colour = "black")) #+
+#style
+
+#ggsave("Figure_Sal_observed vs fitted.png",width = 17, height = 9)
+
+
+#Density histogram of residuals
+hist_p <- ggplot(m6.re, aes(x = Residual)) + 
+  geom_histogram(aes(y = ..density..), bins = 15, fill = 'grey', colour = 'black') + 
+  geom_line(aes(y = ..density..), stat = 'density') +
+  xlab('Residual') + theme_classic()+
+  ylab('Density') +
+  theme(axis.title = element_text(size=12, face = "bold"),
+        axis.text = element_text(size = 10, colour = "black"))#+
+#style
+hist_p
+
+#ggsave("Figure_Sal_density histogram of residuals.png",width = 17, height = 9)
+
+# #QQ plot#
+# QQ_p <- dat2_2 %>%
+#   add_residual_draws(fit1b) %>%
+#   median_qi() %>%
+#   ggplot(aes(sample = .residual)) +
+#   geom_qq() +
+#   geom_qq_line() + 
+#   xlab('Theoretical quantiles') +
+#   ylab('Sample quantiles')# +
+# #style
+# QQ_p
+
+
+qq_plot <- dat_NE2 %>%
+  add_predicted_draws(fitNb) %>%
+  summarise(
+    p_residual = mean(.prediction < Annual_displacement),
+    z_residual = qnorm(p_residual)
+  ) %>%
+  ggplot(aes(sample = z_residual)) +
+  geom_qq() + ylab("Sample") + xlab("Theoretical")+
+  geom_abline() + theme_classic() + theme_classic()+
+  theme(axis.title = element_text(size=12, face = "bold"),
+        axis.text = element_text(size = 10, colour = "black"))
+
+
+#ggsave("Figure_Sal_QQ_Plot.png",width = 17, height = 9)
+
+#Residuals vs fitted
+Resid_p <- ggplot(m6.re, aes(x = Fitted, y = Residual)) + 
+  geom_point() + 
+  geom_smooth(method = 'gam', formula = y ~ s(x, bs = 'cs', k = 5), se = FALSE, size = 1.25,colour="black") +
+  xlab('Fitted value') +
+  ylab("Pearson's residuals") +
+  theme(axis.title.x=element_text(vjust=1.8))+ theme_classic()+
+  theme(axis.title = element_text(size=12, face = "bold"),
+        axis.text = element_text(size = 10, colour = "black")) #+
+#style
+Resid_p
+#ggsave("Figure_Sal_residuals vs fitted.png",width = 17, height = 9)
+
+#acf#
+rs <- data.frame('r' = resid(fitNb),'f.' = fitted(fitNb))
+
+require(ggfortify)
+acf_p <- autoplot(acf(rs$r.Estimate)) + 
+  ylab("Autocorrelation function") +
+  ggtitle("") + 
+  theme(axis.title.x=element_text(vjust=1.8)) +
+  geom_hline(yintercept = 0)+ theme_classic()+
+  theme(axis.title = element_text(size=12, face = "bold"),
+        axis.text = element_text(size = 10, colour = "black")) #+
+#style
+acf_p
+
+library(gridExtra)
+
+ggsave("../Plots/Historical_NE_ModelDiagnostics.png", arrangeGrob(hist_p, qq_plot, Resid_p, acf_p, ncol = 2,nrow = 2),width = 9.5, height = 7.5)
+dev.off()
+

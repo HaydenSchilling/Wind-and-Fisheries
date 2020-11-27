@@ -1,7 +1,7 @@
 Category,Family-NIMO,Common-NIMO,Species-NIMO,NIMO_NAME
 Tropical,Acanthuridae,Surgeonfish,,Acanthuridae_37437000
 coast/slope,Acropomatidae,Threespine cardinalfish,Apogonops anomalus,Acropomatidae_Apogonops.anomalus_37311053
-Tropical,Acropomatidae,Lanternbelly,Synagrops spp,Acropomatidae_Synagrops.spp_37311949
+coast/slope,Acropomatidae,Lanternbelly,Synagrops spp,Acropomatidae_Synagrops.spp_37311949
 Tropical,Ammodytidae,Sand lance,,Acropomatidae_other_37311956
 Tropical,Anguilliformes,Order of eels,,Ammodytidae_37425000
 coast/slope,Antennariidae,Anglerfish,,Anguilliformes_37990019
@@ -23,10 +23,10 @@ estuary/coast,Blenniidae,Blenny,Omobranchus anolius,Blenniidae_Omobranchus.anoli
 estuary/coast,Blenniidae,Blenny,Parablennius spp,Blenniidae_Parablennius.spp_37408918
 Tropical,Blenniidae,Blenny,Plagiotremus spp,Blenniidae_Plagiotremus.spp_37408921
 coast,Bothidae,Flatfish,Lophonectes gallus,Bothidae_Lophonectes.gallus_37460001
+Coast,Bothidae,Flatfish,Arnoglossus spp,Bothidae_Arnoglossus.spp_37460902
 Tropical,Bothidae,Flatfish,Crossorhombus spp,Bothidae_Crossorhombus.spp_37460907
 Tropical,Bothidae,Flatfish,Engyprosopon spp,Bothidae_Engyprosopon.spp_37460908
 Tropical,Bothidae,Flatfish,Grammatobothus spp,Bothidae_Grammatobothus.spp_37460909
-Tropical,Bothidae,Flatfish,Arnoglossus spp,Bothidae_Arnoglossus.spp_37460902
 Tropical,Bothidae,Flatfish,Asterorhombus spp,Bothidae_Asterorhombus.spp_37460903
 coast,Bovichtidae,Thornfishes,Bovichtus augustifrons,Bovichtidae_Bovichtus.augustifrons_37403001
 coast,Bovichtidae,Thornfishes,Pseudaphritis urvilli,Bovichtidae_Pseudaphritis.urvilli_37403003
@@ -41,15 +41,15 @@ coast/pelagic,Carangidae,Scad,Decapterus spp,Carangidae_Decapterus.spp_37337901
 coast/pelagic,Carangidae,Yellowtail scad,Trachurus novaezelandiae,Carangidae_Trachurus.novaezelandiae_37337003
 coast/pelagic,Carangidae,Kingfish,Seriola spp,Carangidae_Seriola.spp_37337927
 Tropical,Carapidae,Pearlfish,,Carapidae_37229000
-coast,Centrolophidae,Trevallas,Seriolella spp,Centrolophidae_Seriolella.spp_37445909
+coast/slope,Centrolophidae,Trevallas,Seriolella spp,Centrolophidae_Seriolella.spp_37445909
 coast,Cepolidae,Bandfish,Acanthocepola spp,Cepolidae_Acanthocepola.spp_37380901
 coast,Cepolidae,Bandfish,Owstonia spp,Cepolidae_Owstonia.spp_37380903
 coast,Cepolidae,Bandfish,Cepola australis,Cepolidae_Cepola.australis_37380001
 Ocean,Cetomimidae,Whalefish,,Cetomimidae_37132000
 Tropical,Chaetodontidae,Butterfly fish,,Chaetodontidae_37365900
 Tropical,Champsodontidae,Gapers,,Champsodontidae_37401000
-Estuary,Chandidae,Port Jackson perchlet,Ambassis jacksoniensis,Chandidae_Ambassis.jacksoniensis_37310012
 Estuary,Chandidae,Estuary perchlet,Ambassis marianus,Chandidae_Ambassis.marianus_37310018
+estuary/coast,Chandidae,Port Jackson perchlet,Ambassis jacksoniensis,Chandidae_Ambassis.jacksoniensis_37310012
 Ocean,Chauliodontidae,Viperfish,,Chauliodontidae_37111000
 coast,Cheilodactylidae,Jackass morwong,Nemadactylus macropterus,Cheilodactylidae_Nemadactylus.macropterus_37377003
 coast,Cheilodactylidae,Morwong,Cheilodactylus spp,Cheilodactylidae_Cheilodactylus.spp_37377902
@@ -57,11 +57,11 @@ Ocean,Chiasmodontidae,Swallowers,,Chiasmodontidae_37402000
 coast,Chironemidae,Marblefish,Chironemus spp,Chironemidae_Chironemus.spp_37375901
 coast/slope,Chlorophthalmidae,Greeneyes,Chlorophthalmus spp,Chlorophthalmidae_Chlorophthalmus.spp_37120903
 Tropical,Cirrhitidae,Hawkfish,,Cirrhitidae_37374000
-coast,Clinidae,Weedfish,,Clinidae_37416000
+estuary/coast,Clinidae,Weedfish,,Clinidae_37416000
 coast/pelagic,Clupeidae,Pilchard,Sardinops sagax,Clupeidae_Sardinops.sagax_37085002
 coast/pelagic,Clupeidae,Maray,Etrumeus teres,Clupeidae_Etrumeus.teres_37085001
 coast/pelagic,Clupeidae,Blue sprat,Spartelloides robustus,Clupeidae_Spartelloides.robustus_37085003
-estuary,Clupeidae,Sandy sprat,Hyperlophus vittatus,Clupeidae_Hyperlophus.vittatus_37085005
+coast/pelagic,Clupeidae,Sandy sprat,Hyperlophus vittatus,Clupeidae_Hyperlophus.vittatus_37085005
 Tropical,Coryphaenidae,Dolphin fish,Coryphena spp,Coryphaenidae_Coryphena.spp_37338901
 coast,Creediidae,Sand burrower,Creedia spp,Creediidae_Creedia.spp_37395901
 coast,Creediidae,Sand burrower,Limnichthys spp,Creediidae_Limnichthys.spp_37395902
@@ -79,12 +79,12 @@ Tropical,Fistulariidae,Flutemouth,,Fistulariidae_37278000
 coast,Gempylidae,Barracouda,Thyrsites atun,Gempylidae_Thyrsites.atun_37439001
 slope,Gempylidae,Gemfish,Rexea solandri,Gempylidae_Rexea.solandri_37439002
 slope,Gempylidae,Snake mackeral,Gempylus serpens,Gempylidae_Gempylus.serpens_37439010
-Estuary,Gerreidae,Silver belly,Gerres subfasciatus,Gerreidae_Gerres.subfasciatus_37349005
-Estuary,Gerreidae,Silver belly,Parequula melbournensis,Gerreidae_Parequula.melbournensis_37349001
-Estuary,Girellidae,Luderick,Girella tricuspidata,Girellidae_Girella.tricuspidata_37361007
-Estuary,Girellidae,Luderick,Girella spp,Girellidae_Girella.spp_37361902
-coast,Gobiesocidae,Clingfish,Alabes spp,Gobiesocidae_Alabes.spp_37206901
-coast,Gobiesocidae,Clingfish,other,Gobiesocidae_other_37206000
+estuary/coast,Gerreidae,Silver belly,Gerres subfasciatus,Gerreidae_Gerres.subfasciatus_37349005
+estuary/coast,Gerreidae,Silver belly,Parequula melbournensis,Gerreidae_Parequula.melbournensis_37349001
+estuary/coast,Girellidae,Luderick,Girella tricuspidata,Girellidae_Girella.tricuspidata_37361007
+estuary/coast,Girellidae,Luderick,Girella spp,Girellidae_Girella.spp_37361902
+estuary/coast,Gobiesocidae,Clingfish,Alabes spp,Gobiesocidae_Alabes.spp_37206901
+estuary/coast,Gobiesocidae,Clingfish,other,Gobiesocidae_other_37206000
 estuary/coast,Gobiidae,Goby,,Gobiidae_37428000
 coast/pelagic,Gonorhynchidae,Beak salmon,Gonorhynchus greyi,Gonorhynchidae_Gonorhynchus.greyi_37141001
 Ocean,Gonostomatidae,Bristlemouth,,Gonostomatidae_37106912
@@ -92,8 +92,8 @@ Tropical,Grammistidae,Soapfish,,Grammistidae_37312000
 Tropical,Haemulidae,Sweetlips,,Haemulidae_37350000
 coast/pelagic,Hemiramphidae,Garfish,Hemiramphus spp,Hemiramphidae_Hemiramphus.spp_37234903
 Tropical,Holocentridae,Squirelfish,,Holocentridae_37261000
-slope,Hoplichthyidae,Ghost flathead,Hoplichthys spp,Hoplichthyidae_Hoplichthys.spp_37297901
-slope,Howellidae,Pelagic bass,Howella spp,Howellidae_Howella.spp_37327912
+coast/slope,Hoplichthyidae,Ghost flathead,Hoplichthys spp,Hoplichthyidae_Hoplichthys.spp_37297901
+coast/slope,Howellidae,Pelagic bass,Howella spp,Howellidae_Howella.spp_37327912
 Ocean,Idiacanthidae,Black dragonfish,Idiacanthus spp,Idiacanthidae_Idiacanthus.spp_37113901
 Ocean,Ipnopidae,Tripodfish,,Ipnopidae_37123000
 Tropical,Istiophoridae,Marlin,,Istiophoridae_37444000
@@ -119,14 +119,14 @@ Tropical,Microdesmidae,Wormfish,,Microdesmidae_37435000
 Ocean,Molidae,Sunfish,,Molidae_37470000
 estuary/coast,Monacanthidae,Leatherjacket,,Monacanthidae_37465903
 coast,Monodactylidae,Pomfred,Schuetta spp,Monodactylidae_Schuetta.spp_37356902
-Estuary,Monodactylidae,Diamondfish,Monodactylus argenteus,Monodactylidae_Monodactylus.argenteus_37356002
+estuary/coast,Monodactylidae,Diamondfish,Monodactylus argenteus,Monodactylidae_Monodactylus.argenteus_37356002
 coast,Moridae,Beardies,,Moridae_37224000
-estuary,Mugilidae,Mullet,Liza argentea,Mugilidae_Liza.argentea_37381004
-estuary,Mugilidae,Mullet,other,Mugilidae_other_37381000
+estuary/coast,Mugilidae,Mullet,Liza argentea,Mugilidae_Liza.argentea_37381004
+estuary/coast,Mugilidae,Mullet,other,Mugilidae_other_37381000
 Tropical,Mullidae,Goatfish,,Mullidae_37355000
 Ocean,Myctophidae,Lanternfish,,Myctophidae_37122000
 Tropical,Nemipteridae,Threadfin bream,,Nemipteridae_37347000
-coast,Nomeidae,Driftfish,,Nomeidae_37446000
+coast/slope,Nomeidae,Driftfish,,Nomeidae_37446000
 Ocean,Notosudidae,Paperbones,,Notosudidae_37125000
 coast,Odacidae,Rock cale,,Odacidae_37385000
 coast/slope,Ophidiidae,Ling,Genyptrus spp,Ophidiidae_Genyptrus.spp_37228901
@@ -140,48 +140,48 @@ coast,Percophidae,Duckbills,,Percophidae_37393000
 Ocean,Phosichthyidae,Lightfishes,,Phosichthyidae_37106913
 Tropical,Pinguipedidae,Grub fish,,Pinguipedidae_37390000
 coast,Platycephalidae,Flathead,other,Platycephalidae_other_37296000
-estuary,Platycephalidae,Flathead,Platycephalus fuscus,Platycephalidae_Platycephalus.fuscus_37296004
+estuary/coast,Platycephalidae,Flathead,Platycephalus fuscus,Platycephalidae_Platycephalus.fuscus_37296004
 coast,Plesiopidae,Prettyfins,,Plesiopidae_37316000
 estuary/coast,Pleuronectidae,Flounder,Rhombosolea spp,Pleuronectidae_Rhombosolea.spp_37461912
 coast,Pomacentridae,Damselfish,,Pomacentridae_37372000
-estuary,Pomatomidae,Tailor,Pomatomus saltatrix,Pomatomidae_Pomatomus.saltatrix_37334002
+estuary/coast,Pomatomidae,Tailor,Pomatomus saltatrix,Pomatomidae_Pomatomus.saltatrix_37334002
 coast,Priacanthidae,Bigeyes,,Priacanthidae_37326000
-coast,Pseudochromidae,Dottyback,,Pseudochromidae_37313000
+tropical,Pseudochromidae,Dottyback,,Pseudochromidae_37313000
 estuary/coast,Rhombosoleidae,Flounder,Ammotretis spp,Rhombosoleidae_Ammotretis.spp_37461900
 Tropical,Samaridae,Flatfish,,Samaridae_37461000.2
 Tropical,Scaridae,Parrotfish,,Scaridae_37386000
 Tropical,Schindleriidae,Floater,Schindleria spp,Schindleriidae_Schindleria.spp_37424901
-coast,Sciaenidae,Teraglin,Atractoscion aequidens,Sciaenidae_Atractoscion.aequidens_37354020
-estuary,Sciaenidae,Mulloway,Agyrosomus japonicus,Sciaenidae_Agyrosomus.japonicus_37354001
+estuary/coast,Sciaenidae,Teraglin,Atractoscion aequidens,Sciaenidae_Atractoscion.aequidens_37354020
+estuary/coast,Sciaenidae,Mulloway,Agyrosomus japonicus,Sciaenidae_Agyrosomus.japonicus_37354001
 coast/pelagic,Scomberesocidae,Saury,Scomberesox saurus,Scomberesocidae_Scomberesox.saurus_37236001
 coast/pelagic,Scombridae,Blue mackerel,Scomber australasicus,Scombridae_Scomber.australasicus_37441001
 Tropical,Scombridae,Tuna,Auxis spp,Scombridae_Auxis.spp_37441915
 Tropical,Scombridae,Tuna,other,Scombridae_other_37441000
 Ocean,Scopelarchidae,Pearleyes,,Scopelarchidae_37131000
-coast,Scorpaenidae,Ocean perch,Helicolenus spp,Scorpaenidae_Helicolenus.spp_37287918
 coast,Scorpaenidae,Gurnard perch,Neosebastes spp,Scorpaenidae_Neosebastes.spp_37287927
-coast,Scorpaenidae,Cobbler,Gymnapistes marmoratus,Scorpaenidae_Gymnapistes.marmoratus_37287018
 coast,Scorpaenidae,,other,Scorpaenidae_other_37287000
-Estuary,Scorpaenidae,Fortescue,Centropogon australis,Scorpaenidae_Centropogon.australis_37287048
+coast/slope,Scorpaenidae,Ocean perch,Helicolenus spp,Scorpaenidae_Helicolenus.spp_37287918
+estuary,Scorpaenidae,Cobbler,Gymnapistes marmoratus,Scorpaenidae_Gymnapistes.marmoratus_37287018
+estuary/coast,Scorpaenidae,Fortescue,Centropogon australis,Scorpaenidae_Centropogon.australis_37287048
 coast,Scorpididae,Sweep,Scorpis spp,Scorpididae_Scorpis.spp_37361906
 coast,Serraninae,Wirrahs,Acanthistius spp,Serraninae_Acanthistius.spp_37311912
-coast,Siganidae,Rabbitfish,Siganus spp,Siganidae_Siganus.spp_37438902
+tropical,Siganidae,Rabbitfish,Siganus spp,Siganidae_Siganus.spp_37438902
 coast,Sillaginidae,Stout whiting,Sillago robusta,Sillaginidae_Sillago.robusta_37330005
 coast,Sillaginidae,Eastern school whiting,Sillago flindersi,Sillaginidae_Sillago.flindersi_37330014
 coast,Sillaginidae,Southern school whiting,Sillago bassensis,Sillaginidae_Sillago.bassensis_37330002
-coast,Sillaginidae,King George whiting,Sillaginodes punctatus,Sillaginidae_Sillaginodes.punctatus_37330001
 coast,Sillaginidae,Whiting,other,Sillaginidae_other_37330000
-Estuary,Sillaginidae,Sand whiting,Sillago ciliata,Sillaginidae_Sillago.ciliata_37330010
+estuary/coast,Sillaginidae,King George whiting,Sillaginodes punctatus,Sillaginidae_Sillaginodes.punctatus_37330001
+estuary/coast,Sillaginidae,Sand whiting,Sillago ciliata,Sillaginidae_Sillago.ciliata_37330010
 coast,Soleidae,Sole,,Soleidae_37462000
-estuary,Sparidae,Snapper,Chrysophrys auratus,Sparidae_Chrysophrys.auratus_37353001
-estuary,Sparidae,Yellowfin bream,Acanthopagrus australis,Sparidae_Acanthopagrus.australis_37353004
-estuary,Sparidae,Tarwhine,Rhabdosargus sarba,Sparidae_Rhabdosargus.sarba_37353013
+estuary/coast,Sparidae,Snapper,Chrysophrys auratus,Sparidae_Chrysophrys.auratus_37353001
+estuary/coast,Sparidae,Yellowfin bream,Acanthopagrus australis,Sparidae_Acanthopagrus.australis_37353004
+estuary/coast,Sparidae,Tarwhine,Rhabdosargus sarba,Sparidae_Rhabdosargus.sarba_37353013
 Tropical,Sphyraenidae,Barracudas,Sphyraena spp,Sphyraenidae_Sphyraena.spp_37382901
 Ocean,Sternoptychidae,Hatchet fish,,Sternoptychidae_37107000
 Estuary,Syngnathidae,Pipefish,Stigmatopora nigra,Syngnathidae_Stigmatopora.nigra_37282018
 Estuary,Syngnathidae,Pipefish,other,Syngnathidae_other_37282000
 Tropical,Synodontidae,Lizardfish,,Synodontidae_37118000
-Estuary,Terapontidae,Trumpeter,Pelates spp,Terapontidae_Pelates.spp_37321908
+estuary/coast,Terapontidae,Trumpeter,Pelates spp,Terapontidae_Pelates.spp_37321908
 coast/slope,Tetragonuridae,Squaretail,Tetragonurus spp,Tetragonuridae_Tetragonurus.spp_37449901
 estuary/coast,Tetraodontidae,Toadfish,,Tetraodontidae_37467000
 coast,Trachichthyidae,Roughy,Aulotrachichthys spp,Trachichthyidae_Aulotrachichthys.spp_37255901
@@ -191,7 +191,7 @@ coast,Trichonotidae,Sanddivers,Trichonotus spp,Trichonotidae_Trichonotus.spp_373
 coast,Triglidae,Gurnard,Lepidotrigla papilio,Triglidae_Lepidotrigla.papilio_37288002
 coast,Triglidae,Gurnard,Lepidotrigla spp,Triglidae_Lepidotrigla.spp_37288901
 coast,Triglidae,Gurnard,other,Triglidae_other_37288000
-coast,Tripterygiidae,Triplefins,,Tripterygiidae_37415000
+estuary/coast,Tripterygiidae,Triplefins,,Tripterygiidae_37415000
 coast,Uranoscopidae,Stargazers,,Uranoscopidae_37400000
 Tropical,Xiphiidae,Swordfish,Xiphias gladius,Xiphiidae_Xiphias.gladius_37442001
 coast/slope,Zeidae,Dory,,Zeidae_37264000

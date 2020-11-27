@@ -80,6 +80,8 @@ fish_data <-  fish_data %>% mutate(NE_Winds.standardised = as.numeric(scale(NE_W
                                    dists_km.standardised = as.numeric(scale(dists_km)))
 head(fish_data)
 
+fit_scale_d <- lm(dists_km ~ dists_km.standardised, data = fish_data)
+summary(fit_scale_d)
 ## Normalise Coastal Species
 
 
@@ -144,6 +146,10 @@ norm_abund <- rowSums(norm_el)
 norm_abund
 fish_data$Coastal_Normalised_Abund <- norm_abund
 
+#fish_data <- write_csv(fish_data, "../Data/Fish_data_final_larval_for_katana.csv")
+
+
+
 ## Tweedie Family for positive continuous response variable
 # library(tweedie)
 # 
@@ -164,19 +170,20 @@ library(brms)
 #plot(fit4)
 #plot(conditional_effects(fit4))
 
-# fit5 <- brm(Coastal_Normalised_Abund~
-#                poly(NE_Winds.standardised, degree = 2)*dists_km+
-#                poly(SE_Winds.standardised, degree = 2)*dists_km+
-#                SE_Winds.standardised:NE_Winds.standardised*
-#                dists_km + (1|Project_ID), family = hurdle_gamma, data = fish_data, iter = 10000, seed = 1234)
-#  
-# saveRDS(fit5, "../Data/Coastal 14 day brms model.rds")
-fit5 <- readRDS("../Data/Coastal 14 day brms model.rds")
+fit5 <- brm(Coastal_Normalised_Abund~
+               poly(NE_Winds.standardised, degree = 2)*dists_km.standardised+
+               poly(SE_Winds.standardised, degree = 2)*dists_km.standardised+
+               SE_Winds.standardised:NE_Winds.standardised*
+              dists_km.standardised + (1|Project_ID), family = hurdle_gamma, data = fish_data, iter = 20000, seed = 1234)
+
+#saveRDS(fit5, "../Data/Coastal 14 day brms modelv3_dist_stand.rds")
+fit5 <- readRDS("../Data/Coastal 14 day brms modelv3_dist_stand.rds")
 
 brms::prior_summary(fit5)
 
 plot(fit5)
 summary(fit5)
+performance::r2_bayes(fit5)
 
 library(tidybayes)
 get_variables(fit5)
@@ -184,22 +191,22 @@ get_variables(fit5)
 
 fit5 %>%
   spread_draws(b_Intercept, b_polyNE_Winds.standardiseddegreeEQ21,
-               b_polyNE_Winds.standardiseddegreeEQ22, b_dists_km,
+               b_polyNE_Winds.standardiseddegreeEQ22, b_dists_km.standardised,
                b_polySE_Winds.standardiseddegreeEQ21, b_polySE_Winds.standardiseddegreeEQ22,
-               `b_polyNE_Winds.standardiseddegreeEQ21:dists_km`, `b_polyNE_Winds.standardiseddegreeEQ22:dists_km`,
-               `b_SE_Winds.standardised:NE_Winds.standardised`, `b_dists_km:SE_Winds.standardised:NE_Winds.standardised`,
-               `b_dists_km:polySE_Winds.standardiseddegreeEQ22`, `b_dists_km:polySE_Winds.standardiseddegreeEQ21`) %>%
+               `b_polyNE_Winds.standardiseddegreeEQ21:dists_km.standardised`, `b_polyNE_Winds.standardiseddegreeEQ22:dists_km.standardised`,
+               `b_SE_Winds.standardised:NE_Winds.standardised`, `b_dists_km.standardised:SE_Winds.standardised:NE_Winds.standardised`,
+               `b_dists_km.standardised:polySE_Winds.standardiseddegreeEQ22`, `b_dists_km.standardised:polySE_Winds.standardiseddegreeEQ21`) %>%
   rename("Intercept" = b_Intercept, "Up" = b_polyNE_Winds.standardiseddegreeEQ21,
-         "Up (quadratic)"  = b_polyNE_Winds.standardiseddegreeEQ22, "Dist" = b_dists_km,
+         "Up (quadratic)"  = b_polyNE_Winds.standardiseddegreeEQ22, "Dist" = b_dists_km.standardised,
          "Down" = b_polySE_Winds.standardiseddegreeEQ21, "Down (quadratic)" = b_polySE_Winds.standardiseddegreeEQ22,
-         "Up * Dist"= `b_polyNE_Winds.standardiseddegreeEQ21:dists_km`, "Up (quadratic) * Dist "= `b_polyNE_Winds.standardiseddegreeEQ22:dists_km`,
-         "Down * Up" = `b_SE_Winds.standardised:NE_Winds.standardised`, "Down * Up * Dist"=`b_dists_km:SE_Winds.standardised:NE_Winds.standardised`,
-         "Down (quadratic) * Dist" = `b_dists_km:polySE_Winds.standardiseddegreeEQ22`, "Down * Dist" = `b_dists_km:polySE_Winds.standardiseddegreeEQ21`) %>%
-  tidyr::pivot_longer(cols = c(4:13), names_to = "Variable") %>%
+         "Up * Dist"= `b_polyNE_Winds.standardiseddegreeEQ21:dists_km.standardised`, "Up (quadratic) * Dist "= `b_polyNE_Winds.standardiseddegreeEQ22:dists_km.standardised`,
+         "Down * Up" = `b_SE_Winds.standardised:NE_Winds.standardised`, "Down * Up * Dist"=`b_dists_km.standardised:SE_Winds.standardised:NE_Winds.standardised`,
+         "Down (quadratic) * Dist" = `b_dists_km.standardised:polySE_Winds.standardiseddegreeEQ22`, "Down * Dist" = `b_dists_km.standardised:polySE_Winds.standardiseddegreeEQ21`) %>%
+  tidyr::pivot_longer(cols = c(4:13), names_to = "Parameter") %>%
   #median_qi() %>%
-  ggplot(aes(x = value, y = Variable)) +
+  ggplot(aes(x = value, y = Parameter)) +
   stat_halfeye(normalize = "groups") + geom_vline(xintercept =0 , col = "red", lty = 2) +
-  xlab("Estimate")+
+  xlab("Estimate") +
   theme_classic() + theme(axis.text = element_text(colour="black"),
                           axis.title = element_text(face = "bold"))
 
@@ -209,11 +216,11 @@ ggsave("../plots/Larval Fish 14 Day Bayesian.png", dpi = 600, height = 12, width
 # Which ones are actually important effects/interactions
 fit5 %>%
   gather_draws(b_Intercept, b_polyNE_Winds.standardiseddegreeEQ21,
-               b_polyNE_Winds.standardiseddegreeEQ22, b_dists_km,
+               b_polyNE_Winds.standardiseddegreeEQ22, b_dists_km.standardised,
                b_polySE_Winds.standardiseddegreeEQ21, b_polySE_Winds.standardiseddegreeEQ22,
-               `b_polyNE_Winds.standardiseddegreeEQ21:dists_km`, `b_polyNE_Winds.standardiseddegreeEQ22:dists_km`,
-               `b_SE_Winds.standardised:NE_Winds.standardised`, `b_dists_km:SE_Winds.standardised:NE_Winds.standardised`,
-               `b_dists_km:polySE_Winds.standardiseddegreeEQ22`, `b_dists_km:polySE_Winds.standardiseddegreeEQ21`) %>%
+               `b_polyNE_Winds.standardiseddegreeEQ21:dists_km.standardised`, `b_polyNE_Winds.standardiseddegreeEQ22:dists_km.standardised`,
+               `b_SE_Winds.standardised:NE_Winds.standardised`, `b_dists_km.standardised:SE_Winds.standardised:NE_Winds.standardised`,
+               `b_dists_km.standardised:polySE_Winds.standardiseddegreeEQ22`, `b_dists_km.standardised:polySE_Winds.standardiseddegreeEQ21`) %>%
   median_qi() #%>%
 #  write_csv("../Data/Larval fish model coefs 14 day Bayesian.csv")
 
@@ -228,18 +235,19 @@ fit5 %>%
 plot(conditional_effects(fit5))
 
 
-mydf1 <- ggpredict(fit5, terms = "dists_km [all]")
+mydf1 <- ggpredict(fit5, terms = "dists_km.standardised [all]")
+mydf1$x <- mydf1$x * fit_scale_d$coefficients[2] +  fit_scale_d$coefficients[1] # back transform to km
 mydf2 <- ggpredict(fit5, terms = "NE_Winds.standardised")
 mydf3 <- ggpredict(fit5, terms = "SE_Winds.standardised [all]")
 
-mydf1$Term <- "Distance to\nCoast (km)"
-mydf2$Term <- "Upwelling\nFavourable Winds"
-mydf3$Term <- "Downwelling\nFavourable Winds"
+mydf1$Term <- "a) Distance to\nCoast (km)"
+mydf2$Term <- "b) Upwelling\nFavourable Winds"
+mydf3$Term <- "c) Downwelling\nFavourable Winds"
 
 mydf_all <- bind_rows(mydf1, mydf2,mydf3)
 
 
-pD <- ggplot(mydf_all, aes(x, predicted)) + facet_wrap(~Term, scales = "free_x", switch = "x") +
+pD <- ggplot(mydf_all, aes(x, predicted)) + facet_wrap(~Term, scales = "free_x") +
   geom_line() +
   geom_ribbon(aes(ymin = conf.low, ymax = conf.high), alpha = .1) +
   theme_classic() + theme(axis.title.x = element_blank(),
@@ -257,109 +265,6 @@ pD <- ggplot(mydf_all, aes(x, predicted)) + facet_wrap(~Term, scales = "free_x",
 
 pD
 
-ggsave("../plots/larval 14 predictions bayesian.png", width = 21, height = 14.8, units="cm", dpi = 600)
+ggsave("../plots/larval 14 predictions bayesian.png", width = 21, height = 12.8, units="cm", dpi = 600)
 
 
-library(bayesplot)
-
-
-
-
-
-post5 <- posterior_samples(fit5, add_chain = T)
-mcmc_pairs(post5)
-
-# library(DHARMa)
-# simulations = model$BUGSoutput$sims.list$beetlesPred
-# pred = apply(model$BUGSoutput$sims.list$lambda, 2, median)
-# dim(simulations)
-# sim = createDHARMa(simulatedResponse = t(simulations), observedResponse = data$beetles, fittedPredictedResponse = pred, integerResponse = T)
-# plotSimulatedResiduals(sim)
-
-
-bayes_R2(fit5)
-#simulationOutput <- simulateResiduals(fittedModel = fit4, n = 250)
-#plot(simulationOutput)
-#hist(residuals(fit4))
-
-post <- posterior_samples(fit4, add_chain = T)
-
-
-## Predictions
-
-# Heatmap making for interaction plot (Run from here) - Very slow if standard error included (was run on HPC to get SE)
-nums <- seq(-2,2, by = 0.05)
-heat_dataM <- data.frame("Southeast Winds" = rep(0,81*81), # makes empty dataframe ready for values
-                         "Northeast Winds" =  rep(0,81*81), 
-                         "Abundance" =  rep(0,81*81))
-Nn <- 1
-# loop for NE
-for (i in 1:length(nums)){
-  for (j in 1:length(nums)){
-    pred_map <- data.frame("NE_Winds.standardised" = nums[i],
-                           "SE_Winds.standardised" = nums[j],
-                           "dists_km" = mean(fish_data$dists_km),
-                           "Project_ID" = "P3",
-                           "Volume_m3" = 1000)
-    PredX <- predict(fit5, newdata = pred_map, type = "response", se.fit = F)
-    heat_dataM$Southeast.Winds[Nn] <- pred_map$SE_Winds.standardised[1]
-    heat_dataM$Northeast.Winds[Nn] <- pred_map$NE_Winds.standardised[1]
-    heat_dataM$Abundance[Nn] <- PredX#$fit
-    print(paste("This is line ", Nn, " out of 6561"))
-    Nn <- Nn + 1
-  }
-}
-
-
-################################# Final Plots
-
-mydf <- ggpredict(fit5, terms = "dists_km [all]")
-
-pD <- ggplot(mydf, aes(x, predicted)) + #facet_wrap(~Term, scales = "free_x", switch = "x") +
-  geom_line() +
-  geom_ribbon(aes(ymin = conf.low, ymax = conf.high), alpha = .1) +
-  theme_classic() + theme(axis.title.x = element_text(colour="black", face = "bold", size = 15),
-                          axis.text.x  = element_text(colour="black", size = 14), 
-                          axis.title.y = element_text(face="bold", colour="black", size = 15),
-                          axis.text.y  = element_text(colour="black", size = 14),
-                          axis.ticks = element_line(colour="black"),
-                          strip.text = element_text(colour="black", face = "bold", size = 13),
-                          strip.background = element_blank(),
-                          strip.placement = "outside",
-                          #legend.justification=c(1,0), legend.position="right",
-                          panel.border = element_rect(colour = "black", fill=NA, size = 1))+
-  ylab("Predicted Normalised \nCoastal Species Abundance") +
-  xlab("Distance to \nCoast (km)")
-
-pD
-
-
-# check which dataset is being called (new or saved one)
-pH <- ggplot(heat_dataM, aes(x = Southeast.Winds,y = Northeast.Winds)) + geom_tile(aes(fill = Abundance)) +
-  geom_contour(col="white", aes(z = Abundance), binwidth = 0.02) +
-  scale_x_continuous(expand = c(0,0)) + 
-  scale_y_continuous(expand = c(0,0)) +
-  #scale_fill_gradient(low = "blue", high = "red") + 
-  theme_classic() + 
-  scale_fill_viridis(option = "magma", name="Predicted\nNormalised\nCoastal\nSpecies\nAbundance") + # or geom_raster()
-  xlab("Downwelling \nFavourable Winds") + ylab("Upwelling \nFavourable Winds") +
-  theme(axis.title.x = element_text(face="bold", colour="black", size = 15),
-        axis.text.x  = element_text(colour="black", size = 14), 
-        axis.title.y = element_text(face="bold", colour="black", size = 15),
-        axis.text.y  = element_text(colour="black", size = 14),
-        axis.ticks = element_line(colour="black"),
-        legend.title = element_text(colour="black", size=12, face="bold"),
-        legend.text = element_text(colour="black", size=10)) 
-
-pH
-
-#ggsave("../plots/Larvae heatmap 14 day.pdf", width = 21, height = 14.8, units = "cm")
-#ggsave("../plots/Larvae heatmap 14 day.png", width = 21, height = 14.8, units = "cm", dpi = 600)
-
-
-# Combine pD and pH
-
-plot_grid(pD, pH, labels = c("A", "B"), label_size = 12, rel_widths = c(1,2))
-## Run below to save final plots
-ggsave("../plots/Larvae 14 day plots_Bayesian.png", width = 21, height = 14.8, units = "cm", dpi = 600)
-ggsave("../plots/Larvae 14 day plots_Bayesian.pdf", width = 21, height = 14.8, units = "cm", dpi = 600)
