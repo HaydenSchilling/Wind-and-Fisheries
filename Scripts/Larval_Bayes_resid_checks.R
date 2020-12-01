@@ -44,30 +44,30 @@ hist_p
 
 #ggsave("Figure_Sal_density histogram of residuals.png",width = 17, height = 9)
 
-# #QQ plot#
-# QQ_p <- fish_data %>%
-#   add_residual_draws(fit5) %>%
-#   median_qi() %>%
-#   ggplot(aes(sample = .residual)) +
-#   geom_qq() +
-#   geom_qq_line() +
-#   xlab('Theoretical quantiles') +
-#   ylab('Sample quantiles')+ theme_classic() +
-#      theme(axis.title = element_text(size=12, face = "bold"),
-#            axis.text = element_text(size = 10, colour = "black"))# +
+#QQ plot#
+QQ_p <- fish_data %>%
+  add_residual_draws(fit5) %>%
+  median_qi() %>%
+  ggplot(aes(sample = .residual)) +
+  geom_qq() +
+  geom_qq_line() +
+  xlab('Theoretical quantiles') +
+  ylab('Sample quantiles')+ theme_classic() +
+     theme(axis.title = element_text(size=12, face = "bold"),
+           axis.text = element_text(size = 10, colour = "black"))# +
 # #style
 
-qq_plot <- fish_data %>%
-  add_predicted_draws(fit5) %>%
-  summarise(
-    p_residual = mean(.prediction < Coastal_Normalised_Abund),
-    z_residual = qnorm(p_residual)
-  ) %>%
-  ggplot(aes(sample = z_residual)) +
-  geom_qq() + ylab("Sample") + xlab("Theoretical")+
-  geom_abline() + theme_classic() +
-  theme(axis.title = element_text(size=12, face = "bold"),
-        axis.text = element_text(size = 10, colour = "black"))
+# qq_plot <- fish_data %>%
+#   add_predicted_draws(fit5) %>%
+#   summarise(
+#     p_residual = mean(.prediction < Coastal_Normalised_Abund),
+#     z_residual = qnorm(p_residual)
+#   ) %>%
+#   ggplot(aes(sample = z_residual)) +
+#   geom_qq() + ylab("Sample") + xlab("Theoretical")+
+#   geom_abline() + theme_classic() +
+#   theme(axis.title = element_text(size=12, face = "bold"),
+#         axis.text = element_text(size = 10, colour = "black"))
 
 #ggsave("Figure_Sal_QQ_Plot.png",width = 17, height = 9)
 
@@ -97,5 +97,5 @@ acf_p <- autoplot(acf(rs$r.Estimate)) +
            axis.text = element_text(size = 10, colour = "black")) #+
 #style
 
-ggsave("Larval_Resid_Checking.png", arrangeGrob(hist_p, qq_plot, Resid_p, acf_p, ncol = 2,nrow = 2),width = 9.5, height = 7.5)
+ggsave("Larval_Resid_Checking.png", arrangeGrob(hist_p, QQ_p, Resid_p, acf_p, ncol = 2,nrow = 2),width = 9.5, height = 7.5)
 dev.off()

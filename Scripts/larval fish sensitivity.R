@@ -20,7 +20,7 @@ library(performance)
 
 
 #### This loop will be very slow - Do not need to run again ###
-for (lag_days in 17:20){
+for (lag_days in 9:20){
 
 # Load Fish Data
 fish_data <- read.csv("../Data/allNIMO_dist.csv", header = T)
@@ -99,7 +99,8 @@ row.names(norm_el)
 
 ### Load species category data
 Misk_list <- read_csv("../Data/Copy of Smith et al 2018 habitat catgeories from Miskie.csv")
-Estuary_sp <- Misk_list %>% filter(Category == "coast") %>% select(NIMO_NAME)
+Estuary_sp <- Misk_list %>% filter(Category == "coast" | Category == "coast/pelagic"|
+                                     Category == "estuary/coast" | Category == "coast/slope") %>% select(NIMO_NAME)
 # Subset to interested species Based upon Ford et al.
 include_list <- Estuary_sp$NIMO_NAME
 # c(#"Girellidae_Girella.tricuspidata_37361007",# "Girellidae_Girella.spp_37361902", "Labridae_37384000",

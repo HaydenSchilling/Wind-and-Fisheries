@@ -118,28 +118,6 @@ ggsave("../plots/Fishing Effort over time.png", height = 14.8, width=21, dpi =60
 
 Do full model for all species
 
-```{r}
-#m7 <- glmmTMB(Catch ~ poly(X135_degree_winds.standardised, degree = 2) + 
-#       poly(X45_degree_winds.standardised, degree = 2) +
-#       X135_degree_winds.standardised:X45_degree_winds.standardised+
-#        Estuary_Type *Drought_Months + Species + (Species|Estuary), family = Gamma(link="log"),
-#       data = my.df, offset = log10(Effort_days))
-#AIC(m7) # -38.18
-#performance::r2(m7) # 0.08
-#
-#simulationOutput <- simulateResiduals(fittedModel = m7, n = 250)
-#plot(simulationOutput, quantreg = F)
-#hist(residuals(m7), breaks = 30)
-#
-#car::Anova(m7)
-#summary(m7)
-#
-#total_Summary <- broom.mixed::tidy(m7)
-#total_Summary
-#write.csv(total_Summary, "../Data/All Species Summary Table.csv", row.names = F)
-
-```
-
 Bayesian Model
 ```{r}
 library(brms)
@@ -178,7 +156,7 @@ M_dat <- ggpredict(m7a, terms = "X45_degree_winds.standardised [all]")
 M_dat$Term <- "Upwelling \nFavourable Winds"
 
 M_plot <- ggplot(M_dat, aes(x, predicted/1000))+
-  geom_line() + xlab("Upwellwing\nFavourable Winds")+
+  geom_line() + xlab("Upwelling\nFavourable Winds")+
   geom_ribbon(aes(ymin = conf.low/1000, ymax = conf.high/1000), alpha = .1) +
   theme_classic() + theme(axis.text  = element_text(colour="black", size = 12), 
                           axis.title = element_text(face="bold", colour="black", size = 14),

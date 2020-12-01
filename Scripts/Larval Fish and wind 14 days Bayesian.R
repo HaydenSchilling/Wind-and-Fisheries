@@ -95,7 +95,8 @@ row.names(norm_el)
 
 ### Load species category data
 Misk_list <- read_csv("../Data/Copy of Smith et al 2018 habitat catgeories from Miskie.csv")
-Estuary_sp <- Misk_list %>% filter(Category == "coast") %>% select(NIMO_NAME)
+Estuary_sp <- Misk_list %>% filter(Category == "coast" | Category == "coast/pelagic"|
+                                     Category == "estuary/coast" | Category == "coast/slope") %>% select(NIMO_NAME)
 # Subset to interested species Based upon Ford et al.
 include_list <- Estuary_sp$NIMO_NAME
 # c(#"Girellidae_Girella.tricuspidata_37361007",# "Girellidae_Girella.spp_37361902", "Labridae_37384000",
@@ -174,9 +175,9 @@ fit5 <- brm(Coastal_Normalised_Abund~
                poly(NE_Winds.standardised, degree = 2)*dists_km.standardised+
                poly(SE_Winds.standardised, degree = 2)*dists_km.standardised+
                SE_Winds.standardised:NE_Winds.standardised*
-              dists_km.standardised + (1|Project_ID), family = hurdle_gamma, data = fish_data, iter = 20000, seed = 1234)
+              dists_km.standardised + (1|Project_ID), family = hurdle_gamma, data = fish_data, iter = 10000, seed = 1234)
 
-#saveRDS(fit5, "../Data/Coastal 14 day brms modelv3_dist_stand.rds")
+saveRDS(fit5, "../Data/Coastal 14 day brms modelv3_dist_stand.rds")
 fit5 <- readRDS("../Data/Coastal 14 day brms modelv3_dist_stand.rds")
 
 brms::prior_summary(fit5)
