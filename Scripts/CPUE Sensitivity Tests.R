@@ -38,12 +38,12 @@ library(brms)
 
 my.df2 <- my.df %>% drop_na(X135_degree_winds.standardised, X45_degree_winds.standardised)
 
-m7a <- brm(CPUE ~ poly(X135_degree_winds.standardised, degree = 2) + 
-             poly(X45_degree_winds.standardised, degree = 2) +
-             X135_degree_winds.standardised:X45_degree_winds.standardised+
-             Estuary_Type *Drought_Months + Species + (Species|Estuary),
-           data = my.df2, iter = 10000, seed = 1234)
-saveRDS(m7a, "../Data/Fisheries Data/Lag Models/CPUE Multi_species brms model CPUE no lag.rds")
+#m7a <- brm(CPUE ~ poly(X135_degree_winds.standardised, degree = 2) + 
+#             poly(X45_degree_winds.standardised, degree = 2) +
+#             X135_degree_winds.standardised:X45_degree_winds.standardised+
+#             Estuary_Type *Drought_Months + Species + (Species|Estuary),
+#           data = my.df2, iter = 10000, seed = 1234)
+#saveRDS(m7a, "../Data/Fisheries Data/Lag Models/CPUE Multi_species brms model CPUE no lag.rds")
 m7a <- readRDS("../Data/Fisheries Data/Lag Models/CPUE Multi_species brms model CPUE no lag.rds")
 
 
@@ -53,12 +53,12 @@ my.df2 <- mydata %>% drop_na(X135_Longer_Lag_1, X45_Longer_Lag_1) %>%  group_by(
   mutate(X45_degree_winds.standardised = as.numeric(scale(X45_Longer_Lag_1)),
                                                            X135_degree_winds.standardised = as.numeric(scale(X135_Longer_Lag_1)))
 
-m7_1L <- brm(CPUE ~ poly(X135_degree_winds.standardised, degree = 2) + 
-             poly(X45_degree_winds.standardised, degree = 2) +
-             X135_degree_winds.standardised:X45_degree_winds.standardised+
-             Estuary_Type *Drought_Months + Species + (Species|Estuary),
-           data = my.df2, iter = 10000, seed = 1234)
-saveRDS(m7_1L, "../Data/Fisheries Data/Lag Models/CPUE Multi_species brms model CPUE 1 longer.rds")
+#m7_1L <- brm(CPUE ~ poly(X135_degree_winds.standardised, degree = 2) + 
+#             poly(X45_degree_winds.standardised, degree = 2) +
+#             X135_degree_winds.standardised:X45_degree_winds.standardised+
+#             Estuary_Type *Drought_Months + Species + (Species|Estuary),
+#           data = my.df2, iter = 10000, seed = 1234)
+#saveRDS(m7_1L, "../Data/Fisheries Data/Lag Models/CPUE Multi_species brms model CPUE 1 longer.rds")
 m7_1L <- readRDS("../Data/Fisheries Data/Lag Models/CPUE Multi_species brms model CPUE 1 longer.rds")
 
 
@@ -69,12 +69,12 @@ my.df2 <- my.df %>% drop_na(X135_Longer_Lag_2, X45_Longer_Lag_2) %>%  group_by(S
          X135_degree_winds.standardised = as.numeric(scale(X135_Longer_Lag_2)))
 
 
-m7_2L <- brm(CPUE ~ poly(X135_degree_winds.standardised, degree = 2) + 
-               poly(X45_degree_winds.standardised, degree = 2) +
-               X135_degree_winds.standardised:X45_degree_winds.standardised+
-               Estuary_Type *Drought_Months + Species + (Species|Estuary),
-             data = my.df2, iter = 10000, seed = 1234)
-saveRDS(m7_2L, "../Data/Fisheries Data/Lag Models/CPUE Multi_species brms model CPUE 2 longer.rds")
+#m7_2L <- brm(CPUE ~ poly(X135_degree_winds.standardised, degree = 2) + 
+#               poly(X45_degree_winds.standardised, degree = 2) +
+#               X135_degree_winds.standardised:X45_degree_winds.standardised+
+#               Estuary_Type *Drought_Months + Species + (Species|Estuary),
+#             data = my.df2, iter = 10000, seed = 1234)
+#saveRDS(m7_2L, "../Data/Fisheries Data/Lag Models/CPUE Multi_species brms model CPUE 2 longer.rds")
 m7_2L <- readRDS("../Data/Fisheries Data/Lag Models/CPUE Multi_species brms model CPUE 2 longer.rds")
 
 
@@ -84,12 +84,12 @@ my.df2 <- my.df %>% drop_na(X135_Shorter_Lag_1, X45_Shorter_Lag_1) %>%  group_by
          X135_degree_winds.standardised = as.numeric(scale(X135_Shorter_Lag_1)))
 
 
-m7_1S <- brm(CPUE ~ poly(X135_degree_winds.standardised, degree = 2) + 
-               poly(X45_degree_winds.standardised, degree = 2) +
-               X135_degree_winds.standardised:X45_degree_winds.standardised+
-               Estuary_Type *Drought_Months + Species + (Species|Estuary),
-             data = my.df2, iter = 10000, seed = 1234)
-saveRDS(m7_1S, "../Data/Fisheries Data/Lag Models/CPUE Multi_species brms model CPUE 1 shorter.rds")
+#m7_1S <- brm(CPUE ~ poly(X135_degree_winds.standardised, degree = 2) + 
+#               poly(X45_degree_winds.standardised, degree = 2) +
+#               X135_degree_winds.standardised:X45_degree_winds.standardised+
+#               Estuary_Type *Drought_Months + Species + (Species|Estuary),
+#             data = my.df2, iter = 10000, seed = 1234)
+#saveRDS(m7_1S, "../Data/Fisheries Data/Lag Models/CPUE Multi_species brms model CPUE 1 shorter.rds")
 m7_1S <- readRDS("../Data/Fisheries Data/Lag Models/CPUE Multi_species brms model CPUE 1 shorter.rds")
 
 

@@ -125,15 +125,21 @@ library(tidyverse)
 
 my.df2 <- my.df %>% drop_na(X135_degree_winds.standardised, X45_degree_winds.standardised)
 
-#m7a <- brm(CPUE ~ poly(X135_degree_winds.standardised, degree = 2) + 
-#             poly(X45_degree_winds.standardised, degree = 2) +
-#             X135_degree_winds.standardised:X45_degree_winds.standardised+
-#             Estuary_Type *Drought_Months + Species + (Species|Estuary),
-#           data = my.df2, iter = 10000, seed = 1234)
-#saveRDS(m7a, "../Data/Fisheries Data/Lag Models/CPUE Multi_species brms model CPUE no lag.rds")
+m7a <- brm(CPUE ~ poly(X135_degree_winds.standardised, degree = 2) + 
+             poly(X45_degree_winds.standardised, degree = 2) +
+             X135_degree_winds.standardised:X45_degree_winds.standardised+
+             Estuary_Type *Drought_Months + Species + (Species|Estuary),
+           data = my.df2, iter = 10000, seed = 1234)
+saveRDS(m7a, "../Data/Fisheries Data/Lag Models/CPUE Multi_species brms model CPUE no lag.rds")
 m7a <- readRDS("../Data/Fisheries Data/Lag Models/CPUE Multi_species brms model CPUE no lag.rds")
 
 ```
+
+```{r}
+table(my.df2$Species, my.df2$Year)
+#table(my.df2$Estuary, my.df2$Estuary_Type)
+```
+
 
 Check model
 ```{r}
@@ -361,7 +367,7 @@ dev.off()
 
 
 ```{r}
-plot(ggeffect(m7a, terms = "X45_degree_winds.standardised [all]"), xlim=c(-2,2), ylim=c(0,1))
+plot(ggeffect(m7a, terms = "X45_degree_winds.standardised [all]"))
 plot(ggeffect(m7a, terms = "X135_degree_winds.standardised [all]"))
 plot(ggeffect(m7a, terms = "Drought_Months [all]"))
 ```

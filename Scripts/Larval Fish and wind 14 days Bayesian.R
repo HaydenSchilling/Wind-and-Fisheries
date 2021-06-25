@@ -147,9 +147,16 @@ norm_abund <- rowSums(norm_el)
 norm_abund
 fish_data$Coastal_Normalised_Abund <- norm_abund
 
+range(fish_data$Year)
 #fish_data <- write_csv(fish_data, "../Data/Fish_data_final_larval_for_katana.csv")
 
-
+## To get summary data for supplementary table
+#table(fish_data$Project_name, fish_data$Year)
+#table(fish_data$Project_name)#
+#
+#summary_datdat <- fish_data %>% group_by(Project_name) %>% summarise(min_lat = max(Latitude), max_lat = min(Latitude),
+#                                                                     min_dist = min(dists_km), max = max(dists_km))
+#summary_datdat
 
 ## Tweedie Family for positive continuous response variable
 # library(tweedie)
@@ -203,7 +210,7 @@ fit5 %>%
          "Up * Dist"= `b_polyNE_Winds.standardiseddegreeEQ21:dists_km.standardised`, "Up (quadratic) * Dist "= `b_polyNE_Winds.standardiseddegreeEQ22:dists_km.standardised`,
          "Down * Up" = `b_SE_Winds.standardised:NE_Winds.standardised`, "Down * Up * Dist"=`b_dists_km.standardised:SE_Winds.standardised:NE_Winds.standardised`,
          "Down (quadratic) * Dist" = `b_dists_km.standardised:polySE_Winds.standardiseddegreeEQ22`, "Down * Dist" = `b_dists_km.standardised:polySE_Winds.standardiseddegreeEQ21`) %>%
-  tidyr::pivot_longer(cols = c(4:13), names_to = "Parameter") %>%
+  tidyr::pivot_longer(cols = c(4:15), names_to = "Parameter") %>%
   #median_qi() %>%
   ggplot(aes(x = value, y = Parameter)) +
   stat_halfeye(normalize = "groups") + geom_vline(xintercept =0 , col = "red", lty = 2) +
@@ -234,6 +241,34 @@ fit5 %>%
 
 # prediction plots
 plot(conditional_effects(fit5))
+
+mean(fish_data$dists_km)
+sd(fish_data$dists_km)
+
+p1 <- conditional_effects(fit5, effects = "NE_Winds.standardised:dists_km.standardised:")
+p2 <- plot(p1, plot=FALSE)[[1]] + theme_classic() + ylab("Predicted Normalised\nCoastal Taxa Abundance")+
+  xlab("Upwelling Favourable Winds") + theme(axis.text = element_text(colour="black", size=10),
+                                             axis.title = element_text(face="bold",size=12),
+                                             legend.title = element_text(face="bold")) + 
+  scale_fill_discrete(name="Standardised\nDistance from Coast", breaks=c("1","0","-1"), labels=c("Mean +1 SD", "Mean", "Mean - 1SD")) +
+  scale_colour_discrete(name="Standardised\nDistance from Coast", breaks=c("1","0","-1"), labels=c("Mean +1 SD", "Mean", "Mean - 1SD"))
+p2
+
+
+p3 <- conditional_effects(fit5, effects = "SE_Winds.standardised:dists_km.standardised:")
+p4 <- plot(p3, plot=FALSE)[[1]] + theme_classic() + ylab("Predicted Normalised\nCoastal Taxa Abundance")+
+  xlab("Downwelling Favourable Winds") + theme(axis.text = element_text(colour="black", size=10),
+                                             axis.title = element_text(face="bold",size=12),
+                                             legend.title = element_text(face="bold")) + 
+  scale_fill_discrete(name="Standardised\nDistance from Coast", breaks=c("1","0","-1"), labels=c("Mean +1 SD", "Mean", "Mean - 1SD")) +
+  scale_colour_discrete(name="Standardised\nDistance from Coast", breaks=c("1","0","-1"), labels=c("Mean +1 SD", "Mean", "Mean - 1SD"))
+p4
+
+library(patchwork)
+
+extra_p <- p2 + p4 + plot_layout(ncol = 2, guides = 'collect')
+extra_p
+ggsave("../plots/larval 14 predictions varied distances.png", width =21, height = 10.8, units="cm", dpi =600)
 
 
 mydf1 <- ggpredict(fit5, terms = "dists_km.standardised [all]")

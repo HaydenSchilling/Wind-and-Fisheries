@@ -1,7 +1,7 @@
 library(tidyverse)
 library(REdaS)
 
-mydata <- read_csv("../BOM Data/BARRA Model/Larval_speed_direction.csv")
+mydata <- read_csv("All_Locations_wind_speed_direction.csv")
 
 
 # Classify onshore/offshore
@@ -38,8 +38,10 @@ mydata$Wind.speed.adjusted = mydata$Wind.effect.size * mydata$Speed_km_hr * -1
 # Group by day
 datM <- mydata %>% group_by(Latitude, Longitude, Year, Month, Day) %>%
   summarise(displacement = (sum(Wind.speed.adjusted, na.rm = TRUE)), count = n())
-head(datM)
+
 
 hist(datM$displacement)
-
-write_csv(datM, path = "../BOM Data/BARRA Model/BARRA Larval Daily 135 deg Wind Data Final.csv")
+datM$DownWind <- datM$displacement
+datM$displacement <- NULL
+head(datM)
+write_csv(datM, path = "Pat Monthly Downwelling Wind Data Final.csv")
