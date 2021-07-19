@@ -177,6 +177,8 @@ M_plot <- ggplot(M_dat, aes(x, predicted/1000))+
   #ggtitle("c) Mullet")
 M_plot  
 ggsave("../plots/CPUE Multispecies.png", dpi = 600, width = 10, height = 12, units = "cm")
+ggsave("../plots/CPUE Multispecies.pdf", dpi = 600, width = 10, height = 12, units = "cm")
+
 ```
 
 Get co-eff outputs
@@ -210,6 +212,8 @@ m7a %>%
                           axis.title = element_text(face = "bold"))# +
   #scale_y_continuous(trans = ggallin::ssqrt_trans, breaks = c(-20, -10, -1,1,10,20))
 ggsave("../plots/CPUE mulitspecies Estimate plots.png", dpi = 600, height = 12, width = 18, units= "cm")
+ggsave("../plots/CPUE mulitspecies Estimate plots.pdf", dpi = 600, height = 12, width = 18, units= "cm")
+
 ```
 
 

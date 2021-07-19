@@ -219,6 +219,7 @@ fit5 %>%
                           axis.title = element_text(face = "bold"))
 
 ggsave("../plots/Larval Fish 14 Day Bayesian.png", dpi = 600, height = 12, width = 12, units= "cm")
+ggsave("../plots/Larval Fish 14 Day Bayesian.pdf", dpi = 600, height = 12, width = 12, units= "cm")
 
 
 # Which ones are actually important effects/interactions
@@ -302,5 +303,6 @@ pD <- ggplot(mydf_all, aes(x, predicted)) + facet_wrap(~Term, scales = "free_x")
 pD
 
 ggsave("../plots/larval 14 predictions bayesian.png", width = 21, height = 12.8, units="cm", dpi = 600)
+ggsave("../plots/larval 14 predictions bayesian.pdf", width = 21, height = 12.8, units="cm", dpi = 600)
 
 
