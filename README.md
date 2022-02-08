@@ -1,7 +1,7 @@
 # Wind-and-Fisheries
 Data and Code for Wind and Fisheries Analysis
 
-This repository goes with Schilling et al. (2021) Coastal winds and larval fish abundance indicate a recruitment mechanism for southeast Australian estuarine fisheries. _Fisheries Oceanography_ and provides all the data and code to replicate this study.
+This repository goes with Schilling et al. (2022) Coastal winds and larval fish abundance indicate a recruitment mechanism for southeast Australian estuarine fisheries. _Fisheries Oceanography_ and provides all the data and code to replicate this study.
 Publication is available here: https://doi.org/10.1111/fog.12561
 
 All analysis was conducted in R v3.6.1 with some initial data processing done using a HPC. The scripts are all writen to be run with the "Scripts" folder as the working directory.
